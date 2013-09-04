@@ -108,6 +108,7 @@ ROOT_URLCONF = 'zombie.urls'
 WSGI_APPLICATION = 'zombie.wsgi.application'
 
 TEMPLATE_DIRS = (
+    '/opt/zombie/zombie/zombie/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
