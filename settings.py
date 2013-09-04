@@ -83,7 +83,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'ouv(=*j0nl%4wti^^s^7vd*fht#c4p@@@de17gb5i%a23p514e'
+SECRET_KEY = '%e*4o%o-w61enge5x!3^qw&(b6@(jcvel-@xz4%tph&0crl7vn'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -108,6 +108,7 @@ ROOT_URLCONF = 'zombie.urls'
 WSGI_APPLICATION = 'zombie.wsgi.application'
 
 TEMPLATE_DIRS = (
+    '/opt/zombie/zombie/zombie/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
