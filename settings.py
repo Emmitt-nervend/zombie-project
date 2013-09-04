@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 30a55ae462a62d13b1c1acb0e689ebcd0d50c008
 # Django settings for zombie project.
 
 DEBUG = True
