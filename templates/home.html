@@ -1,12 +1,18 @@
-<!-- Here is the home page html file that will obviously have our home page!!! -->
+<!DOCTYPE HTML>
+<html>
 
-<h1>Zombie Attack Homepage</h1>
+<head>
+	<title>{% block title %}Zombie Attack{% endblock %}</title>
+</head>
 
-<h2>ZOMBIES!!!!</h2>
+<body>
+	<h1>ZOMBIE ATTACK!!!</h1>
 
-<p> Human or Zombie? </p>
+	{% block footer %}
+	<hr>
+	<h5>Don't wait! Start to play</h5>
+	{% endblock %}
 
+</body>
 
-<h5>Russell Rocks!</h5>
-
-<!-- comment -->
+</html>
