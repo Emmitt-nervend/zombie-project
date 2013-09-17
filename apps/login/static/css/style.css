@@ -1,3 +1,6 @@
 body {
-	background-color: blue;
+	background: url('/static/images/graveyard.jpg');
+}
+h1 {
+	color: white;
 }
