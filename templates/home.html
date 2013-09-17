@@ -1,18 +1,7 @@
-<!DOCTYPE HTML>
-<html>
+{% extends "base.html" %}
 
-<head>
-	<title>{% block title %}Zombie Attack{% endblock %}</title>
-</head>
+{% block title %}Zombie Attack{% endblock %}
 
-<body>
-	<h1>ZOMBIE ATTACK!!!</h1>
-
-	{% block footer %}
-	<hr>
-	<h5>Don't wait! Start to play</h5>
-	{% endblock %}
-
-</body>
-
-</html>
+{% block content %}
+	<h1>Zombie Attack</h1>
+{% endblock %}
