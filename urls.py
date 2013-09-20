@@ -6,6 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'zombie.apps.login.views.home', name='home'),
-    url(r'^login/$', 'zombie.apps.login.views.login', name='login'),
+    url(r'^sign-up/$', 'zombie.apps.login.views.signUp', name='sign-up'),
     url(r'^admin/', include(admin.site.urls)),
 )

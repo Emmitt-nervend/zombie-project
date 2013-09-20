@@ -11,8 +11,13 @@ h1 {
 	color: white;
 }
 
+h2 {
+	color: white;
+}
+
 .center-screen {
-	margin: 0 auto;
+	padding: 5px;
+	margin: 5px auto 0 auto;
 	height: 300px;
 	width: 300px;
 	background-color: gray;
