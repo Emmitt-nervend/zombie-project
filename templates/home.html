@@ -1,14 +1,10 @@
-{% load staticfiles %}
-<!DOCTYPE HTML>
-<html>
-<head>
-	<title>Zombie Attack!</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Zombie | Attack{% endblock %}
+
+{% block content %}
 
     <button>Sign In</button>
     <button>Sign Up</button>
-	
-</body>
-</html>
+
+{% endblock %}
