@@ -6,6 +6,15 @@ body {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+
 h1 {
 	color: white;
 }
+
+.center-screen {
+	margin: 0 auto;
+	height: 300px;
+	width: 300px;
+	background-color: gray;
+}
+
