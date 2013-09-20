@@ -7,7 +7,5 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'zombie.apps.login.views.home', name='home'),
-
-    #for admin
     url(r'^admin/', include(admin.site.urls)),
 )
