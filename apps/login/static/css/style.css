@@ -16,6 +16,7 @@ h2 {
 }
 
 .center-screen {
+	border-radius: 2px;
 	padding: 5px;
 	margin:  250px auto;
 	height: 300px;
