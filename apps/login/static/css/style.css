@@ -15,11 +15,19 @@ h2 {
 	color: white;
 }
 
+.walter-turncoat {
+	font-family: 'Walter Turncoat', cursive;
+}
+
+.full-btn {
+	width: 100%;
+}
+
 .center-screen {
 	border-radius: 2px;
 	padding: 5px;
-	margin:  250px auto;
-	height: 300px;
+	margin:  150px auto;
+	min-height: 250px;
 	width: 300px;
 	text-align: center;
 	background-color: rgb(22, 22, 22);
