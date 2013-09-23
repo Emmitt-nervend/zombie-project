@@ -24,17 +24,27 @@ h2 {
 }
 
 .center-screen {
+	z-index: 100;
+	left: 38%;
+	position: absolute;
 	padding: 5px;
 	margin:  150px auto;
 	min-height: 250px;
 	width: 300px;
 	text-align: center;
 	background-color: rgb(22, 22, 22);
-	background-color: rgba(22, 22,22, 0.6);
+	opacity: ;
 }
 
-#homelogo{
+#homelogo {
 	width: 290px;
+}
+
+#myCanvas {
+	background:black;
+    opacity: 0.6;
+    width: 100%;
+    height: 100%;
 }
 
 

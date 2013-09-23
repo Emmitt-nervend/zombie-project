@@ -3,11 +3,23 @@
 {% block title %}Zombie | Attack{% endblock %}
 
 {% block content %}
-
+	
 <div class="center-screen">
-	<img src="/static/images/Logo.png" id="homelogo">
-	<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">Play Game</button>
-	<a href="/sign-up"><button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">Sign Up</button></a>
+
+	 <img src="/static/images/Logo.png" id="homelogo">
+
+	<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">
+		Play Game
+	</button>
+
+	<a href="/sign-up">
+		<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">
+			Sign Up
+		</button>
+	</a> 
+
 </div>
+
+<canvas id="myCanvas"></canvas>
 
 {% endblock %}
