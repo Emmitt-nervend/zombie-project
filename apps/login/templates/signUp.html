@@ -6,13 +6,15 @@
 
 <div class="center-screen">
 	<h2 class="walter-turncoat">Create your user</h2>
-	<form>
+	<form method="POST" action="">
 		{% csrf_token %}
 		<input class="form-control" type="text" name="firstName" id="firstName" placeHolder="First name">
 		<input class="form-control" type="text" name="lastName" id="lastName" placeHolder="Last name">
 		<input class="form-control" type="text" name="userName" id="userName" placeHolder="Username">
+		<input class="form-control" type="text" name="email" id="email" placeHolder="Email">
 		<input class="form-control" type="password" name="password" id="password" placeHolder="Password">
 		<input class="form-control" type="password" name="passwordConfirm" id="passwordConfirm" placeHolder="Repeat password">
+		<!-- <input class="form-control" type="checkbox" name="designer" > -->
 		<button type="submit" name="createUser" class="btn btn-danger btn-lg my-btn full-btn walter-turncoat">Create New User</button>
 	</form>
 </div>

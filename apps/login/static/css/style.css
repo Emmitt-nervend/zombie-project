@@ -25,15 +25,14 @@ h2 {
 
 .center-screen {
 	z-index: 100;
-	left: 38%;
+	left: 39%;
 	position: absolute;
 	padding: 5px;
 	margin:  150px auto;
 	min-height: 250px;
 	width: 300px;
 	text-align: center;
-	background-color: rgb(22, 22, 22);
-	opacity: ;
+	background-color: rgba(22, 22,22, 0.6);
 }
 
 #homelogo {
