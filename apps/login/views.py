@@ -11,6 +11,9 @@ from zombie.apps.login.models import ZombieUser, Map
 def home(request):
 	return render(request, 'home.html', {})
 
+def playoption(request):
+	return render(request, 'playoption.html', {})
+
 def signUp(request):
 	if request.method == 'POST':
 		print "Post"

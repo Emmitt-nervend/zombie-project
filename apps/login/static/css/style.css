@@ -36,6 +36,10 @@ h2 {
 	background-color: rgba(22, 22,22, 0.6);
 }
 
+.or-space{
+	margin-top: 0px;
+}
+
 #homelogo {
 	width: 290px;
 }
