@@ -14,6 +14,9 @@ def home(request):
 def playoption(request):
 	return render(request, 'playoption.html', {})
 
+def signIn(request):
+	return render(request, 'signIn.html', {})
+
 def signUp(request):
 	if request.method == 'POST':
 		print "Post"
