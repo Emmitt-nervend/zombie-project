@@ -24,12 +24,13 @@ h2 {
 }
 
 .center-screen {
+	position: absolute;
 	border-radius: 2px;
 	z-index: 100;
-	left: 39%;
-	position: absolute;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: 100px;
 	padding: 5px;
-	margin:  150px auto;
 	min-height: 250px;
 	width: 300px;
 	text-align: center;
