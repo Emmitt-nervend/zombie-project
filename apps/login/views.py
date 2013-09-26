@@ -12,7 +12,7 @@ def home(request):
 	return render(request, 'home.html', {})
 
 def playoption(request):
-	return render(request, 'playoption.html', {})
+	return render(request, 'playOption.html', {})
 
 def signIn(request):
 	return render(request, 'signIn.html', {})
