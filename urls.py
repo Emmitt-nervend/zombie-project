@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^sign-up/$', 'zombie.apps.login.views.signUp', name='sign-up'),
     url(r'^login/$', 'zombie.apps.login.views.signIn', name='signIn'),
     url(r'^success/$', 'zombie.apps.login.views.success', name='success'),
+    url(r'^web/$', 'zombie.apps.login.views.web', name='web'),
     url(r'^admin/', include(admin.site.urls)),
 )
