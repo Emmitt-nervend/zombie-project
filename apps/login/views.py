@@ -23,7 +23,7 @@ def signIn(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return HttpResponseRedirect('/success/')
+				return HttpResponseRedirect('/web/')
 			else:
 				return render(request, 'login.html', {'errors': 'Invalid user or password'})
 		else:
