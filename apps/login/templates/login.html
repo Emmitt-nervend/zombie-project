@@ -10,10 +10,11 @@
 
     <h2 class="walter-turncoat head-spacing">Sign in</h2>
 
-    <form>
+    <form method="POST" action="">
+    	{% csrf_token %}
     	<input class="form-control" type="text" name="userName" id="userName" placeHolder="Username">
     	<input class="form-control" type="password" name="password" id="password" placeHolder="Password">
-    	<button type="submit" name="createUser" class="btn btn-danger btn-lg my-btn full-btn walter-turncoat">Enter Dashboard</button>    
+    	<button type="submit" name="signIn" class="btn btn-danger btn-lg my-btn full-btn walter-turncoat">Enter Dashboard</button>    
     </form>
 </div>
 

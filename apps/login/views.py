@@ -14,7 +14,26 @@ def playoption(request):
 	return render(request, 'playOption.html', {})
 
 def signIn(request):
-	return render(request, 'signIn.html', {})
+	if request.method == 'POST':
+		form = forms.Login(request.POST)
+		submittedName = request.POST['userName']
+		submittedPassword = request.POST['password']
+		#search for mathcing name
+		user = authenticate(username=submittedName, password =submittedPassword)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect('/success/')
+			else:
+				return render(request, 'login.html', {'errors': 'Invalid user or password'})
+		else:
+			return render(request, 'login.html', {'errors': 'Invalid user or password'})
+	else:
+		return render (request, 'login.html', {})
+
+
+
+	return render(request, 'login.html', {})
 
 def signUp(request):
 	if request.method == 'POST':
