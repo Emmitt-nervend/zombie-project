@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'^playoption/$', 'zombie.apps.login.views.playoption', name='playoption'),
     url(r'^sign-up/$', 'zombie.apps.login.views.signUp', name='sign-up'),
     url(r'^sign-in/$', 'zombie.apps.login.views.signIn', name='sign-in'),
+    url(r'^success/$', 'zombie.apps.login.views.success', name='success'),
     url(r'^admin/', include(admin.site.urls)),
 )

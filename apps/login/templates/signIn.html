@@ -4,16 +4,19 @@
 
 {% block content %}
 
-  <div class="center-screen">
+<div class="center-screen">
 
     <a href="/"><img src="/static/images/Logo.png" id="homelogo"></a>
 
     <h2 class="walter-turncoat head-spacing">Sign in</h2>
 
     <form>
-      <input class="form-control" type="text" name="userName" id="userName" placeHolder="Username">
-      <input class="form-control" type="password" name="password" id="password" placeHolder="Password">
-      <button type="submit" name="createUser" class="btn btn-danger btn-lg my-btn full-btn walter-turncoat">Enter Dashboard</button>    
+    	<input class="form-control" type="text" name="userName" id="userName" placeHolder="Username">
+    	<input class="form-control" type="password" name="password" id="password" placeHolder="Password">
+    	<button type="submit" name="createUser" class="btn btn-danger btn-lg my-btn full-btn walter-turncoat">Enter Dashboard</button>    
     </form>
+</div>
+
+<canvas id="myCanvas"></canvas>
 
 {% endblock %}

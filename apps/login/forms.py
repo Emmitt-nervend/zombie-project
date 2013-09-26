@@ -8,6 +8,7 @@ class CreateZombieUserForm(forms.Form):
 	email = forms.EmailField()
 	password = forms.CharField()
 	passwordConfirm = forms.CharField()
+	designer = forms.BooleanField(required=False)
 
 
 class Login(forms.Form):

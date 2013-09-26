@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, logout, login
 from zombie.apps.login.models import ZombieUser, Map
 
 
-
 def home(request):
 	return render(request, 'home.html', {})
 
@@ -19,15 +18,18 @@ def signIn(request):
 
 def signUp(request):
 	if request.method == 'POST':
-		print "Post"
 		form = forms.CreateZombieUserForm(request.POST)
 		if request.POST['password'] == request.POST['passwordConfirm']:
-			print "Passwords match"
 			if form.is_valid():
-				print "form is valid"
 				cd = form.cleaned_data
 				newAuthUser = Auth_User.objects.create_user(cd['userName'], cd['email'], cd['password'])
-				newZombieUser = ZombieUser(user=newAuthUser)
+				newAuthUser.last_name = cd['lastName']
+				newAuthUser.first_name = cd['firstName']
+				newAuthUser.save()
+				if cd['designer'] is 1:
+					newZombieUser = ZombieUser(user=newAuthUser, accountType=1)
+				else:
+					newZombieUser = ZombieUser(user=newAuthUser)
 				newZombieUser.save()
 				user = authenticate(username=cd['userName'], password=cd['password'])
 				login(request, user)
@@ -38,3 +40,6 @@ def signUp(request):
 			return render(request, 'signUp.html', {'errors': 'Passowords do not match', 'form': form})
 	else:
 		return render(request, 'signUp.html', {})
+
+def success(request):
+	return render(request, 'success.html', {})
