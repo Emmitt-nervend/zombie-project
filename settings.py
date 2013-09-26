@@ -69,10 +69,11 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    '/opt/zombie/zombie/zombie/apps/login/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/opt/zombie/zombie/zombie/apps/login/static',
+    '/opt/zombie/zombie/zombie/apps/web/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -125,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Custom apps
     'zombie.apps.login',
+    'zombie.apps.web',
     # Django admin
     'django.contrib.admin',
 ) 

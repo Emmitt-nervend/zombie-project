@@ -16,6 +16,9 @@ def playoption(request):
 def signIn(request):
 	return render(request, 'signIn.html', {})
 
+def web(request):
+	return render(request, 'app.html', {})
+
 def signUp(request):
 	if request.method == 'POST':
 		form = forms.CreateZombieUserForm(request.POST)
