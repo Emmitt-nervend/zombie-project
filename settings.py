@@ -124,7 +124,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Custom apps
+    'rest_framework',
+    # Project apps
     'zombie.apps.login',
     'zombie.apps.web',
     # Django admin
