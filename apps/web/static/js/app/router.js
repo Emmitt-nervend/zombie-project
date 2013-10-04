@@ -2,12 +2,14 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'app/views/dashboard'
+    'app/views/dashboard',
+    'app/views/editor'
 ], function(
     $,
     _,
     Backbone,
-    DashboardView
+    DashboardView,
+    EditorView
 ) {
 
     return Backbone.Router.extend({
@@ -16,7 +18,8 @@ define([
 
         routes: {
             '': 'dashboardRedirect',
-            'dashboard': 'dashboard'
+            'dashboard': 'dashboard',
+            'map-editor': 'editor'
         },
 
         dashboardRedirect: function() {
@@ -26,6 +29,11 @@ define([
         dashboard: function() {
             this.cleanup();
             this.render(new DashboardView(), 'dashboard');
+        },
+
+        editor: function() {
+            this.cleanup();
+            this.render(new EditorView(), 'editor');
         },
 
         cleanup: function() {
