@@ -13,11 +13,11 @@
 	<div class="top-right">
 		<img src="/static/images/hazard.png">
 	</div>
-	<div class="top-right-form">
+	<div class="top-right-form" style="display: none">
 		<form action="" method="POST">
 	        {% csrf_token %}    
             <input name="userName" type="text" placeholder="Username" class="form-control">
-            <input name="password" type="password" placeholder="Password" class="form-control">
+            <input name="password" type="password" id="password" placeholder="Password" class="form-control">
 	    </form>
 	</div>
 	

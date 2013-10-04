@@ -8,12 +8,6 @@ from zombie.apps.login.models import ZombieUser, Map
 
 
 def home(request):
-	return render(request, 'home.html', {})
-
-def playoption(request):
-	return render(request, 'playOption.html', {})
-
-def signIn(request):
 	if request.method == 'POST':
 		form = forms.Login(request.POST)
 		submittedName = request.POST['userName']
@@ -25,15 +19,29 @@ def signIn(request):
 				login(request, user)
 				return HttpResponseRedirect('/web/')
 			else:
-				return render(request, 'login.html', {'errors': 'Invalid user or password'})
+				return render(request, 'home.html', {'errors': 'Invalid user or password'})
 		else:
-			return render(request, 'login.html', {'errors': 'Invalid user or password'})
+			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
-		return render (request, 'login.html', {})
+		return render(request, 'home.html', {})
 
-
-
-	return render(request, 'login.html', {})
+def playoption(request):
+	if request.method == 'POST':
+		form = forms.Login(request.POST)
+		submittedName = request.POST['userName']
+		submittedPassword = request.POST['password']
+		#search for mathcing name
+		user = authenticate(username=submittedName, password =submittedPassword)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect('/web/')
+			else:
+				return render(request, 'home.html', {'errors': 'Invalid user or password'})
+		else:
+			return render(request, 'home.html', {'errors': 'Invalid user or password'})
+	else:
+		return render(request, 'playOption.html', {})
 
 def web(request):
 	return render(request, 'app.html', {})
