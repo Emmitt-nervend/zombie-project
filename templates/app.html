@@ -9,13 +9,11 @@
 	    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
 	    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
     </head>
-    <body>
-        <nav class="navbar navbar-default navbar-static-top" role="navigation">
-          <!-- <button type="button" class="btn btn-primary btn-danger btn-lg dropdown-toggle walter-turncoat">
-          Play Game
-          </button> -->
-        </nav> 
-        <div id="content" class="row-fluid background"></div>
+    <body class="background">
+    <div class="top-right">
+        <img src="/static/images/hazard.png">
+    </div>
+    <div id="content" class="row-fluid"></div>
     	<script type="text/javascript" src="{% static 'js/vendor/require.js' %}" data-main="{% static 'js/app' %}"></script>
     </body>
 </html>
