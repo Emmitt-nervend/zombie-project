@@ -41,12 +41,37 @@ h2 {
 
 .top-right {
 	position: absolute;
-	top: 15px;
+	top: 20px;
 	right: 15px;
 	width: 50px;
 	height: 50px;
-	background-color: yellow;
 	z-index: 100;
+}
+
+.top-right-form {
+	position: absolute;
+	width: 300px;
+	top: 15px;
+	right: 75px;
+	z-index: 150;
+}
+
+.top-right-form form {
+	width: 300px;
+}
+
+.top-right img {
+	width:50px;
+	height:50px;
+	transition:width 1s, height 1s;
+	-webkit-transition:width 1s, height 1s, -webkit-transform 1s; /* Safari */
+}
+
+.top-right img:hover {
+	width:50px;
+	height:50px;
+	transform:rotate(360deg);
+	-webkit-transform:rotate(360deg); /* Safari */
 }
 
 .head-spacing{
@@ -58,7 +83,7 @@ h2 {
 }
 
 #myCanvas {
-	background:black;
+	background: black;
     opacity: 0.6;
     width: 100%;
     height: 100%;
