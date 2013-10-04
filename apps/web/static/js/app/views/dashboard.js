@@ -33,6 +33,7 @@ define([
             return this;
         }
 
+
     });
     return DashboardView;
 });
