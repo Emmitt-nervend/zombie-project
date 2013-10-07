@@ -44,7 +44,10 @@ def playoption(request):
 		return render(request, 'playOption.html', {})
 
 def web(request):
-	return render(request, 'app.html', {})
+	if request.user.is_authenticated():
+		return render(request, 'app.html', {})
+	else:
+		return render(request, 'home.html', {})
 
 def signUp(request):
 	if request.method == 'POST':
