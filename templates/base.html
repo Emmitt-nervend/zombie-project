@@ -10,16 +10,6 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}">
 </head>
 <body>
-	<div class="top-right" id="top-right">
-		<img src="/static/images/hazard.png">
-	</div>
-	<div class="top-right-form" style="display: none">
-		<form action="" method="POST">
-	        {% csrf_token %}    
-            <input name="userName" type="text" placeholder="Username" class="form-control">
-            <input name="password" type="password" id="password" placeholder="Password" class="form-control">
-	    </form>
-	</div>
 	
 	<div class="background">
 		{% block content %}{% endblock %}

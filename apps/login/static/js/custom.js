@@ -16,5 +16,6 @@ $(document).ready(function(){
 	})
 	$("#signIn").click(function(){
 		$(".top-right-form").show("slide", {direction: "right"});
+		$(".top-right img").addClass("top-right-rotate");
 	});
 });
