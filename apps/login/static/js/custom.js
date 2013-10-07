@@ -1,5 +1,9 @@
 $(document).ready(function(){
-
+	$(".top-right img").click(function(){
+		$(".top-right-form").show("slide", {direction: "right"});
+		$(".top-right img").toggleClass("top-right-rotate");
+		$(".top-right-form").toggle("slide", {direction: "right"});
+	});
 	$(".top-right img").mouseover(function(){
 		$(".top-right-form").show("slide", {direction: "right"});
 		$(".top-right img").addClass("top-right-rotate");
