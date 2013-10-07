@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'handlebars',
-    'text!app/templates/dashboard.handlebars'
+    'text!app/templates/editor.handlebars'
 ], function(
     $,
     _,
@@ -11,7 +11,7 @@ define([
     Handlebars,
     template
 ) {
-    var DashboardView = Backbone.View.extend({
+    var EditorView = Backbone.View.extend({
 
         template: Handlebars.compile(template),
 
@@ -35,5 +35,5 @@ define([
 
 
     });
-    return DashboardView;
+    return EditorView;
 });
