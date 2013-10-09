@@ -48,6 +48,15 @@ h2 {
 	z-index: 100;
 }
 
+.top-right-panel {
+	position: absolute;
+	color: white;
+	margin: 15px 10px 0 10px;
+	top: 15px;
+	right: 75px;
+	z-index: 150;
+}
+
 .top-right-form {
 	position: absolute;
 	width: 300px;
