@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'zombie.apps.login.views.home', name='home'),
-    url(r'^playoption/$', 'zombie.apps.login.views.playoption', name='playoption'),
+    url(r'^play/$', 'zombie.apps.login.views.playoption', name='playoption'),
     url(r'^sign-up/$', 'zombie.apps.login.views.signUp', name='sign-up'),
     url(r'^success/$', 'zombie.apps.login.views.success', name='success'),
     url(r'^web/$', 'zombie.apps.login.views.web', name='web'),
