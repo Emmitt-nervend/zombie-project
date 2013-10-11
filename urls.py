@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     url(r'^web/$', 'zombie.apps.login.views.web', name='web'),
     url(r'^rest/', include('zombie.apps.rest.urls', namespace='rest')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^guest/', 'zombie.apps.login.views.guest'),
 )
