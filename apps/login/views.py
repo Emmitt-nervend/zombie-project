@@ -1,21 +1,20 @@
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
-from zombie.apps.login import forms
+import json
+import requests
 
 from django.contrib.auth.models import User as Auth_User
 from django.contrib.auth import authenticate, logout, login
+from django.shortcuts import render, render_to_response
+from django.http import HttpResponseRedirect
+from zombie.apps.login import forms
 from zombie.apps.login.models import ZombieUser, Map
-import json
-#import simplejson as json 
-import requests
 
 def home(request):
 	if request.method == 'POST':
 		form = forms.Login(request.POST)
-		submittedName = request.POST['userName']
-		submittedPassword = request.POST['password']
+		submitted_name = request.POST['userName']
+		submitted_password = request.POST['password']
 		#search for mathcing name
-		user = authenticate(username=submittedName, password =submittedPassword)
+		user = authenticate(username=submitted_name, password =submitted_password)
 		if user is not None:
 			if user.is_active:
 				login(request, user)
@@ -27,13 +26,13 @@ def home(request):
 	else:
 		return render(request, 'home.html', {})
 
-def playoption(request):
+def play_option(request):
 	if request.method == 'POST':
 		form = forms.Login(request.POST)
-		submittedName = request.POST['userName']
-		submittedPassword = request.POST['password']
+		submitted_name = request.POST['userName']
+		submitted_password = request.POST['password']
 		#search for mathcing name
-		user = authenticate(username=submittedName, password =submittedPassword)
+		user = authenticate(username=submitted_name, password = submitted_password)
 		if user is not None:
 			if user.is_active:
 				login(request, user)
@@ -43,7 +42,7 @@ def playoption(request):
 		else:
 			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
-		return render(request, 'playOption.html', {})
+		return render(request, 'play_option.html', {})
 
 def web(request):
 	if request.user.is_authenticated():
@@ -51,30 +50,30 @@ def web(request):
 	else:
 		return render(request, 'home.html', {})
 
-def signUp(request):
+def sign_up(request):
 	if request.method == 'POST':
 		form = forms.CreateZombieUserForm(request.POST)
 		if request.POST['password'] == request.POST['passwordConfirm']:
 			if form.is_valid():
 				cd = form.cleaned_data
-				newAuthUser = Auth_User.objects.create_user(cd['userName'], cd['email'], cd['password'])
-				newAuthUser.last_name = cd['lastName']
-				newAuthUser.first_name = cd['firstName']
-				newAuthUser.save()
+				new_auth_user = Auth_User.objects.create_user(cd['userName'], cd['email'], cd['password'])
+				new_auth_user.last_name = cd['lastName']
+				new_auth_user.first_name = cd['firstName']
+				new_auth_user.save()
 				if cd['designer'] is 1:
-					newZombieUser = ZombieUser(user=newAuthUser, accountType=1)
+					new_zombie_user = ZombieUser(user=new_auth_user, accountType=1)
 				else:
-					newZombieUser = ZombieUser(user=newAuthUser)
-				newZombieUser.save()
+					new_zombie_user = ZombieUser(user=new_auth_user)
+				new_zombie_user.save()
 				user = authenticate(username=cd['userName'], password=cd['password'])
 				login(request, user)
 				return HttpResponseRedirect('/success/')
 			else:
-				return render(request, 'signUp.html', {'errors': 'Passowords do not match', 'form': form})
+				return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 'form': form})
 		else:
-			return render(request, 'signUp.html', {'errors': 'Passowords do not match', 'form': form})
+			return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 'form': form})
 	else:
-		return render(request, 'signUp.html', {})
+		return render(request, 'sign_up.html', {})
 
 def success(request):
 	return render(request, 'success.html', {})
