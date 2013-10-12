@@ -10,7 +10,8 @@
 
 {% if user.is_authenticated %}
 	<div class="top-right-panel" style="display: none">
-		Welcome, <a href="/web">{{user}}</a>
+		Welcome, <a href="/web">{{user}}</a><br>
+		<a href="/logout">Logout.</a>
 	</div>
 {% else %}
 	<div class="top-right-form" style="display: none">
@@ -19,14 +20,15 @@
 	        <input name="userName" type="text" placeholder="Username" class="form-control">
 	        <input name="password" type="password" id="password" placeholder="Password" class="form-control">
 	    </form>
+	    <a href="/password-reset">Forgot password?</a>
 	</div>
 {% endif %}
 	
 <div class="center-screen">
 
-	 <img src="/static/images/Logo.png" id="homelogo">
+	<img src="/static/images/Logo.png" id="homelogo">
 
-	 <a href="/play">
+	<a href="/play">
 		<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">
 			Play Game
 		</button>

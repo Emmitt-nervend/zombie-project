@@ -7,7 +7,7 @@ require.config({
         'handlebars': 'vendor/handlebars',
         'text': 'vendor/text',
         'twitter-bootstrap': 'vendor/bootstrap.min',
-        'jqueryui': 'vendor/jquery-ui-1.10.0',
+        'jqueryui': 'vendor/jquery-ui-1.10.3.min',
         'lasso': 'vendor/lasso',
     },
     shim: {

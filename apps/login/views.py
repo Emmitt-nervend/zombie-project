@@ -76,7 +76,28 @@ def sign_up(request):
 		return render(request, 'sign_up.html', {})
 
 def success(request):
-	return render(request, 'success.html', {})
+	message = "Success! Your account has been created."
+	return render(request, 'success.html', {'message': message})
+
+def password_reset_success(request):
+	message = "Success! You will recieve an email with a password reset link."
+	return render(request, 'success.html', {'message': message})
+
+def logout_user(request):
+	if request.user.is_authenticated():
+		logout(request)
+		message = "You have been successfully logged out."
+		return render(request, 'success.html', {'message': message})
+	else:
+		return HttpResponseRedirect('/')
+
+def password_reset(request):
+	if request.method == 'POST':
+		form = forms.PasswordReset(request.POST)
+		print form
+		message = "Success! You will recieve an email with a password reset link."
+		return render(request, 'success.html', {'message':message})
+	return render(request, 'password_reset.html', {})
 
 def guest(request):
 	map = {

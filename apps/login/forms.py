@@ -14,3 +14,7 @@ class CreateZombieUserForm(forms.Form):
 class Login(forms.Form):
 	userName = forms.CharField()
 	password = forms.CharField()
+
+
+class PasswordReset(forms.Form):
+	email = forms.CharField()

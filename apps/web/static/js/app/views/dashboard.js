@@ -3,7 +3,8 @@ define([
     'underscore',
     'backbone',
     'handlebars',
-    'text!app/templates/dashboard.handlebars'
+    'text!app/templates/dashboard.handlebars',
+    'jqueryui'
 ], function(
     $,
     _,
@@ -24,15 +25,29 @@ define([
             this.off();
         },
 
-        events: {
-        },
 
         render: function() {
+            console.log(user);
             this.$el.empty().html(this.template({
+                user: user,
             }));
             return this;
-        }
+        },
 
+        events: {
+            'mouseover .top-right img': 'showPanel',
+            'mouseleave .top-right-panel': 'hidePanel'
+        },
+
+        showPanel: function() {
+            $(".top-right img").addClass("top-right-rotate");
+            $(".top-right-panel").show("slide", {direction: "right"});
+        },
+
+        hidePanel: function() {
+            $(".top-right-panel").hide("slide", {direction: "right"});
+            $(".top-right img").removeClass("top-right-rotate");
+        }
 
     });
     return DashboardView;
