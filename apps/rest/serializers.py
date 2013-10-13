@@ -13,7 +13,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
 class ZombieUserSerializer(serializers.ModelSerializer):
 
 	class Meta:
-		fields = ('id', 'user', 'games_won', 'games_lost', 'account_type', 'maps')
+		fields = ('id', 'user', 'games_won', 'games_lost', 'account_type', 'maps', 'profile_pic')
 		model = ZombieUser
 
 

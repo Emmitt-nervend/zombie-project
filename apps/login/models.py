@@ -10,6 +10,7 @@ class ZombieUser(models.Model):
 	games_lost = models.IntegerField(null=True, blank=True)
 	account_type = models.IntegerField(null=True, blank=True)
 	maps = models.ManyToManyField('Map', null=True, blank=True)
+	profile_pic = models.CharField(max_length=100)
 
 	def __unicode__(self):
 		return unicode(self.user)
