@@ -19,7 +19,8 @@ define([
         routes: {
             '': 'dashboardRedirect',
             'dashboard': 'dashboard',
-            'map-editor': 'editor'
+            'map-editor': 'editor',
+            'profile': 'profile'
         },
 
         dashboardRedirect: function() {
@@ -34,6 +35,11 @@ define([
         editor: function() {
             this.cleanup();
             this.render(new EditorView(), 'editor');
+        },
+
+        profile: function() {
+            this.cleanup();
+            this.render(new ProfileView(), 'profile');
         },
 
         cleanup: function() {

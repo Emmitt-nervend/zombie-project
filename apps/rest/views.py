@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import User
 
 from rest_framework import generics
@@ -36,6 +38,18 @@ class MapList(generics.ListAPIView):
 	queryset = Map.objects.all()
 	serializer_class = MapSerializer
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class MapListByUser(generics.ListAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	serializer_class = MapSerializer
+
+	def get(self, request, user_id):
+		maps = Map.objects.filter(owner=user_id)
+		mapsFinal = [{'id': map_item.id,
+					  'title': map_item.title,
+					  'url': map_item.url} for map_item in maps]
+		return Response(mapsFinal)
 
 
 class MapDetail(generics.RetrieveUpdateDestroyAPIView):

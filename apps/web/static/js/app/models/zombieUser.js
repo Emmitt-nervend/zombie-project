@@ -4,5 +4,6 @@ define([
     Backbone
 ) {
     return Backbone.Model.extend({
+    	urlRoot: '/rest/zombie-users'
     });
 });

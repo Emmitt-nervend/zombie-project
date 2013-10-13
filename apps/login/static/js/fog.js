@@ -11,7 +11,6 @@ var maxVelocity = 1.3;
 var targetFPS = 25;
 
 // Set the dimensions of the canvas as variables so they can be used.
-console.log(screen.width);
 var canvasWidth = screen.width;
 var canvasHeight = screen.height;
 
