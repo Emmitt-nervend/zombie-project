@@ -36,7 +36,7 @@ class Map(models.Model):
 class ResetLink(models.Model):
 	id = models.AutoField(primary_key=True)
 	token = models.CharField(max_length=30)
-	user = models.OneToOneField(User)
+	user = models.ForeignKey(User)
 	timestamp = models.DateTimeField()
 	active = models.BooleanField(default=True)
 
