@@ -1,12 +1,16 @@
 import json
 import requests
 
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User as Auth_User
 from django.contrib.auth import authenticate, logout, login
-from django.shortcuts import render, render_to_response
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+from django.utils.timezone import utc
+from zombie import settings
 from zombie.apps.login import forms
-from zombie.apps.login.models import ZombieUser, Map
+from zombie.apps.login.models import ZombieUser, Map, ResetLink
 
 def home(request):
 	if request.method == 'POST':
@@ -69,18 +73,16 @@ def sign_up(request):
 				login(request, user)
 				return HttpResponseRedirect('/success/')
 			else:
-				return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 'form': form})
+				return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 
+														'form': form})
 		else:
-			return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 'form': form})
+			return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 
+													'form': form})
 	else:
 		return render(request, 'sign_up.html', {})
 
 def success(request):
 	message = "Success! Your account has been created."
-	return render(request, 'success.html', {'message': message})
-
-def password_reset_success(request):
-	message = "Success! You will recieve an email with a password reset link."
 	return render(request, 'success.html', {'message': message})
 
 def logout_user(request):
@@ -94,10 +96,79 @@ def logout_user(request):
 def password_reset(request):
 	if request.method == 'POST':
 		form = forms.PasswordReset(request.POST)
-		print form
-		message = "Success! You will recieve an email with a password reset link."
-		return render(request, 'success.html', {'message':message})
-	return render(request, 'password_reset.html', {})
+		if form.is_valid():
+			cd = form.cleaned_data
+			email = cd['email']
+			try:
+				email_lookup = Auth_User.objects.get(email=email)
+			except Auth_User.DoesNotExist:
+				email_lookup = False
+			if email_lookup:
+				token = Auth_User.objects.make_random_password()
+				current_time = datetime.utcnow().replace(tzinfo=utc)
+				new_reset_link = ResetLink(token=token, user=email_lookup, timestamp=current_time)
+				new_reset_link.save()
+				url = settings.SITE_URL
+				send_mail('Password Reset', 
+						  'Hi there, ' + email_lookup.first_name +'. You recently requested a new password. Please follow this link to create a new password: ' + settings.SITE_URL + '/change-password/' + token + '.', 
+						  'info@zombieattack.biz',
+    					  [email], fail_silently=False)
+				message = "Success! You will recieve an email with a password reset link."
+				return render(request, 'success.html', {'message': message})
+			else:
+				message = "There is no user with that email address."
+				return render(request, 'password_reset.html', {'message': message, 
+															   'email': email})
+	else:
+		return render(request, 'password_reset.html', {})
+
+def change_password(request, token):
+	if request.method == 'POST':
+		form = forms.ChangePassword(request.POST)
+		if request.POST['password'] == request.POST['passwordConfirm']:
+			if form.is_valid():
+				cd = form.cleaned_data
+				new_password = cd['password']
+				try:
+					token_match = ResetLink.objects.get(token=token, active=True)
+				except ResetLink.DoesNotExist:
+					token_match = False
+				if token_match:
+					user_id = token_match.user.id
+					updated_user = Auth_User.objects.get(id=user_id)
+					updated_user.set_password(new_password)
+					updated_user.save()
+					token_match.active = False
+					token_match.save()
+					message = "Your password has been successfully updated."
+					return render(request, 'success.html', {'message': message})
+				else:
+					message = "Sorry, this link has expired."	
+					return render(request, 'success.html', {'message': message})
+			else:
+				message = "Invalid submission. Stop trying to hack the site."
+				return render(request, 'change_password.html', {'message': message})
+		else:
+			message = "Sorry, passwords do not match."
+			return render(request, 'change_password.html', {'message': message})
+
+	# Limits access to only people with a valid url
+	else:
+		try:
+			token_match = ResetLink.objects.get(token=token, active=True)
+		except ResetLink.DoesNotExist:
+			token_match = False
+		if token_match:
+			twenty_four_hours = timedelta(hours=24)
+			now = datetime.utcnow().replace(tzinfo=utc)
+			difference = now - token_match.timestamp
+			if difference < twenty_four_hours:
+				return render(request, 'change_password.html', {})
+			else:
+				token_match.active = False
+				token_match.save()
+		message = "Sorry, this link has expired."	
+		return render(request, 'success.html', {'message': message})
 
 def guest(request):
 	map = {

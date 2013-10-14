@@ -18,3 +18,8 @@ class Login(forms.Form):
 
 class PasswordReset(forms.Form):
 	email = forms.CharField()
+
+
+class ChangePassword(forms.Form):
+	password = forms.CharField()
+	passwordConfirm = forms.CharField()

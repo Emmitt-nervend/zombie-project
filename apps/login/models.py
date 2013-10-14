@@ -15,6 +15,7 @@ class ZombieUser(models.Model):
 	def __unicode__(self):
 		return unicode(self.user)
 
+
 class Map(models.Model):
 	id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=60)
@@ -30,3 +31,14 @@ class Map(models.Model):
 
 	def __unicode__(self):
 		return unicode(self.title)
+
+
+class ResetLink(models.Model):
+	id = models.AutoField(primary_key=True)
+	token = models.CharField(max_length=30)
+	user = models.OneToOneField(User)
+	timestamp = models.DateTimeField()
+	active = models.BooleanField(default=True)
+
+	def __unicode__(self):
+		return unicode(self.user)
