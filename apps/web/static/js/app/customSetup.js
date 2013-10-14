@@ -24,8 +24,6 @@ define([
 
 	var csrftoken = getCookie('csrftoken');
 
-	console.log(csrftoken);
-
 	$.ajaxSetup({
         crossDomain: false, // obviates need for sameOrigin test
     	beforeSend: function(xhr, settings) {

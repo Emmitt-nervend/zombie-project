@@ -9,7 +9,8 @@ define([
     'app/models/map',
     'app/collections/maps',
     'jqueryui',
-    'app/customSetup'
+    'app/customSetup',
+    'twitter-bootstrap'
 ], function(
     $,
     _,

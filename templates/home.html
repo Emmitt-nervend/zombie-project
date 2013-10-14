@@ -10,8 +10,10 @@
 
 {% if user.is_authenticated %}
 	<div class="top-right-panel" style="display: none">
-		Welcome, <a href="/web">{{user}}</a><br>
-		<a href="/logout">Logout.</a>
+		<div class="navbar navbar-inverse">
+			<span class="navbar-text"></a>Welcome, <a href="/web">{{user}}</a></span>
+			<span class="navbar-text"><a href="/logout">Logout.</a></span>
+		</div>
 	</div>
 {% else %}
 	<div class="top-right-form" style="display: none">

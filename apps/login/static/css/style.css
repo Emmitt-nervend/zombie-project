@@ -76,8 +76,8 @@ h2 {
 
 .top-right-panel {
 	position: absolute;
-	color: white;
-	margin: 15px 10px 0 10px;
+	color: gray;
+	margin: 8px 10px 0 10px;
 	top: 15px;
 	right: 75px;
 	z-index: 150;
@@ -91,9 +91,9 @@ h2 {
 	z-index: 150;
 }
 
-.top-right-form form {
-	width: 300px;
-}
+	.top-right-form form {
+		width: 300px;
+	}
 
 .top-right img,
 .top-right {
@@ -121,7 +121,7 @@ h2 {
 	margin: 15px auto 0 auto;
 
 }
-	#content h1{
+	#content h1 {
 		color: black;
 	}
 
