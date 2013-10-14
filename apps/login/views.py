@@ -100,7 +100,7 @@ def password_reset(request):
 			cd = form.cleaned_data
 			email = cd['email']
 			try:
-				email_lookup = Auth_User.objects.get(email=email, active=True)
+				email_lookup = Auth_User.objects.get(email=email)
 			except Auth_User.DoesNotExist:
 				email_lookup = False
 			if email_lookup:
@@ -111,7 +111,7 @@ def password_reset(request):
 				url = settings.SITE_URL
 				send_mail('Password Reset', 
 						  'Hi there, ' + email_lookup.first_name +'. You recently requested a new password. Please follow this link to create a new password: ' + settings.SITE_URL + '/change-password/' + token + '.', 
-						  'info@zombieattack.biz',
+						  'zombieattack51@gmail.com',
     					  [email], fail_silently=False)
 				message = "Success! You will recieve an email with a password reset link."
 				return render(request, 'success.html', {'message': message})
