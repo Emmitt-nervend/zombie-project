@@ -1,23 +1,23 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
-    <head>
-	    <title>Zombie Dashboard</title>
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <link href='http://fonts.googleapis.com/css?family=Walter+Turncoat' rel='stylesheet' type='text/css'>
-	    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}">
-	    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
-        <script type="text/javascript">
-            var USER = "{{user}}";
-            var USER_ID = {{user.id}};
-        </script>
-    </head>
+<head>
+    <title>Zombie Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href='http://fonts.googleapis.com/css?family=Walter+Turncoat' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+    <script type="text/javascript">
+    var USER = "{{user}}";
+    var USER_ID = {{user.id}};
+    </script>
+</head>
 <body class="background">
 
     <div id="content" class="row-fluid"></div>
 
-	<script type="text/javascript" src="{% static 'js/vendor/require.js' %}" data-main="{% static 'js/app' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vendor/require.js' %}" data-main="{% static 'js/app' %}"></script>
 </body>
 </html>

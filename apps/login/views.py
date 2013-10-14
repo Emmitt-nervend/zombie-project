@@ -100,7 +100,7 @@ def password_reset(request):
 			cd = form.cleaned_data
 			email = cd['email']
 			try:
-				email_lookup = Auth_User.objects.get(email=email)
+				email_lookup = Auth_User.objects.get(email=email, active=True)
 			except Auth_User.DoesNotExist:
 				email_lookup = False
 			if email_lookup:
