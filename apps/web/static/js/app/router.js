@@ -2,15 +2,19 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'app/views/nav',
     'app/views/dashboard',
     'app/views/editor'
 ], function(
     $,
     _,
     Backbone,
+    NavView,
     DashboardView,
     EditorView
 ) {
+
+    var nav = new NavView();
 
     return Backbone.Router.extend({
 
@@ -53,6 +57,7 @@ define([
             // Save reference to new view
             this.view = view;
             $('#content').empty()
+                .append(nav.render().el)
                 .append(view.render().el);
         }
 

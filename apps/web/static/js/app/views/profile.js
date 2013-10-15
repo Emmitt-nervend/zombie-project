@@ -51,7 +51,19 @@ define([
         },
 
         events: {
+            'mouseover .top-right img': 'showPanel',
+            'mouseleave .top-right-panel': 'hidePanel',
             'click #submit': 'gamesWon'
+        },
+
+        showPanel: function() {
+            $(".top-right img").addClass("top-right-rotate");
+            $(".top-right-panel").show("slide", {direction: "right"});
+        },
+
+        hidePanel: function() {
+            $(".top-right-panel").hide("slide", {direction: "right"});
+            $(".top-right img").removeClass("top-right-rotate");
         },
 
         gamesWon: function(e) {
