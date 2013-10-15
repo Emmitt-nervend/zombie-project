@@ -105,21 +105,14 @@ h2 {
 	position: absolute;
 	color: gray;
 	margin: 8px 10px 0 10px;
-	top: 15px;
-	right: 75px;
+	top: 13px;
+	right: 65px;
 	z-index: 150;
 }
-	.navbar {
-		min-height: 25px !important;
-	}
 	.top-right-panel span {
-		margin: 0 !important;
 		width: 50px;
 		height: 25px;
 		margin: 15px 5px;
-	}
-	.top-right-panel span:hover {
-		background-color: white;
 	}
 	.top-right-panel span a {
 		display: block;
