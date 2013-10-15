@@ -63,7 +63,7 @@ h2 {
 
 
 /*********************************************************/
-/******* STYLE FOR HAZZARD BUTTON/HOVER ******************/
+/******* STYLE FOR NAV MENU (HAZARD SYMBOL) **************/
 /*********************************************************/
 .top-right {
 	position: absolute;
@@ -74,14 +74,6 @@ h2 {
 	z-index: 100;
 }
 
-.top-right-panel {
-	position: absolute;
-	color: gray;
-	margin: 8px 10px 0 10px;
-	top: 15px;
-	right: 75px;
-	z-index: 150;
-}
 
 .top-right-form {
 	position: absolute;
@@ -90,7 +82,6 @@ h2 {
 	right: 75px;
 	z-index: 150;
 }
-
 	.top-right-form form {
 		width: 300px;
 	}
@@ -109,6 +100,67 @@ h2 {
 	transform:rotate(360deg);
 	-webkit-transform:rotate(360deg); /* Safari */
 }
+
+.top-right-panel {
+	position: absolute;
+	color: gray;
+	margin: 8px 10px 0 10px;
+	top: 15px;
+	right: 75px;
+	z-index: 150;
+}
+	.navbar {
+		min-height: 25px !important;
+	}
+	.top-right-panel span {
+		margin: 0 !important;
+		width: 50px;
+		height: 25px;
+		margin: 15px 5px;
+	}
+	.top-right-panel span:hover {
+		background-color: white;
+	}
+	.top-right-panel span a {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	.dashboard {
+		background-image: url('/static/images/icons/glyphicons_034_old_man_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.dashboard:hover {
+			background-image: url('/static/images/icons/glyphicons_034_old_man.png');	
+		}
+	.editor {
+		background-image: url('/static/images/icons/glyphicons_280_settings_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.editor:hover {
+			background-image: url('/static/images/icons/glyphicons_280_settings.png');	
+		}
+	.settings {
+		background-image: url('/static/images/icons/glyphicons_136_cogwheel_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.settings:hover {
+			background-image: url('/static/images/icons/glyphicons_136_cogwheel.png');	
+		}
+	.logout {
+		background-image: url('/static/images/icons/glyphicons_063_power_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.logout:hover {
+			background-image: url('/static/images/icons/glyphicons_063_power.png');	
+		}
+
+
+
 
 
 /*********************************************************/
