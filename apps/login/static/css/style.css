@@ -161,12 +161,25 @@ h2 {
 /*********************************************************/
 #content{
 	background-color: white;
-	max-width: 800px;
+	width: 90%;
 	min-height: 750px;
-	margin: 15px auto 0 auto;
-
+	margin: 100px auto 0 auto;
+	border-radius: 5px;
 }
 	#content h1 {
 		color: black;
+		text-align: center;
 	}
 
+.row div{
+	background-color: #CAD5D1;
+	min-height: 300px;
+	text-align: center;
+	border-radius: 5px;
+
+}
+
+.profile-pic img{
+	width: 75%;
+	margin: 10px auto 20px auto;
+}
