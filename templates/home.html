@@ -11,8 +11,10 @@
 {% if user.is_authenticated %}
 	<div class="top-right-panel" style="display: none">
 		<div class="navbar navbar-inverse">
-			<span class="navbar-text"></a>Welcome, <a href="/web">{{user}}</a></span>
-			<span class="navbar-text"><a href="/logout">Logout.</a></span>
+			<span class="navbar-text dashboard"><a href="/web#dashboard"></a></span>
+			<span class="navbar-text editor"><a href="#map-editor"></a></span>
+			<span class="navbar-text settings"><a href="#settings"></a></span>
+			<span class="navbar-text logout"><a href="/logout"></a></span>
 		</div>
 	</div>
 {% else %}
