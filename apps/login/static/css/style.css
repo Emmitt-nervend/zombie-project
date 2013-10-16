@@ -116,9 +116,9 @@ h2 {
 /*********************************************************/
 #content{
 	background-color: white;
-	max-width: 800px;
+	width: 90%;
 	min-height: 750px;
-	margin: 15px auto 0 auto;
+	margin: 100px auto 0 auto;
 
 }
 	#content h1 {
