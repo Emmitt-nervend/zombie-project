@@ -160,14 +160,12 @@ h2 {
 /******* STYLE FOR PROFILE PAGE **************************/
 /*********************************************************/
 #content{
-	background-color: white;
-	width: 90%;
+	background-color: rgba(22, 22,22, 0.8);
 	min-height: 750px;
-	margin: 100px auto 0 auto;
+	margin-top: 50px;
 	border-radius: 5px;
 }
 	#content h1 {
-		color: black;
 		text-align: center;
 	}
 
@@ -180,6 +178,7 @@ h2 {
 }
 
 .profile-pic img{
-	width: 75%;
+	width: 80%;
+	border: 2px solid black;
 	margin: 10px auto 20px auto;
 }
