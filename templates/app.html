@@ -10,14 +10,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}">
     <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
     <script type="text/javascript">
-    var USER = "{{user}}";
-    var USER_ID = {{user.id}};
+        var USER = "{{user}}";
+        var USER_ID = {{user.id}};
+        var STATIC_PREFIX = "{{STATIC_URL}}";
     </script>
 </head>
 <body class="background">
-
     <div id="content" class="row-fluid"></div>
-
     <script type="text/javascript" src="{% static 'js/vendor/require.js' %}" data-main="{% static 'js/app' %}"></script>
 </body>
 </html>
