@@ -207,15 +207,22 @@ def guest(request):
 	headers = {'content-type': 'application/json'}
 	#map = json.dumps(map)
 	#print map
-	print dir(map)
+	#print dir(map)
+
 	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
-	print r.text
-	print r.url
-	print r.request
-	print r.reason
-	print r.json
 
-		# $ is the symbol for jquery.
-		#$.post('http://zombie-attack.aws.af.cm/uploadMap/12345', { map: map });
-	return render(request, 'guest.html', {})	
+	#print r.headers
+	#print r.url
+	#print r.status_code
+	#print r.encoding
+	#print r.json
+	#print r.request
+	#print r.text
 
+	python_response = json.loads(r.text)
+	#print python_response['url']
+
+	# $ is the symbol for jquery.
+	#$.post('http://zombie-attack.aws.af.cm/uploadMap/12345', { map: map });
+	
+	return render(request, 'guest.html', {'url':python_response['url']})	

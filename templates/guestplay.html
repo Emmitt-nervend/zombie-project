@@ -1,0 +1,20 @@
+<!--{% load staticfiles %}-->
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+var URL = "{{url}}";
+function PopupCenter(pageURL, title,w,h) {
+	var left = (screen.width/2)-(w/2);
+	var top = (screen.height/2)-(h/2);
+	var targetWin = window.open (pageURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+} 
+</script>
+	<title></title>
+</head>
+<body onload="PopupCenter(URL, 'Play As Guest', 600, 600);">
+
+	<a onclick="PopupCenter(URL, 'Play As Guest', 600, 600);" href="javascript:void(0);"> CLICK TO OPEN POPUP </a>
+
+</body>
+</html>
