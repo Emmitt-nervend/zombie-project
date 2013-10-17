@@ -223,3 +223,9 @@ li > a{
 .add-margin{
 	margin: 0 0 10px 0;
 }
+.red{
+	color: red;
+}
+.red:hover{
+	color: black;
+}
