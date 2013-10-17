@@ -117,12 +117,12 @@ h1, h2, h3, ul {
 		height: 100%;
 	}
 	.dashboard {
-		background-image: url('/static/images/icons/glyphicons_034_old_man_white.png');
+		background-image: url('/static/images/icons/glyphicons_020_home_white.png');
 		background-repeat: no-repeat;
 		background-position:center;
 	}
 		.dashboard:hover {
-			background-image: url('/static/images/icons/glyphicons_034_old_man.png');	
+			background-image: url('/static/images/icons/glyphicons_020_home.png');	
 		}
 	.editor {
 		background-image: url('/static/images/icons/glyphicons_280_settings_white.png');
