@@ -9,16 +9,26 @@
 	background-repeat: no-repeat;
 }
 
-h1, h2, h3, ul {
+h1, h2, h3, ul, label {
 	color: white;
+	font-family: 'Walter Turncoat', cursive;
+	letter-spacing: 2px;
 }
-
+li > a{
+	color: black;
+	font-size: 18px;
+}
+	a:hover{
+		color: white;
+		cursor: pointer;
+	}
 
 /*********************************************************/
 /******* STYLE FOR LANDING PAGE **************************/
 /*********************************************************/
 .walter-turncoat {
 	font-family: 'Walter Turncoat', cursive;
+	letter-spacing: 2px;
 }
 
 .full-btn {
@@ -154,7 +164,7 @@ h1, h2, h3, ul {
 
 
 /*********************************************************/
-/******* STYLE FOR PROFILE PAGE **************************/
+/******* STYLE FOR PROFILE & SETTINGS PAGE ***************/
 /*********************************************************/
 #content{
 	background-color: rgba(22, 22,22, 0.8);
@@ -164,9 +174,9 @@ h1, h2, h3, ul {
 	padding: 25px 50px;
 	overflow: auto;
 }
-	#content h1 {
-		text-align: center;
-	}
+#content h1 {
+	text-align: center;
+}
 
 .logo{
 	width: 40%;
@@ -185,22 +195,31 @@ h1, h2, h3, ul {
 }
 
 .profile-pic img{
-	max-width: 100%; max-height: 200px;
+	width: 100%;
 	border: 2px solid black;
-	margin: 10px auto 0 auto;
+	margin: 10px auto 10px auto;
 }
 
 .box {
 	height: 100px;
 	border-radius: 5px;
 }
-	#win{
-		background-color: green;
-	}
-	#loss{
-		background-color: red;
-	}
+#win{
+	background-color: green;
+}
+#loss{
+	background-color: red;
+}
 
+.full-height{
+	min-height: 500px;
+}
 .left-align{
 	text-align: left;
+}
+.remove-margin{
+	margin: 0 !important;
+}
+.add-margin{
+	margin: 0 0 10px 0;
 }

@@ -3,7 +3,8 @@ define([
     'underscore',
     'backbone',
     'handlebars',
-    'text!app/templates/settings.handlebars'
+    'text!app/templates/settings.handlebars',
+    'twitter-bootstrap'
 ], function(
     $,
     _,

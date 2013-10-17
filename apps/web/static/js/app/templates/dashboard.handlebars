@@ -7,16 +7,18 @@
 
 <div class="row">
 
-	<div class="col-md-3 profile-pic col-attrib">
+	<div class="col-md-3 profile-pic col-attrib full-height">
 		<img src="/static/images/profileDefault.jpg" class="img-rounded">
-		<h2 class="walter-turncoat"><a href="#settings">{{user}} profile</a></h2> 
-											{{!-- WILL LINK TO THE EDIT PROFILE PAGE --}}
+		<h2 class="remove-margin"><a href="#settings">{{user}}'s profile</a></h2> 
 
 		<div class="row">
 
  			<div class="col-md-6">
  				<div class="box" id="win">
  					<p>Wins</p>
+ 					{{#unless userinfo.won}}
+			 			<h1>0</h1>
+			 		{{/unless}}
  					<h1>{{userinfo.games_won}}</h1>
  				</div>
  			</div>
@@ -24,15 +26,21 @@
  			<div class="col-md-6">
  				<div class="box" id="loss">
  					<p>Losses</p>
+ 					{{#unless userinfo.games_lost}}
+			 			<h1>0</h1>
+			 		{{/unless}}
  					<h1>{{userinfo.games_lost}}</h1>
  				</div>
  			</div> 
 		</div>  {{!-- END OF LEFT SIDE BAR --}}
 	</div> 
 
- 	<div class="col-md-8 col-md-offset-1 col-attrib left-align"> 			
+ 	<div class="col-md-8 col-md-offset-1 col-attrib left-align full-height"> 			
 
- 		<h3 class="left-align">Created Maps</h3>
+ 		<h2 class="left-align">Created Maps</h2>
+ 		{{#unless maps}}
+ 			<h3>You have no maps! Create a map now by clicking <a href"#">here</a></h3>
+ 		{{/unless}}
  		<ul class="left-align">
  			{{#each maps}}
  				{{#with attributes}}
