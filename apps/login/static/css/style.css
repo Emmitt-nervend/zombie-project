@@ -223,3 +223,26 @@ li > a{
 .add-margin{
 	margin: 0 0 10px 0;
 }
+.red{
+	color: red;
+}
+.red:hover{
+	color: black;
+}
+table{
+	margin-left: 30px;
+}
+td{
+	padding-right: 35px;
+}
+
+/*********************************************************/
+/******* STYLE FOR MAP EDITOR PAGE ***********************/
+/*********************************************************/
+#map{
+	background-color: white;
+}
+
+#grid{
+	background-color: blue;
+}

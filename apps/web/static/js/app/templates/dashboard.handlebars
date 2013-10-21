@@ -16,7 +16,7 @@
  			<div class="col-md-6">
  				<div class="box" id="win">
  					<p>Wins</p>
- 					{{#unless userinfo.won}}
+ 					{{#unless userinfo.games_won}}
 			 			<h1>0</h1>
 			 		{{/unless}}
  					<h1>{{userinfo.games_won}}</h1>
@@ -35,19 +35,19 @@
 		</div>  {{!-- END OF LEFT SIDE BAR --}}
 	</div> 
 
- 	<div class="col-md-8 col-md-offset-1 col-attrib left-align full-height"> 			
+ 	<div class="col-md-8 col-md-offset-1 col-attrib full-height"> 			
 
  		<h2 class="left-align">Created Maps</h2>
  		{{#unless maps}}
  			<h3>You have no maps! Create a map now by clicking <a href"#">here</a></h3>
  		{{/unless}}
- 		<ul class="left-align">
+ 		<table class="left-align">
  			{{#each maps}}
  				{{#with attributes}}
- 					<li><a href="#">{{title}} </a></li>
+ 					<tr><td>{{title}}</td><td><a href="#">edit</a></td><td><a href="#">delete</td></tr>
  				{{/with}}
  			{{/each}}
- 		</ul>
+ 		</table>
 
  	</div>
 
