@@ -32,4 +32,13 @@ $(document).ready(function(){
 		$(".top-right-form").show("slide", {direction: "right"});
 		$(".top-right img").addClass("top-right-rotate");
 	});
+
+	var left = (screen.width/2)-300;
+	var top = (screen.height/2)-300;
+
+	$('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
+
 });
+
+
+	
