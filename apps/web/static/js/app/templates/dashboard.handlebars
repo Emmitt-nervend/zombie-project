@@ -1,5 +1,54 @@
-<h1>Welcome to the dashboard</h1>
-<form id="gamesWonForm">
+
+{{!-- <form id="gamesWonForm">
 	<input type="text" id="gamesWon" name="gamesWon" placeHolder="Games Won">
 	<button type="submit" id="submit">Update Games Won</button>
-</form>
+</form> --}}
+<a href="/"><img src="/static/images/Logo.png" class="img-rounded logo"></a>
+
+<div class="row">
+
+	<div class="col-md-3 profile-pic col-attrib full-height">
+		<img src="/static/images/profileDefault.jpg" class="img-rounded">
+		<h2 class="remove-margin"><a href="#settings">{{user}}'s profile</a></h2> 
+
+		<div class="row">
+
+ 			<div class="col-md-6">
+ 				<div class="box" id="win">
+ 					<p>Wins</p>
+ 					{{#unless userinfo.games_won}}
+			 			<h1>0</h1>
+			 		{{/unless}}
+ 					<h1>{{userinfo.games_won}}</h1>
+ 				</div>
+ 			</div>
+
+ 			<div class="col-md-6">
+ 				<div class="box" id="loss">
+ 					<p>Losses</p>
+ 					{{#unless userinfo.games_lost}}
+			 			<h1>0</h1>
+			 		{{/unless}}
+ 					<h1>{{userinfo.games_lost}}</h1>
+ 				</div>
+ 			</div> 
+		</div>  {{!-- END OF LEFT SIDE BAR --}}
+	</div> 
+
+ 	<div class="col-md-8 col-md-offset-1 col-attrib full-height"> 			
+
+ 		<h2 class="left-align">Created Maps</h2>
+ 		{{#unless maps}}
+ 			<h3>You have no maps! Create a map now by clicking <a href"#">here</a></h3>
+ 		{{/unless}}
+ 		<table class="left-align">
+ 			{{#each maps}}
+ 				{{#with attributes}}
+ 					<tr><td>{{title}}</td><td><a href="#">edit</a></td><td><a href="#">delete</td></tr>
+ 				{{/with}}
+ 			{{/each}}
+ 		</table>
+
+ 	</div>
+
+</div>

@@ -4,14 +4,16 @@ define([
     'backbone',
     'app/views/nav',
     'app/views/dashboard',
-    'app/views/editor'
+    'app/views/editor',
+    'app/views/settings'
 ], function(
     $,
     _,
     Backbone,
     NavView,
     DashboardView,
-    EditorView
+    EditorView,
+    SettingsView
 ) {
 
     var nav = new NavView();
@@ -24,7 +26,7 @@ define([
             '': 'dashboardRedirect',
             'dashboard': 'dashboard',
             'map-editor': 'editor',
-            'profile': 'profile'
+            'settings': 'settings'
         },
 
         dashboardRedirect: function() {
@@ -41,9 +43,9 @@ define([
             this.render(new EditorView(), 'editor');
         },
 
-        profile: function() {
+        settings: function() {
             this.cleanup();
-            this.render(new ProfileView(), 'profile');
+            this.render(new SettingsView(), 'settings');
         },
 
         cleanup: function() {

@@ -1,7 +1,7 @@
 .background {
 	width: 100%;
 	height: 100%;
-	background: url('/static/images/spooky.jpg');
+	background: url('/static/images/zombieGraveyard.jpg');
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -9,19 +9,26 @@
 	background-repeat: no-repeat;
 }
 
-h1 {
+h1, h2, h3, ul, label {
 	color: white;
+	font-family: 'Walter Turncoat', cursive;
+	letter-spacing: 2px;
 }
-
-h2 {
-	color: white;
+li > a{
+	color: black;
+	font-size: 18px;
 }
+	a:hover{
+		color: white;
+		cursor: pointer;
+	}
 
 /*********************************************************/
 /******* STYLE FOR LANDING PAGE **************************/
 /*********************************************************/
 .walter-turncoat {
 	font-family: 'Walter Turncoat', cursive;
+	letter-spacing: 2px;
 }
 
 .full-btn {
@@ -63,7 +70,7 @@ h2 {
 
 
 /*********************************************************/
-/******* STYLE FOR HAZZARD BUTTON/HOVER ******************/
+/******* STYLE FOR NAV MENU (HAZARD SYMBOL) **************/
 /*********************************************************/
 .top-right {
 	position: absolute;
@@ -74,14 +81,6 @@ h2 {
 	z-index: 100;
 }
 
-.top-right-panel {
-	position: absolute;
-	color: gray;
-	margin: 8px 10px 0 10px;
-	top: 15px;
-	right: 75px;
-	z-index: 150;
-}
 
 .top-right-form {
 	position: absolute;
@@ -90,7 +89,6 @@ h2 {
 	right: 75px;
 	z-index: 150;
 }
-
 	.top-right-form form {
 		width: 300px;
 	}
@@ -110,17 +108,141 @@ h2 {
 	-webkit-transform:rotate(360deg); /* Safari */
 }
 
+.top-right-panel {
+	position: absolute;
+	color: gray;
+	margin: 8px 10px 0 10px;
+	top: 13px;
+	right: 65px;
+	z-index: 150;
+}
+	.top-right-panel span {
+		width: 50px;
+		height: 25px;
+		margin: 15px 5px;
+	}
+	.top-right-panel span a {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	.dashboard {
+		background-image: url('/static/images/icons/glyphicons_020_home_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.dashboard:hover {
+			background-image: url('/static/images/icons/glyphicons_020_home.png');	
+		}
+	.editor {
+		background-image: url('/static/images/icons/glyphicons_280_settings_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.editor:hover {
+			background-image: url('/static/images/icons/glyphicons_280_settings.png');	
+		}
+	.settings {
+		background-image: url('/static/images/icons/glyphicons_136_cogwheel_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.settings:hover {
+			background-image: url('/static/images/icons/glyphicons_136_cogwheel.png');	
+		}
+	.logout {
+		background-image: url('/static/images/icons/glyphicons_063_power_white.png');
+		background-repeat: no-repeat;
+		background-position:center;
+	}
+		.logout:hover {
+			background-image: url('/static/images/icons/glyphicons_063_power.png');	
+		}
+
+
+
+
 
 /*********************************************************/
-/******* STYLE FOR PROFILE PAGE **************************/
+/******* STYLE FOR PROFILE & SETTINGS PAGE ***************/
 /*********************************************************/
 #content{
-	background-color: white;
-	width: 90%;
+	background-color: rgba(22, 22,22, 0.8);
 	min-height: 750px;
-	margin: 100px auto 0 auto;
-
+	margin-top: 50px;
+	border-radius: 5px;
+	padding: 25px 50px;
+	overflow: auto;
 }
+#content h1 {
+	text-align: center;
+}
+
+.logo{
+	width: 40%;
+	height: 125px;
+	clear: left;
+}
+
+.row > div{
+	text-align: center;
+	border-radius: 5px;
+	padding-top: 10px; padding-bottom: 10px;
+}
+
+.col-attrib{
+	background-color: rgba(100, 100,100, 0.8);
+}
+
+.profile-pic img{
+	width: 100%;
+	border: 2px solid black;
+	margin: 10px auto 10px auto;
+}
+
+.box {
+	height: 100px;
+	border-radius: 5px;
+}
+#win{
+	background-color: green;
+}
+#loss{
+	background-color: red;
+}
+
+.full-height{
+	min-height: 500px;
+}
+.left-align{
+	text-align: left;
+}
+.remove-margin{
+	margin: 0 !important;
+}
+.add-margin{
+	margin: 0 0 10px 0;
+}
+.red{
+	color: red;
+}
+.red:hover{
+	color: black;
+}
+table{
+	margin-left: 30px;
+}
+td{
+	padding-right: 35px;
+}
+
+/*********************************************************/
+/******* STYLE FOR MAP EDITOR PAGE ***********************/
+/*********************************************************/
+#map{
+	background-color: white;
+}
+<<<<<<< HEAD
 	#content h1 {
 		color: black;
 	}
@@ -164,4 +286,9 @@ canvas {
 
 .hidden {
   opacity: 0;
+=======
+
+#grid{
+	background-color: blue;
+>>>>>>> 1af9f0f772c81574f8c42ab1a177e66cce14d910
 }

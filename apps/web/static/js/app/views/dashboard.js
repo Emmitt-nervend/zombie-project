@@ -43,9 +43,15 @@ define([
         },
 
         render: function() {
+            var current_user = this.zombieUsers.get(USER_ID);
+            if(!_.isUndefined(current_user)) {
+                current_user = current_user.toJSON();
+            }
+            console.log(this.maps.models);
             this.$el.empty().html(this.template({
+                userinfo: current_user,
                 user: USER,
-                maps: this.maps
+                maps: this.maps.models
             }));
             return this;
         },
