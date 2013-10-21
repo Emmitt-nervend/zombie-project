@@ -124,3 +124,44 @@ h2 {
 	#content h1 {
 		color: black;
 	}
+.zero{
+	width:40px;
+	height:40px;
+	background:url("/static/images/bottom.png") 0 0;
+	display:block;
+}
+
+/*********************************************************/
+/******* STYLE FOR MAP EDITOR ****************************/
+/*********************************************************/
+#tiles {
+  display: inline-block;
+  width: 360px;
+}
+
+.tile {
+  border: 2px solid white;
+  display: inline-block;
+}
+
+.selected {
+  border: 2px solid black;
+}
+
+canvas {
+  position: absolute;
+}
+
+#grid {
+  border: 1px solid;
+}
+
+#toggle {
+  position: absolute;
+  top: 400px;
+  left: 150px;
+}
+
+.hidden {
+  opacity: 0;
+}
