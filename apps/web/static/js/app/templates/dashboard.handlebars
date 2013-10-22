@@ -1,18 +1,22 @@
-
 {{!-- <form id="gamesWonForm">
 	<input type="text" id="gamesWon" name="gamesWon" placeHolder="Games Won">
 	<button type="submit" id="submit">Update Games Won</button>
 </form> --}}
-<a href="/"><img src="/static/images/Logo.png" class="img-rounded logo"></a>
+<div class="centered-img">
+	<a href="/">
+		<img src="/static/images/Logo.png" class="img-rounded logo">
+	</a>
+</div>
 
 <div class="row">
 
 	<div class="col-md-3 profile-pic col-attrib full-height">
 		<img src="/static/images/profileDefault.jpg" class="img-rounded">
-		<h2 class="remove-margin"><a href="#settings">{{user}}'s profile</a></h2> 
+		<h2 class="remove-margin">
+			<a href="#settings">{{user}}'s profile</a>
+		</h2> 
 
 		<div class="row">
-
  			<div class="col-md-6">
  				<div class="box" id="win">
  					<p>Wins</p>
@@ -35,7 +39,7 @@
 		</div>  {{!-- END OF LEFT SIDE BAR --}}
 	</div> 
 
- 	<div class="col-md-8 col-md-offset-1 col-attrib full-height"> 			
+ 	<div class="col-md-8 col-md-push-1 col-attrib full-height"> 			
 
  		<h2 class="left-align">Created Maps</h2>
  		{{#unless maps}}
