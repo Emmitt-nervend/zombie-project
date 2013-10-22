@@ -70,8 +70,6 @@ def sign_up(request):
 				else:
 					new_zombie_user = ZombieUser(user=new_auth_user)
 				new_zombie_user.save()
-				user = authenticate(username=cd['userName'], password=cd['password'])
-				login(request, user)
 				return HttpResponseRedirect('/success/')
 			else:
 				return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 

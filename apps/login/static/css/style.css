@@ -14,11 +14,11 @@ h1, h2, h3, ul, label {
 	font-family: 'Walter Turncoat', cursive;
 	letter-spacing: 2px;
 }
-li > a{
+li > a {
 	color: black;
 	font-size: 18px;
 }
-	a:hover{
+	a:hover {
 		color: white;
 		cursor: pointer;
 	}
@@ -160,13 +160,10 @@ li > a{
 		}
 
 
-
-
-
 /*********************************************************/
 /******* STYLE FOR PROFILE & SETTINGS PAGE ***************/
 /*********************************************************/
-#content{
+#content {
 	background-color: rgba(22, 22,22, 0.8);
 	min-height: 750px;
 	margin-top: 50px;
@@ -174,27 +171,28 @@ li > a{
 	padding: 25px 50px;
 	overflow: auto;
 }
-#content h1 {
+	#content h1 {
+		text-align: center;
+	}
+
+.centered-img {
 	text-align: center;
 }
+	.logo {
+		width: 40%;
+		height: 125px;
+	}
 
-.logo{
-	width: 40%;
-	height: 125px;
-	clear: left;
-}
-
-.row > div{
+.row > div {
 	text-align: center;
 	border-radius: 5px;
 	padding-top: 10px; padding-bottom: 10px;
 }
+	.col-attrib {
+		background-color: rgba(100, 100,100, 0.8);
+	}
 
-.col-attrib{
-	background-color: rgba(100, 100,100, 0.8);
-}
-
-.profile-pic img{
+.profile-pic img {
 	width: 100%;
 	border: 2px solid black;
 	margin: 10px auto 10px auto;
@@ -204,45 +202,58 @@ li > a{
 	height: 100px;
 	border-radius: 5px;
 }
-#win{
+
+#win {
 	background-color: green;
 }
-#loss{
+
+#loss {
 	background-color: red;
 }
 
-.full-height{
+.full-height {
 	min-height: 500px;
 }
-.left-align{
+
+.left-align {
 	text-align: left;
 }
-.remove-margin{
+
+.padding-left {
+	padding-left: 15px;
+}
+
+.remove-margin {
 	margin: 0 !important;
 }
-.add-margin{
+
+.add-margin {
 	margin: 0 0 10px 0;
 }
-.red{
+
+.red {
 	color: red;
 }
-.red:hover{
+
+.red:hover {
 	color: black;
 }
-table{
+
+table {
 	margin-left: 30px;
 }
-td{
+
+td {
 	padding-right: 35px;
 }
 
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR PAGE ***********************/
 /*********************************************************/
-#map{
+#map {
 	background-color: white;
 }
 
-#grid{
+#grid {
 	background-color: blue;
 }

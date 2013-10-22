@@ -43,7 +43,7 @@ define([
         },
 
         render: function() {
-            console.log(this.zombieUser);
+            console.log(this.zombieUser.attributes.account_type);
             var current_user = "";
             if(!_.isUndefined(this.zombieUser)) {
                 current_user = this.zombieUser.toJSON();
