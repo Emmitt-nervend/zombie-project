@@ -28,9 +28,9 @@ define([
 
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
-            this.zombieUsers = new ZombieUsers();
-            this.zombieUsers.on('reset', this.render, this);
-            this.zombieUsers.fetch();
+            this.zombieUser = new ZombieUser({id: USER_ID});
+            this.zombieUser.on('reset', this.render, this);
+            this.zombieUser.fetch();
             this.maps = new Maps();
             this.maps.on('reset', this.render, this);
             this.maps.fetch();
@@ -38,16 +38,16 @@ define([
 
         destroy: function() {
             this.off();
-            this.zombieUsers.off();
+            this.zombieUser.off();
             this.maps.off();
         },
 
         render: function() {
-            var current_user = this.zombieUsers.get(USER_ID);
-            if(!_.isUndefined(current_user)) {
-                current_user = current_user.toJSON();
+            console.log(this.zombieUser);
+            var current_user = "";
+            if(!_.isUndefined(this.zombieUser)) {
+                current_user = this.zombieUser.toJSON();
             }
-            console.log(this.maps.models);
             this.$el.empty().html(this.template({
                 userinfo: current_user,
                 user: USER,

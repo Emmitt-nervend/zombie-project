@@ -19,29 +19,29 @@ class AuthUserList(generics.ListAPIView):
 class AuthUserDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = User.objects.all()
 	serializer_class = AuthUserSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)
 
 
 class ZombieUserList(generics.ListAPIView):
 	queryset = ZombieUser.objects.all()
 	serializer_class = ZombieUserSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)
 
 
 class ZombieUserDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = ZombieUser.objects.all()
 	serializer_class = ZombieUserSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)
 
 
 class MapList(generics.ListAPIView):
 	queryset = Map.objects.all()
 	serializer_class = MapSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)
 
 
 class MapListByUser(generics.ListAPIView):
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)
 	serializer_class = MapSerializer
 
 	def get(self, request, user_id):
@@ -55,4 +55,4 @@ class MapListByUser(generics.ListAPIView):
 class MapDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Map.objects.all()
 	serializer_class = MapSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)

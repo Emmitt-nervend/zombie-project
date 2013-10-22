@@ -39,10 +39,11 @@ def play_option(request):
 		user = authenticate(username=submitted_name, password = submitted_password)
 		if user is not None:
 			if user.is_active:
-				login(request, user)
+				expiration = 3600  # One hour
+				user.login(request, expiration)
 				return HttpResponseRedirect('/web/')
 			else:
-				return render(request, 'home.html', {'errors': 'Invalid user or password'})
+				return render(request, 'home.html', {'errors': 'Inactive account'})
 		else:
 			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
@@ -83,13 +84,13 @@ def sign_up(request):
 
 def success(request):
 	message = "Success! Your account has been created."
-	return render(request, 'success.html', {'message': message})
+	return render(request, 'message.html', {'message': message})
 
 def logout_user(request):
 	if request.user.is_authenticated():
 		logout(request)
 		message = "You have been successfully logged out."
-		return render(request, 'success.html', {'message': message})
+		return render(request, 'message.html', {'message': message})
 	else:
 		return HttpResponseRedirect('/')
 
@@ -114,7 +115,7 @@ def password_reset(request):
 						  'zombieattack51@gmail.com',
     					  [email], fail_silently=False)
 				message = "Success! You will recieve an email with a password reset link."
-				return render(request, 'success.html', {'message': message})
+				return render(request, 'message.html', {'message': message})
 			else:
 				message = "There is no user with that email address."
 				return render(request, 'password_reset.html', {'message': message, 
@@ -141,10 +142,10 @@ def change_password(request, token):
 					token_match.active = False
 					token_match.save()
 					message = "Your password has been successfully updated."
-					return render(request, 'success.html', {'message': message})
+					return render(request, 'message.html', {'message': message})
 				else:
 					message = "Sorry, this link has expired."	
-					return render(request, 'success.html', {'message': message})
+					return render(request, 'message.html', {'message': message})
 			else:
 				message = "Invalid submission. Stop trying to hack the site."
 				return render(request, 'change_password.html', {'message': message})
@@ -168,7 +169,7 @@ def change_password(request, token):
 				token_match.active = False
 				token_match.save()
 		message = "Sorry, this link has expired."	
-		return render(request, 'success.html', {'message': message})
+		return render(request, 'message.html', {'message': message})
 
 def guest(request):
 	map = {
