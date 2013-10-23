@@ -57,10 +57,42 @@ define([
         },
 
         events: {
+            'click #apply': 'apply_changes',
+            'click #password': 'change_password',
+            'click #admin': 'become_admin',
         },
 
+
+        apply_changes: function(e) {
+            e.preventDefault();
+            var first = $('#firstName').val();
+            var last = $('#lastName').val();
+            var user = $('#userName').val();
+            var email = $('#email').val();
+            var designer = $('#designer').val();
+            console.log(designer);
+            var current_user = this.user;
+            current_user.save({
+                first_name: first, 
+                last_name: last,
+                username: user,
+                email: email})
+            // var zombieUser = this.zombieUser;
+            // zombieUser.save({account_type: designer});
+            alert("Changes confirmed");
+        },
+
+        change_password: function(e) {
+            alert("change password");
+        },
+
+        become_admin: function(e) {
+            alert("become admin");
+        }
 
     });
 
     return SettingsView;
 });
+
+
