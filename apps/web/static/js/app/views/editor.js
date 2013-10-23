@@ -11,41 +11,41 @@ define([
     Handlebars,
     template
 ) {
-    var EditorView = Backbone.View.extend({
-        /*starting variables and constants*/
         var SIZE = 40;
         var NUM_TILES = 44;
         var COLS = 8;
         var SRC = '/static/images/bottom.png';
-        var selectedLeft = 0;
-        var selectedRight = 0; 
-        var grid = $('#grid')[0].getContext('2d');
-        var clickedLeft = false;
-        var clickedRight = false;
-        var img = new Image();
-        img.src = SRC;
-        var showGrid = true;
 
-        /*for loops outside functions*/
-        for (var i = 0; i < NUM_TILES; ++i) {
-          addTile(i);
-        },
-        for (var i = 0; i < 8; ++i) {
-          for (var j = 0; j < 8; ++j) {
-            grid.strokeRect(i*SIZE, j*SIZE, SIZE, SIZE);
-          }
-        },
-        for (var i = 0; i < 8; ++i) {
-          for (var j = 0; j < 8; ++j) {
-            grid.strokeRect(i*SIZE, j*SIZE, SIZE, SIZE);
-          }
-        },
+    var EditorView = Backbone.View.extend({
+        
 
         template: Handlebars.compile(template),
 
         initialize: function() {
             var self = this;
             this.constructor.__super__.initialize.apply(this, [this.options]);
+            this.selectedLeft = 0;
+            this.selectedRight = 0;
+            this.grid = $('#grid')[0].getContext('2d');
+            this.clickedLeft = false;
+            this.clickedRight = false;
+            this.img = new Image();
+            this.img.src = SRC;
+            this.showGrid = true;
+            /*for loops outside functions*/
+            for (var i = 0; i < NUM_TILES; ++i) {
+              addTile(i);
+            },
+            for (var i = 0; i < 8; ++i) {
+              for (var j = 0; j < 8; ++j) {
+                grid.strokeRect(i*SIZE, j*SIZE, SIZE, SIZE);
+              }
+            },
+            for (var i = 0; i < 8; ++i) {
+              for (var j = 0; j < 8; ++j) {
+                grid.strokeRect(i*SIZE, j*SIZE, SIZE, SIZE);
+              }
+            }
         },
 
         destroy: function() {
@@ -53,10 +53,11 @@ define([
         },
 
         events: {
-            'mousedown .tile':'tileClick', 
+            'mousedown .tile':'tileClick'
         },
 
         render: function() {
+        
             this.$el.empty().html(this.template({
             }));
             return this;
