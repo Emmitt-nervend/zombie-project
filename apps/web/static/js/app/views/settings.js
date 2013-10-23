@@ -69,7 +69,7 @@ define([
             var last = $('#lastName').val();
             var user = $('#userName').val();
             var email = $('#email').val();
-            var designer = $('#designer').val();
+            var designer = document.getElementById('designer');
             console.log(designer);
             var current_user = this.user;
             current_user.save({
@@ -77,8 +77,14 @@ define([
                 last_name: last,
                 username: user,
                 email: email})
-            // var zombieUser = this.zombieUser;
-            // zombieUser.save({account_type: designer});
+            var zombieUser = this.zombieUser;
+            if (designer.checked) {
+                zombieUser.save({account_type: 1});
+            }
+            else {
+                zombieUser.save({account_type: null})
+            }
+            console.log(this.zombieUser.attributes);
             alert("Changes confirmed");
         },
 
