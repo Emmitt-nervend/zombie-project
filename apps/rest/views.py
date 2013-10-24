@@ -1,9 +1,11 @@
 import json
 
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 from rest_framework import generics
 from rest_framework import permissions
+from rest_framework import status
 from rest_framework.response import Response
 
 from zombie.apps.login.models import ZombieUser, Map
@@ -56,3 +58,19 @@ class MapDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Map.objects.all()
 	serializer_class = MapSerializer
 	permission_classes = (permissions.IsAuthenticated,)
+
+
+class ChangePassword(generics.GenericAPIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	def get(self, request):
+		user = User.objects.get(id=request.user.id)
+		authentication = authenticate(username=request.user, password=request.GET["current_password"])
+		if authentication:
+			if request.GET["new_password"] == request.GET["confirm_new_password"]:
+				user.set_password(request.GET["new_password"])
+				user.save()
+				return Response("Password changed successfully", status=status.HTTP_200_OK)
+			else:
+				return Response("Passwords do not match", status=status.HTTP_406_NOT_ACCEPTABLE)
+		else:
+			return Response("Incorrect password", status=status.HTTP_406_NOT_ACCEPTABLE)

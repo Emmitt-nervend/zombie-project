@@ -43,7 +43,6 @@ define([
         },
 
         render: function() {
-            console.log(this.zombieUser.attributes.account_type);
             var current_user = "";
             if(!_.isUndefined(this.zombieUser)) {
                 current_user = this.zombieUser.toJSON();
@@ -57,20 +56,20 @@ define([
         },
 
         events: {
-            'click #apply': 'apply_changes',
-            'click #password': 'change_password',
-            'click #admin': 'become_admin',
+            'click #apply': 'applyChanges',
+            'click #password': 'revealPasswordForm',
+            'click #admin': 'becomeAdmin',
+            'click #changePassword': 'changePassword',
         },
 
 
-        apply_changes: function(e) {
+        applyChanges: function(e) {
             e.preventDefault();
             var first = $('#firstName').val();
             var last = $('#lastName').val();
             var user = $('#userName').val();
             var email = $('#email').val();
             var designer = document.getElementById('designer');
-            console.log(designer);
             var current_user = this.user;
             current_user.save({
                 first_name: first, 
@@ -84,15 +83,28 @@ define([
             else {
                 zombieUser.save({account_type: null})
             }
-            console.log(this.zombieUser.attributes);
             alert("Changes confirmed");
         },
 
-        change_password: function(e) {
-            alert("change password");
+        revealPasswordForm: function(e) {
+            $("#passwordForm").toggleClass('hide');
         },
 
-        become_admin: function(e) {
+        changePassword: function(e) {
+            var formData = $("#passwordForm").serializeArray();
+            var response = $.get( "/rest/change-password", {current_password: formData[0].value,
+                                                            new_password: formData[1].value,
+                                                            confirm_new_password: formData[2].value},
+                function(data) {
+                    alert(data);
+                    $("#passwordForm").toggleClass('hide');
+            })
+                .fail(function(response) {
+                    alert(response.responseJSON);
+                });
+        },
+
+        becomeAdmin: function(e) {
             alert("become admin");
         }
 

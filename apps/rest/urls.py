@@ -9,4 +9,5 @@ urlpatterns = patterns('',
 	url(r'^maps$', views.MapList.as_view()),
 	url(r'^maps/(?P<pk>[0-9]+)$', views.MapDetail.as_view()),
 	url(r'^maps/by-user/(?P<user_id>[0-9]+)$', views.MapListByUser.as_view()),
+	url(r'^change-password$', views.ChangePassword.as_view()),
 )

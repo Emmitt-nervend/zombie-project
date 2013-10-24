@@ -18,39 +18,43 @@
 	<form class="left-align">
 		<label for="firstName">First Name: </label>
 		<input class="form-control add-margin" type="text" name="firstName" id="firstName" placeHolder="First name" value="{{user_info.first_name}}">
-		
 		<label for="lastName">Last Name: </label>
 		<input class="form-control add-margin" type="text" name="lastName" id="lastName" placeHolder="Last name" value="{{user_info.last_name}}">
-		
 		<label for="userName">User Name: </label>
 		<input class="form-control add-margin" type="text" name="userName" id="userName" placeHolder="Username" value="{{user_info.username}}">
-		
 		<label for="email">Email: </label>
 		<input class="form-control add-margin" type="text" name="email" id="email" placeHolder="Email" value="{{user_info.email}}">
-		
 		<div class="checkbox">
 			<input id="designer" type="checkbox" name="designer" {{#if zombie_user_account}}checked="true"{{/if}}><label for="designer">Check for map designer account</label>
 		</div>
-
 		<div class="col-md-4">
 			<button type="button" id="apply" name="createUser" class="btn btn-danger btn-lg full-btn my-btn walter-turncoat">
 				Apply Changes
 			</button>
 		</div>
-
 		<div class="col-md-4">
 			<button type="button" id="password" name="changePass" class="btn btn-primary btn-lg full-btn my-btn walter-turncoat">
 				Change Password
 			</button>
 		</div>
-
 		<div class="col-md-4">
 			<button type="button" id="admin" name="becomeAdmin" class="btn btn-warning btn-lg full-btn my-btn walter-turncoat">
 				Become Admin
 			</button>
 		</div>
-
 	</form>
+
+	<form id="passwordForm" class="hide">
+		<div class="col-mid-12">
+			&nbsp;
+		</div>
+        <input name="originalPassword" type="password" placeholder="Current password" class="form-control">  
+        <input name="newPassword" type="password" placeholder="New password" class="form-control">
+        <input name="newPasswordConfirm" type="password" id="password" placeholder="Confirm new password" class="form-control">
+        <button type="button" id="changePassword" name="changePass" class="btn btn-primary btn-lg full-btn my-btn walter-turncoat">
+			Change Password
+		</button>
+    </form>
 
  	</div>
 </div>
