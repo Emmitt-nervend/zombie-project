@@ -31,6 +31,8 @@ def home(request):
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
+		else:
+			has_editor_account = False
 		return render(request, 'home.html', {'has_editor_account': has_editor_account})
 
 def play_option(request):
@@ -53,6 +55,8 @@ def play_option(request):
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
+		else:
+			has_editor_account = False
 		return render(request, 'play_option.html', {'has_editor_account': has_editor_account})
 
 def web(request):
@@ -65,6 +69,8 @@ def web(request):
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
+		else:
+			has_editor_account = False
 		return render(request, 'home.html', {'has_editor_account': has_editor_account})
 
 def sign_up(request):
