@@ -90,7 +90,6 @@ define([
                     success: function(response) {
                         console.log(response);
                         if (current_account_state != self.zombieUser.attributes.account_type){   
-                            console.log("not the same");
                             window.location.reload();
                         }
                     }
@@ -101,7 +100,6 @@ define([
                     success: function(response) {
                         console.log(response);
                         if (current_account_state != self.zombieUser.attributes.account_type){   
-                            console.log("not the same");
                             window.location.reload();
                         }
                     }
