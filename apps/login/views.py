@@ -17,8 +17,8 @@ def home(request):
 		form = forms.Login(request.POST)
 		submitted_name = request.POST['userName']
 		submitted_password = request.POST['password']
-		#search for mathcing name
-		user = authenticate(username=submitted_name, password =submitted_password)
+		# search for matching name
+		user = authenticate(username=submitted_name, password=submitted_password)
 		if user is not None:
 			if user.is_active:
 				login(request, user)
@@ -28,14 +28,17 @@ def home(request):
 		else:
 			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
-		return render(request, 'home.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		return render(request, 'home.html', {'has_editor_account': has_editor_account})
 
 def play_option(request):
 	if request.method == 'POST':
 		form = forms.Login(request.POST)
 		submitted_name = request.POST['userName']
 		submitted_password = request.POST['password']
-		#search for mathcing name
+		# search for matching name
 		user = authenticate(username=submitted_name, password = submitted_password)
 		if user is not None:
 			if user.is_active:
@@ -47,13 +50,22 @@ def play_option(request):
 		else:
 			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
-		return render(request, 'play_option.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		return render(request, 'play_option.html', {'has_editor_account': has_editor_account})
 
 def web(request):
 	if request.user.is_authenticated():
-		return render(request, 'app.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		return render(request, 'app.html', {'has_editor_account': has_editor_account})
 	else:
-		return render(request, 'home.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		return render(request, 'home.html', {'has_editor_account': has_editor_account})
 
 def sign_up(request):
 	if request.method == 'POST':

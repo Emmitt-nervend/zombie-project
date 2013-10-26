@@ -32,8 +32,7 @@ define([
             }));
             return this;
         }
-
-
+        
     });
     return EditorView;
 });

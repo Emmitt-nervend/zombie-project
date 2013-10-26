@@ -8,6 +8,7 @@ define([
     'app/collections/zombieUsers',
     'app/models/user',
     'app/collections/users',
+    'app/views/settings',
     'jqueryui',
     'app/customSetup',
     'twitter-bootstrap'
@@ -20,9 +21,10 @@ define([
     ZombieUser,
     ZombieUsers,
     User,
-    Users
+    Users,
+    SettingsView
 ) {
-    var SettingsView = Backbone.View.extend({
+    return Backbone.View.extend({
 
         template: Handlebars.compile(template),
 
@@ -65,25 +67,46 @@ define([
 
         applyChanges: function(e) {
             e.preventDefault();
+            var self = this;
             var first = $('#firstName').val();
             var last = $('#lastName').val();
             var user = $('#userName').val();
             var email = $('#email').val();
             var designer = document.getElementById('designer');
+            var current_account_state = this.zombieUser.attributes.account_type;
             var current_user = this.user;
             current_user.save({
                 first_name: first, 
                 last_name: last,
                 username: user,
-                email: email})
+                email: email}, {
+                    success: function(response) {
+                        alert("Changes confirmed");
+                    }
+                });
             var zombieUser = this.zombieUser;
             if (designer.checked) {
-                zombieUser.save({account_type: 1});
+                zombieUser.save({account_type: 1}, {
+                    success: function(response) {
+                        console.log(response);
+                        if (current_account_state != self.zombieUser.attributes.account_type){   
+                            console.log("not the same");
+                            window.location.reload();
+                        }
+                    }
+                });
             }
             else {
-                zombieUser.save({account_type: null})
+                zombieUser.save({account_type: null}, {
+                    success: function(response) {
+                        console.log(response);
+                        if (current_account_state != self.zombieUser.attributes.account_type){   
+                            console.log("not the same");
+                            window.location.reload();
+                        }
+                    }
+                });
             }
-            alert("Changes confirmed");
         },
 
         revealPasswordForm: function(e) {
@@ -92,9 +115,9 @@ define([
 
         changePassword: function(e) {
             var formData = $("#passwordForm").serializeArray();
-            var response = $.get( "/rest/change-password", {current_password: formData[0].value,
-                                                            new_password: formData[1].value,
-                                                            confirm_new_password: formData[2].value},
+            var response = $.post( "/rest/change-password", {current_password: formData[0].value,
+                                                             new_password: formData[1].value,
+                                                             confirm_new_password: formData[2].value},
                 function(data) {
                     alert(data);
                     $("#passwordForm").toggleClass('hide');
@@ -110,7 +133,6 @@ define([
 
     });
 
-    return SettingsView;
 });
 
 

@@ -4,7 +4,9 @@
 <div class="top-right-panel" style="display: none">
 	<div class="navbar navbar-inverse">
 		<span class="navbar-text dashboard"><a href="/web#dashboard"></a></span>
-		<span class="navbar-text editor"><a href="/web#map-editor"></a></span>
+		{{#if has_editor_account}}
+			<span class="navbar-text editor"><a href="/web#map-editor"></a></span>
+		{{/if}}
 		<span class="navbar-text settings"><a href="/web#settings"></a></span>
 		<span class="navbar-text logout"><a href="/logout"></a></span>
 	</div>

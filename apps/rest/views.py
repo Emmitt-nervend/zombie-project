@@ -15,7 +15,7 @@ from zombie.apps.rest.serializers import AuthUserSerializer, ZombieUserSerialize
 class AuthUserList(generics.ListAPIView):
 	queryset = User.objects.all()
 	serializer_class = AuthUserSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	permission_classes = (permissions.IsAuthenticated,)
 
 
 class AuthUserDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -62,12 +62,12 @@ class MapDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ChangePassword(generics.GenericAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
-	def get(self, request):
+	def post(self, request):
 		user = User.objects.get(id=request.user.id)
-		authentication = authenticate(username=request.user, password=request.GET["current_password"])
+		authentication = authenticate(username=request.user, password=request.POST["current_password"])
 		if authentication:
-			if request.GET["new_password"] == request.GET["confirm_new_password"]:
-				user.set_password(request.GET["new_password"])
+			if request.POST["new_password"] == request.POST["confirm_new_password"]:
+				user.set_password(request.POST["new_password"])
 				user.save()
 				return Response("Password changed successfully", status=status.HTTP_200_OK)
 			else:
