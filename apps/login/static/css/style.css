@@ -283,6 +283,16 @@ canvas {
   top: 400px;
   left: 150px;
 }
+#testMap {
+  position: absolute;
+  top: 400px;
+  left: 250px;
+}
+#saveMap {
+  position: absolute;
+  top: 400px;
+  left: 350px;
+}
 
 .hidden {
   opacity: 0;

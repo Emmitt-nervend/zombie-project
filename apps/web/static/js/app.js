@@ -32,8 +32,9 @@ require([
     Backbone,
     Router
 ) {
-
+    
     new Router();
     Backbone.history.start();
+
 
 });

@@ -56,11 +56,13 @@ define([
         },
 
         render: function(view, page) {
+            
             // Save reference to new view
             this.view = view;
             $('#content').empty()
                 .append(nav.render().el)
                 .append(view.render().el);
+
         }
 
     });
