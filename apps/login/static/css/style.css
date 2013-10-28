@@ -254,8 +254,9 @@ td {
 	background-color: white;
 }
 	#content h1 {
-		color: black;
+		color: black;	
 	}
+<<<<<<< HEAD
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR ****************************/
 /*********************************************************/
@@ -298,4 +299,27 @@ td {
 }
 .hidden {
  	opacity: 0;
+ }
+#tiles {
+    display: inline-block;
+    width: 360px;
+}
+
+.tile {
+    border: 2px solid white;
+    display: inline-block;
+}
+
+.selected {
+    border: 2px solid black;
+}
+
+#grid {
+    border: 1px solid;
+}
+
+#toggle {
+    position: absolute;
+    top: 400px;
+    left: 150px;
 }
