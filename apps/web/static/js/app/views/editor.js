@@ -44,7 +44,7 @@ define([
             }));
             this.buildMapEditor()
             return this;
-<<<<<<< HEAD
+
         },
         /*non-event functions*/
         addTile: function(i){
@@ -145,12 +145,7 @@ define([
 
         $('#grid')[func]('hidden');
       }
-
-      });
-=======
-        }
         
     });
->>>>>>> 9252ac3ec0345224dafd31af60cc5042bbb62bc1
     return EditorView;
 });
