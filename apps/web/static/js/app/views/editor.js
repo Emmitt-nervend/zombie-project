@@ -44,11 +44,8 @@ define([
             }));
             this.buildMapEditor()
             return this;
-<<<<<<< HEAD
-=======
-
->>>>>>> 39c2e8fb414090db5a48b8f82bbf753cd590a675
         },
+        
         /*non-event functions*/
         addTile: function(i){
               var tiles = this.$('#tiles');
