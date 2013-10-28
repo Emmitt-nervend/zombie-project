@@ -22,11 +22,15 @@ define([
         },
 
         render: function() {
-
+            if (HAS_EDITOR_ACCOUNT == 'None')
+                var has_editor = false;
+            else
+                var has_editor = true;
             this.$el.empty().append(this.template({
                 page: this.page,
                 user: USER,
-                static_prefix: STATIC_PREFIX
+                static_prefix: STATIC_PREFIX,
+                has_editor_account: has_editor
             }));
             this.delegateEvents();
             return this;

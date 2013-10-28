@@ -39,8 +39,12 @@ define([
         },
 
         editor: function() {
-            this.cleanup();
-            this.render(new EditorView(), 'editor');
+            if(HAS_EDITOR_ACCOUNT === "None") {
+                this.navigate('#dashboard', {trigger: true, replace: true});
+            } else {
+                this.cleanup();
+                this.render(new EditorView(), 'editor');
+            }
         },
 
         settings: function() {

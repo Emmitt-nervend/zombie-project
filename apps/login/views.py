@@ -17,8 +17,8 @@ def home(request):
 		form = forms.Login(request.POST)
 		submitted_name = request.POST['userName']
 		submitted_password = request.POST['password']
-		#search for mathcing name
-		user = authenticate(username=submitted_name, password =submitted_password)
+		# search for matching name
+		user = authenticate(username=submitted_name, password=submitted_password)
 		if user is not None:
 			if user.is_active:
 				login(request, user)
@@ -28,31 +28,50 @@ def home(request):
 		else:
 			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
-		return render(request, 'home.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		else:
+			has_editor_account = False
+		return render(request, 'home.html', {'has_editor_account': has_editor_account})
 
 def play_option(request):
 	if request.method == 'POST':
 		form = forms.Login(request.POST)
 		submitted_name = request.POST['userName']
 		submitted_password = request.POST['password']
-		#search for mathcing name
+		# search for matching name
 		user = authenticate(username=submitted_name, password = submitted_password)
 		if user is not None:
 			if user.is_active:
-				login(request, user)
+				expiration = 3600  # One hour
+				user.login(request, expiration)
 				return HttpResponseRedirect('/web/')
 			else:
-				return render(request, 'home.html', {'errors': 'Invalid user or password'})
+				return render(request, 'home.html', {'errors': 'Inactive account'})
 		else:
 			return render(request, 'home.html', {'errors': 'Invalid user or password'})
 	else:
-		return render(request, 'play_option.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		else:
+			has_editor_account = False
+		return render(request, 'play_option.html', {'has_editor_account': has_editor_account})
 
 def web(request):
 	if request.user.is_authenticated():
-		return render(request, 'app.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		return render(request, 'app.html', {'has_editor_account': has_editor_account})
 	else:
-		return render(request, 'home.html', {})
+		if not request.user.is_anonymous():
+			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
+			has_editor_account = zombie_user.account_type
+		else:
+			has_editor_account = False
+		return render(request, 'home.html', {'has_editor_account': has_editor_account})
 
 def sign_up(request):
 	if request.method == 'POST':
@@ -69,8 +88,6 @@ def sign_up(request):
 				else:
 					new_zombie_user = ZombieUser(user=new_auth_user)
 				new_zombie_user.save()
-				user = authenticate(username=cd['userName'], password=cd['password'])
-				login(request, user)
 				return HttpResponseRedirect('/success/')
 			else:
 				return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 
@@ -83,13 +100,13 @@ def sign_up(request):
 
 def success(request):
 	message = "Success! Your account has been created."
-	return render(request, 'success.html', {'message': message})
+	return render(request, 'message.html', {'message': message})
 
 def logout_user(request):
 	if request.user.is_authenticated():
 		logout(request)
 		message = "You have been successfully logged out."
-		return render(request, 'success.html', {'message': message})
+		return render(request, 'message.html', {'message': message})
 	else:
 		return HttpResponseRedirect('/')
 
@@ -114,7 +131,7 @@ def password_reset(request):
 						  'zombieattack51@gmail.com',
     					  [email], fail_silently=False)
 				message = "Success! You will recieve an email with a password reset link."
-				return render(request, 'success.html', {'message': message})
+				return render(request, 'message.html', {'message': message})
 			else:
 				message = "There is no user with that email address."
 				return render(request, 'password_reset.html', {'message': message, 
@@ -141,10 +158,10 @@ def change_password(request, token):
 					token_match.active = False
 					token_match.save()
 					message = "Your password has been successfully updated."
-					return render(request, 'success.html', {'message': message})
+					return render(request, 'message.html', {'message': message})
 				else:
 					message = "Sorry, this link has expired."	
-					return render(request, 'success.html', {'message': message})
+					return render(request, 'message.html', {'message': message})
 			else:
 				message = "Invalid submission. Stop trying to hack the site."
 				return render(request, 'change_password.html', {'message': message})
@@ -168,7 +185,7 @@ def change_password(request, token):
 				token_match.active = False
 				token_match.save()
 		message = "Sorry, this link has expired."	
-		return render(request, 'success.html', {'message': message})
+		return render(request, 'message.html', {'message': message})
 
 def guest(request):
 	map = {
@@ -205,24 +222,9 @@ def guest(request):
 
 	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
 	headers = {'content-type': 'application/json'}
-	#map = json.dumps(map)
-	#print map
-	#print dir(map)
 
 	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
 
-	#print r.headers
-	#print r.url
-	#print r.status_code
-	#print r.encoding
-	#print r.json
-	#print r.request
-	#print r.text
-
 	python_response = json.loads(r.text)
-	#print python_response['url']
-
-	# $ is the symbol for jquery.
-	#$.post('http://zombie-attack.aws.af.cm/uploadMap/12345', { map: map });
 	
 	return render(request, 'guest.html', {'url':python_response['url']})	

@@ -9,8 +9,14 @@
 </div>
 {% if user.is_authenticated %}
 	<div class="top-right-panel" style="display: none">
-		Welcome, <a href="/web">{{user}}</a><br>
-		<a href="/logout">Logout.</a>
+		<div class="navbar navbar-inverse">
+			<span class="navbar-text dashboard"><a href="/web#dashboard"></a></span>
+			{% if has_editor_account %}
+				<span class="navbar-text editor"><a href="/web#map-editor"></a></span>
+			{% endif %}
+			<span class="navbar-text settings"><a href="#settings"></a></span>
+			<span class="navbar-text logout"><a href="/logout"></a></span>
+		</div>
 	</div>
 {% else %}
 	<div class="top-right-form" style="display: none">
@@ -27,12 +33,7 @@
 
 	<a href="/"><img src="/static/images/Logo.png" id="homelogo"></a>
 
-	<a href="/guest"  
-
-	
-
-
-	>
+	<a href="/guest">
 		<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">
 			Play As Guest
 		</button>

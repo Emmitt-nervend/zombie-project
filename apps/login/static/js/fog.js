@@ -5,7 +5,7 @@ var particles = [];
 var particleCount = 80;
 
 // The maximum velocity in each direction
-var maxVelocity = 1.3;
+var maxVelocity = .8;
 
 // The target frames per second (how often do we want to update / redraw the scene)
 var targetFPS = 25;
