@@ -44,7 +44,6 @@ define([
             }));
             this.buildMapEditor()
             return this;
-<<<<<<< HEAD
         },
         /*non-event functions*/
         addTile: function(i){
@@ -62,11 +61,15 @@ define([
                 height: SIZE + 'px',
                 background: 'url(' + SRC + ') ' + xOffset + 'px ' + yOffset +'px'
               });
-                if (i === selectedLeft) {
+                if (i === selectedLeft || i===selectedRight) {
                   tile.addClass('selected');
                 }
 
               tiles.append(tile);
+              if(i===38)
+              {
+                tile.hide();
+              }
         },
         drawPiece:function(id, x, y) {
           var ctx = this.$('#map')[0].getContext('2d');
@@ -147,10 +150,5 @@ define([
       }
 
       });
-=======
-        }
-        
-    });
->>>>>>> 9252ac3ec0345224dafd31af60cc5042bbb62bc1
     return EditorView;
 });

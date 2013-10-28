@@ -253,17 +253,9 @@ td {
 #map {
 	background-color: white;
 }
-<<<<<<< HEAD
 	#content h1 {
 		color: black;
 	}
-.zero{
-	width:40px;
-	height:40px;
-	background:url("/static/images/bottom.png") 0 0;
-	display:block;
-}
-
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR ****************************/
 /*********************************************************/
@@ -281,7 +273,7 @@ td {
   border: 2px solid black;
 }
 
-canvas {
+.mapEditorCanvas {
   position: absolute;
 }
 
@@ -307,7 +299,3 @@ canvas {
 .hidden {
   opacity: 0;
 }
-#grid {
-	background-color: blue;
-}
-
