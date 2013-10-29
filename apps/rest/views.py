@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from zombie.apps.login.models import ZombieUser, Map
 from zombie.apps.rest.serializers import AuthUserSerializer, ZombieUserSerializer, MapSerializer
 
+from django.shortcuts import render, render_to_response
+
 
 class AuthUserList(generics.ListAPIView):
 	queryset = User.objects.all()
@@ -74,3 +76,8 @@ class ChangePassword(generics.GenericAPIView):
 				return Response("Passwords do not match", status=status.HTTP_406_NOT_ACCEPTABLE)
 		else:
 			return Response("Incorrect password", status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+def api(request):
+	return render(request, "api.html", {})
+

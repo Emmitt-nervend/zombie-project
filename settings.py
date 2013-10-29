@@ -74,6 +74,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     '/opt/zombie/zombie/zombie/apps/login/static',
     '/opt/zombie/zombie/zombie/apps/web/static',
+    '/opt/zombie/zombie/zombie/apps/rest/static',    
 )
 
 # List of finder classes that know how to find static files in
@@ -112,6 +113,7 @@ WSGI_APPLICATION = 'zombie.wsgi.application'
 
 TEMPLATE_DIRS = (
     '/opt/zombie/zombie/zombie/templates',
+    '/opt/zombie/zombie/zombie/apps/rest/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
