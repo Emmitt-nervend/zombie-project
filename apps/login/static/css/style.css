@@ -253,7 +253,73 @@ td {
 #map {
 	background-color: white;
 }
+	#content h1 {
+		color: black;	
+	}
+<<<<<<< HEAD
+/*********************************************************/
+/******* STYLE FOR MAP EDITOR ****************************/
+/*********************************************************/
+#tiles {
+ 	display: inline-block;
+ 	width: 360px;
+}
+
+.tile {
+ 	border: 2px solid white;
+ 	display: inline-block;
+}
+
+.selected {
+ 	border: 2px solid black;
+}
+
+.mapEditorCanvas {
+ 	position: absolute;
+}
 
 #grid {
-	background-color: blue;
+ 	border: 1px solid;
+}
+
+#toggle {
+ 	position: absolute;
+ 	top: 400px;
+ 	left: 150px;
+}
+#testMap {
+ 	position: absolute;
+ 	top: 400px;
+ 	left: 250px;
+}
+#saveMap {
+ 	position: absolute;
+ 	top: 400px;
+ 	left: 350px;
+}
+.hidden {
+ 	opacity: 0;
+ }
+#tiles {
+    display: inline-block;
+    width: 360px;
+}
+
+.tile {
+    border: 2px solid white;
+    display: inline-block;
+}
+
+.selected {
+    border: 2px solid black;
+}
+
+#grid {
+    border: 1px solid;
+}
+
+#toggle {
+    position: absolute;
+    top: 400px;
+    left: 150px;
 }
