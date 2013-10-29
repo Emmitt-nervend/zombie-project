@@ -1,0 +1,15 @@
+
+
+To view the Zombie Attack API:
+
+1) Go to:  http://zombieattack.biz
+
+2)  Log into an administrator account...
+	a) Hover over the biohazard symbol in the upper-right corner
+	b) Enter the following information in the slide out login fields
+		Username:   api
+		Password:  api
+
+3) Go to:  http://zombieattack.biz/rest/api
+
+4) Have a nice day.
