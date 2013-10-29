@@ -78,4 +78,5 @@ class ChangePassword(generics.GenericAPIView):
 			return Response("Incorrect password", status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-
+def api(request):
+	return render(request, "api.html", {})
