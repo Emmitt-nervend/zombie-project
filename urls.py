@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     url(r'^password-reset/', 'zombie.apps.login.views.password_reset', name='password_reset'),
     url(r'^change-password/(?P<token>\w{10})', 'zombie.apps.login.views.change_password', name='change_password'),
     url(r'^rest/', include('zombie.apps.rest.urls', namespace='rest')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),  
 )
