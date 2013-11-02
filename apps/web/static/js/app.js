@@ -9,6 +9,7 @@ require.config({
         'twitter-bootstrap': 'vendor/bootstrap.min',
         'jqueryui': 'vendor/jquery-ui-1.10.3.min',
         'lasso': 'vendor/lasso',
+        'ink-filepicker': '//api.filepicker.io/v1/filepicker'
     },
     shim: {
         'underscore': {
@@ -21,7 +22,7 @@ require.config({
         'jqueryui': ['jquery'],
         'backbone-paginator': ['backbone'],
         'twitter-bootstrap': ['jquery'],
-        'lasso': ['jquery', 'backbone'],
+        'lasso': ['jquery', 'backbone']
     }
 });
 

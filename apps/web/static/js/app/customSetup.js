@@ -2,6 +2,7 @@
 
 define([
     'jquery',
+    'ink-filepicker'
 ], function(
     $
 ) {
@@ -30,6 +31,8 @@ define([
 	        xhr.setRequestHeader("X-CSRFToken", csrftoken);
 	    }
     });
+
+    filepicker.setKey(FILEPICKER_API_KEY);
 
     // Parse bootstrapped model information
     // VARIABLES = $.parseJSON(VARIABLES);

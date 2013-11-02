@@ -64,14 +64,16 @@ def web(request):
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
-		return render(request, 'app.html', {'has_editor_account': has_editor_account})
+		return render(request, 'app.html', {'has_editor_account': has_editor_account,
+											'filepicker_api_key': settings.FILEPICKER_API_KEY})
 	else:
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
 		else:
 			has_editor_account = False
-		return render(request, 'home.html', {'has_editor_account': has_editor_account})
+		return render(request, 'home.html', {'has_editor_account': has_editor_account,
+											 'filepicker_api_key': settings.FILEPICKER_API_KEY})
 
 def sign_up(request):
 	if request.method == 'POST':

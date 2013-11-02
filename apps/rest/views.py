@@ -78,5 +78,14 @@ class ChangePassword(generics.GenericAPIView):
 			return Response("Incorrect password", status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+class UploadFile(generics.GenericAPIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	def post(self, request):
+		print(request)
+		print(request.POST)
+		print(dir(request.POST))
+		return Response("File upload!")
+
+
 def api(request):
 	return render(request, "api.html", {})

@@ -11,7 +11,8 @@ define([
     'app/views/settings',
     'jqueryui',
     'app/customSetup',
-    'twitter-bootstrap'
+    'twitter-bootstrap',
+    'ink-filepicker'
 ], function(
     $,
     _,
@@ -52,7 +53,8 @@ define([
             this.$el.empty().html(this.template({
                 user_info: this.user.attributes,
                 zombie_user_account: this.zombieUser.attributes.account_type,
-                user: USER
+                user: USER,
+                profilePic: this.zombieUser.attributes.profile_pic
             }));
             return this;
         },
@@ -62,6 +64,7 @@ define([
             'click #password': 'revealPasswordForm',
             'click #admin': 'becomeAdmin',
             'click #changePassword': 'changePassword',
+            'click .change-profile': 'filepicker'
         },
 
 
@@ -127,6 +130,22 @@ define([
 
         becomeAdmin: function(e) {
             alert("become admin");
+        },
+
+        filepicker: function(e) {
+            var self = this;
+            filepicker.pick(function(InkBlob){
+                self.zombieUser.save({profile_pic: InkBlob.url}, {
+                    success: function(response) {
+                        self.$el.empty().html(self.template({
+                            user_info: self.user.attributes,
+                            zombie_user_account: self.zombieUser.attributes.account_type,
+                            user: USER,
+                            profilePic: self.zombieUser.attributes.profile_pic
+                        }));
+                    }
+                })
+            });
         }
 
     });
