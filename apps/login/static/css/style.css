@@ -256,7 +256,7 @@ td {
 	#content h1 {
 		color: black;	
 	}
-<<<<<<< HEAD
+
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR ****************************/
 /*********************************************************/
@@ -283,19 +283,22 @@ td {
 }
 
 #toggle {
- 	position: absolute;
+	display: inline-block;
+ 	/*position: absolute;
  	top: 400px;
- 	left: 150px;
+ 	left: 150px;*/
 }
 #testMap {
- 	position: absolute;
+	display: inline-block;
+ 	/*position: absolute;
  	top: 400px;
- 	left: 250px;
+ 	left: 250px;*/
 }
 #saveMap {
- 	position: absolute;
+	display: inline-block;
+ 	/*position: absolute;
  	top: 400px;
- 	left: 350px;
+ 	left: 350px;*/
 }
 .hidden {
  	opacity: 0;
@@ -316,10 +319,4 @@ td {
 
 #grid {
     border: 1px solid;
-}
-
-#toggle {
-    position: absolute;
-    top: 400px;
-    left: 150px;
 }

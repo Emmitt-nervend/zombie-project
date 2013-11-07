@@ -1,7 +1,17 @@
-<div id="tiles" oncontextmenu = "return false" style = "display: inline-block;"></div>
-<canvas id="map" class="mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
-<canvas id="grid" class="grid mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
-
+<label for="mapTitle">Title:</label><input type = "text" id="mapTitle"></input>
+<button id="showBottomTiles" class="tileSetSwitch">Ground</button>
+<button id="showMiddleTiles" class="tileSetSwitch">Middle</button>
+<button id="showTopTiles" class="tileSetSwitch">Top</button>
+<button id="showEventTiles" class="tileSetSwitch">Events</button>
+<div id="tilesBottom" class="displayed tileSet" oncontextmenu = "return false" style = "display: inline-block;"></div>
+<div id="tilesMiddle" class="tileSet" oncontextmenu = "return false" style = "display: inline-block;"></div>
+<div id="tilesTop" class="tileSet" oncontextmenu = "return false" style = "display: inline-block;"></div>
+<div id="tilesEvents" class="tileSet" oncontextmenu = "return false" style = "display: inline-block;"></div>
 <button id="toggle">Toggle Grid</button>
 <button id="testMap">Test It!</button>
 <button id="saveMap">Save Map</button>
+<canvas id="mapBottom" class="mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
+<canvas id="mapMiddle" class="mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
+<canvas id="mapTop" class="mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
+<canvas id="mapEvents" class="mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
+<canvas id="grid" class="grid mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
