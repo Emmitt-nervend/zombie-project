@@ -232,4 +232,4 @@ def guest(request):
 
 	python_response = json.loads(r.text)
 	
-	return render(request, 'guest.html', {'url':python_response['url']})	
+	return render(request, 'guest.html', {'url':python_response['url']})

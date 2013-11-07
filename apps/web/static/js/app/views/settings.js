@@ -129,7 +129,11 @@ define([
         },
 
         becomeAdmin: function(e) {
-            alert("become admin");
+            $.get('/rest/admin-request', function (response){
+                console.log("MADE IT", response);
+            }).fail(function (response){
+                console.log("failed");
+            });
         },
 
         filepicker: function(e) {
