@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from json_field import JSONField
+import django_filepicker
 
 
 class ZombieUser(models.Model):

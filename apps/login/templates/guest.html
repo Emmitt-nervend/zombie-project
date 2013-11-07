@@ -3,14 +3,52 @@
 {% block title %}Zombie Attack{% endblock %}
 
 {% block content %}
-
-<!-- <body onload="Popup('{{url}}', 'Play As Guest', 600, 600);"> -->	
 	
-	<div class="background">
-		<h2>Play As Guest<h2>
+<div class="top-right" id="top-right">
+	<img src="/static/images/hazard.png">
+</div>
+{% if user.is_authenticated %}
+	<div class="top-right-panel" style="display: none">
+		<div class="navbar navbar-inverse">
+			<span class="navbar-text dashboard"><a href="/web#dashboard"></a></span>
+			<span class="navbar-text editor"><a href="#map-editor"></a></span>
+			<span class="navbar-text settings"><a href="#settings"></a></span>
+			<span class="navbar-text logout"><a href="/logout"></a></span>
+		</div>
 	</div>
+{% else %}
+	<div class="top-right-form" style="display: none">
+		<form action="" method="POST">
+	        {% csrf_token %}    
+	        <input name="userName" type="text" placeholder="Username" class="form-control">
+	        <input name="password" type="password" id="password" placeholder="Password" class="form-control">
+	    </form>
+	    <a href="/password-reset">Forgot password?</a>
+	</div>
+{% endif %}
+	
+<div class="center-screen">
 
-	<a id="playGuest" href="{{url}}"> CLICK TO OPEN GAME WINDOW </a>
+	<a href="/"><img src="/static/images/Logo.png" id="homelogo"></a>
+	
+	<a id="playGuest" href="{{url}}">
+		<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">
+			Start Game
+		</button>
+	</a>
+
+	<h2 class="walter-turncoat head-spacing">or</h2>
+	<!-- <h3 class="walter-turncoat head-spacing">Sign Up to play new maps</h2> -->
+
+	<a href="/sign-up">
+		<button type="button" class="btn btn-danger btn-lg dropdown-toggle full-btn walter-turncoat">
+			Sign Up
+		</button>
+	</a> 
+</div>
+
+<canvas id="myCanvas"></canvas>
+
 
 	{% block footer %}{% endblock %}
 

@@ -29,7 +29,7 @@ define([
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.zombieUser = new ZombieUser({id: USER_ID});
-            this.zombieUser.on('reset', this.render, this);
+            this.zombieUser.on('reset change', this.render, this);
             this.zombieUser.fetch();
             this.maps = new Maps();
             this.maps.on('reset', this.render, this);
@@ -47,10 +47,12 @@ define([
             if(!_.isUndefined(this.zombieUser)) {
                 current_user = this.zombieUser.toJSON();
             }
+            console.log(current_user);
             this.$el.empty().html(this.template({
                 userinfo: current_user,
                 user: USER,
-                maps: this.maps.models
+                maps: this.maps.models,
+                profile_pic: current_user.profile_pic,
             }));
             return this;
         },

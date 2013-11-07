@@ -1,4 +1,4 @@
-# Django settings for zombie project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -50,7 +50,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/opt/zombie/static/uploads'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -74,6 +74,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     '/opt/zombie/zombie/zombie/apps/login/static',
     '/opt/zombie/zombie/zombie/apps/web/static',
+    '/opt/zombie/zombie/zombie/apps/rest/static',    
 )
 
 # List of finder classes that know how to find static files in
@@ -112,6 +113,7 @@ WSGI_APPLICATION = 'zombie.wsgi.application'
 
 TEMPLATE_DIRS = (
     '/opt/zombie/zombie/zombie/templates',
+    '/opt/zombie/zombie/zombie/apps/rest/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -173,3 +175,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'zombieattack51@gmail.com'
 EMAIL_HOST_PASSWORD = 'zombie2013'
+
+# Ink file picker
+FILEPICKER_API_KEY = 'AEOqCqG1Q828UAzTQs93iz'
+
+SESSION_SAVE_EVERY_REQUEST = True

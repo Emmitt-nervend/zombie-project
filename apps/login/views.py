@@ -21,7 +21,9 @@ def home(request):
 		user = authenticate(username=submitted_name, password=submitted_password)
 		if user is not None:
 			if user.is_active:
+				expiration = 1200  # twnety minutes
 				login(request, user)
+				request.session.set_expiry(expiration)
 				return HttpResponseRedirect('/web/')
 			else:
 				return render(request, 'home.html', {'errors': 'Invalid user or password'})
@@ -44,8 +46,9 @@ def play_option(request):
 		user = authenticate(username=submitted_name, password = submitted_password)
 		if user is not None:
 			if user.is_active:
-				expiration = 3600  # One hour
-				user.login(request, expiration)
+				expiration = 1200  # twenty minutes
+				login(request, user)
+				request.session.set_expiry(expiration)
 				return HttpResponseRedirect('/web/')
 			else:
 				return render(request, 'home.html', {'errors': 'Inactive account'})
@@ -64,14 +67,16 @@ def web(request):
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
-		return render(request, 'app.html', {'has_editor_account': has_editor_account})
+		return render(request, 'app.html', {'has_editor_account': has_editor_account,
+											'filepicker_api_key': settings.FILEPICKER_API_KEY})
 	else:
 		if not request.user.is_anonymous():
 			zombie_user = ZombieUser.objects.get(user__id=request.user.id)
 			has_editor_account = zombie_user.account_type
 		else:
 			has_editor_account = False
-		return render(request, 'home.html', {'has_editor_account': has_editor_account})
+		return render(request, 'home.html', {'has_editor_account': has_editor_account,
+											 'filepicker_api_key': settings.FILEPICKER_API_KEY})
 
 def sign_up(request):
 	if request.method == 'POST':
@@ -227,4 +232,4 @@ def guest(request):
 
 	python_response = json.loads(r.text)
 	
-	return render(request, 'guest.html', {'url':python_response['url']})	
+	return render(request, 'guest.html', {'url':python_response['url']})

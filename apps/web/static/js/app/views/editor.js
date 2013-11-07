@@ -86,6 +86,7 @@ define([
             },100);
             return this;
         },
+        
         /*non-event functions*/
         addTile: function(i, source, key){
             if(key==="bottom")
