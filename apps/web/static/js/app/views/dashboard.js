@@ -29,7 +29,7 @@ define([
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.zombieUser = new ZombieUser({id: USER_ID});
-            this.zombieUser.on('reset', this.render, this);
+            this.zombieUser.on('reset change', this.render, this);
             this.zombieUser.fetch();
             this.maps = new Maps();
             this.maps.on('reset', this.render, this);

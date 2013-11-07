@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 from rest_framework import generics
 from rest_framework import permissions
@@ -78,14 +79,23 @@ class ChangePassword(generics.GenericAPIView):
 			return Response("Incorrect password", status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-class UploadFile(generics.GenericAPIView):
+class AdminRequest(generics.GenericAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
-	def post(self, request):
-		print(request)
-		print(request.POST)
-		print(dir(request.POST))
-		return Response("File upload!")
+	def get(self, request):
+		user = User.objects.get(id = request.user.id)
+		print("about to send mail")
+		print(user)
+		send_mail('Admin Request', 
+			'Hello, ' + str(user.username) + ' Would like to become an admin, please review his/her status and respond accordingly', 
+			'zombieattack51@gmail.com',
+			['russ.max783@gmail.com'], fail_silently=False)
+		print("Sent mail")
+		message = "Request has been sent, Check back later for results"
+		return Response(message, status=status.HTTP_200_OK)
+
 
 
 def api(request):
 	return render(request, "api.html", {})
+
+

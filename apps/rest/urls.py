@@ -10,6 +10,6 @@ urlpatterns = patterns('',
 	url(r'^maps/(?P<pk>[0-9]+)$', views.MapDetail.as_view()),
 	url(r'^maps/by-user/(?P<user_id>[0-9]+)$', views.MapListByUser.as_view()),
 	url(r'^change-password$', views.ChangePassword.as_view()),
-	url(r'^upload$', views.UploadFile.as_view()),
+	url(r'^admin-request$', views.AdminRequest.as_view()),
 	url(r'^api$', views.api, name='api'),
 )

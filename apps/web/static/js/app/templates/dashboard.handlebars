@@ -20,20 +20,22 @@
  			<div class="col-md-6">
  				<div class="box" id="win">
  					<p>Wins</p>
- 					{{#unless userinfo.games_won}}
+ 					{{#if userinfo.games_won}}
+ 						<h1>{{userinfo.games_won}}</h1>
+			 		{{else}}
 			 			<h1>0</h1>
-			 		{{/unless}}
- 					<h1>{{userinfo.games_won}}</h1>
+ 					{{/if}}
  				</div>
  			</div>
 
  			<div class="col-md-6">
  				<div class="box" id="loss">
  					<p>Losses</p>
- 					{{#unless userinfo.games_lost}}
+ 					{{#if userinfo.games_lost}}
+ 						<h1>{{userinfo.games_lost}}</h1>
+			 		{{else}}
 			 			<h1>0</h1>
-			 		{{/unless}}
- 					<h1>{{userinfo.games_lost}}</h1>
+ 					{{/if}}
  				</div>
  			</div> 
 		</div>  {{!-- END OF LEFT SIDE BAR --}}
