@@ -38,7 +38,7 @@ define([
 
         events: {
             'mouseover .top-right img': 'showPanel',
-            'mouseleave .top-right-panel': 'hidePanel',
+            'mouseleave .top-right-panel': 'hidePanel'
         },
 
         showPanel: function() {
