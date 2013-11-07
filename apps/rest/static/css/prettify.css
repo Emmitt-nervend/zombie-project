@@ -5,7 +5,8 @@
 .str, .atv { color: #D14; }
 .kwd, .prettyprint .tag { color: #1e347b; }
 .typ, .atn, .dec, .var { color: teal; }
-.pln { color: #48484c; }
+/*.pln { color: #48484c; }*/
+.pln { color: #0033CC; }
 
 .prettyprint {
   padding: 8px;
