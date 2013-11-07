@@ -47,10 +47,12 @@ define([
             if(!_.isUndefined(this.zombieUser)) {
                 current_user = this.zombieUser.toJSON();
             }
+            console.log(current_user);
             this.$el.empty().html(this.template({
                 userinfo: current_user,
                 user: USER,
-                maps: this.maps.models
+                maps: this.maps.models,
+                profile_pic: current_user.profile_pic,
             }));
             return this;
         },
