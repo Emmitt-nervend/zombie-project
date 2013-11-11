@@ -94,6 +94,12 @@ class AdminRequest(generics.GenericAPIView):
 		return Response(message, status=status.HTTP_200_OK)
 
 
+class SaveMap(generics.GenericAPIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	def post(self, request):
+		print request.POST['map']
+		return Response('success', status=status.HTTP_200_OK)
+
 
 def api(request):
 	return render(request, "api.html", {})
