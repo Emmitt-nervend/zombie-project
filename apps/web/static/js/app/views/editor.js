@@ -250,7 +250,6 @@ define([
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
             this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
-            console.log(JSON.stringify(this.jsonMapObject));
             $.post('/rest/save-map', {'map' : JSON.stringify(this.jsonMapObject)}, function(response){
                 console.log(response);
             });
