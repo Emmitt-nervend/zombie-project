@@ -34,6 +34,7 @@ define([
             this.selectedLeft = 0;
             this.selectedRight = 0;
             this.showGrid = true;
+            this.erase = false;
             this.jsonMapObject = { 
                 "title": "",
                 "author": "",  
@@ -66,7 +67,8 @@ define([
             'mousedown canvas':'drawTiletoMap',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
-            'click .tileSetSwitch': 'switchTiles'
+            'click .tileSetSwitch': 'switchTiles',
+            'click .funcSwitcher': 'changeFunctions'
         },
 
         render: function() {
@@ -218,15 +220,21 @@ define([
             };
             this.$('.tileSet').hide();
             this.$('.displayed').show();
+            this.$('#draw').hide();
             
         },
         drawTiletoMap: function(e){
+
             var clickedRight = false;
             var clickedLeft = false;
             if (e.which === 1) clickedLeft = true;
             if (e.which === 3) clickedRight = true;
             var x = Math.floor(e.offsetX / this.SIZE);
             var y = Math.floor(e.offsetY / this.SIZE);
+            if(this.erase == true)
+            {
+                alert("Erasing");
+            }
             if (clickedLeft)
                 this.drawPiece(this.selectedLeft, x, y);
             else if (clickedRight)
@@ -243,6 +251,9 @@ define([
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
             this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
             console.log(JSON.stringify(this.jsonMapObject));
+            $.post('/rest/save-map', {'map' : JSON.stringify(this.jsonMapObject)}, function(response){
+                console.log(response);
+            });
         },
         switchTiles: function(e){
             var showSet = e.target.id;
@@ -264,6 +275,13 @@ define([
                 this.$("#tilesEvents").addClass('displayed')
             }
             this.$('.displayed').show();
+        },
+        changeFunctions: function(e)
+        {
+            if(e.target.id=="eraser")
+            {
+                this.erase = true;
+            }
         }
 
     });
