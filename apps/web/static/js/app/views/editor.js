@@ -118,9 +118,7 @@ define([
                 setTimeout(function(){
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
-                            //console.log(i+ ", "+j);
                             self.drawPiece(22, i, j);
-                            //console.log(this.jsonMapObject);
                         }
                     };
                 },100);
