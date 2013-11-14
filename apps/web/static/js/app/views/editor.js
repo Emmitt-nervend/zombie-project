@@ -3,13 +3,17 @@ define([
     'underscore',
     'backbone',
     'handlebars',
-    'text!app/templates/editor.handlebars'
+    'text!app/templates/editor.handlebars',
+    'app/collections/maps',
+    'app/models/map'
 ], function(
     $,
     _,
     Backbone,
     Handlebars,
-    template
+    template,
+    Maps,
+    Map
 ) {
     
     var EditorView = Backbone.View.extend({
@@ -17,45 +21,60 @@ define([
         template: Handlebars.compile(template),
 
         initialize: function() {
-            
             this.constructor.__super__.initialize.apply(this, [this.options]);
+            this.currentMap = this.options['id'];
+            // Initialize editor constants
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
             this.NUM_TILES_MIIDLE = 72;
             this.NUM_TILES_UPPER = 8;
             this.NUM_TILES_EVENTS = 8;
             this.COLS = 8;
-            this.EditorColums = 8;
-            this.EditorRows = 8; 
             this.SRCBOTTOM = '/static/images/bottom.png';
             this.SRCEVENTS = '/static/images/events.png';
             this.SRCMIDDLE = '/static/images/middle.png';
             this.SRCTOP = '/static/images/upper.png';
+            this.EditorColums = 8;
+            this.EditorRows = 8; 
             this.selectedLeft = 0;
             this.selectedRight = 0;
             this.showGrid = true;
             this.erase = false;
-            this.jsonMapObject = { 
-                "title": "",
-                "author": "",  
-                "width": 0,   
-                "height": 0,  
-                "x": 0,       
-                "y": 0,       
-                "events": [Event], 
-                "data": {
-                    "bottom": [],  
-                    "middle": [],  
-                    "top": [],     
-                },
-                "env": ""    
-                };  
-            for(i = 0; i < this.COLS; i++)
-            {
-              this.jsonMapObject.data.top[i] = [];
-              this.jsonMapObject.data.middle[i] = [];
-              this.jsonMapObject.data.bottom[i] = [];
+            // Defaults for new map
+            if (_.isUndefined(this.currentMap)) {
+                this.jsonMapObject = { 
+                    "title": "",
+                    "author": "",  
+                    "width": 0,   
+                    "height": 0,  
+                    "x": 0,       
+                    "y": 0,       
+                    "events": [Event], 
+                    "data": {
+                        "bottom": [],  
+                        "middle": [],  
+                        "top": [],     
+                    },
+                    "env": ""    
+                };
+                for(i = 0; i < this.COLS; i++)
+                {
+                    this.jsonMapObject.data.top[i] = [];
+                    this.jsonMapObject.data.middle[i] = [];
+                    this.jsonMapObject.data.bottom[i] = [];
+                }
+                console.log("jsonMapObject");
+                console.log(this.jsonMapObject);
+            } else {
+                // Load the map if we are editing a map
+                this.currentMapData = new Map({id: this.currentMap})
+                this.currentMapData.on('change', this.render, this);
+                this.currentMapData.fetch();
             }
+
+            this.maps = new Maps();
+            this.maps.on('change', this.render, this);
+            this.maps.fetch();
         },
 
         destroy: function() {
@@ -72,20 +91,40 @@ define([
         },
 
         render: function() {
-        
+            if (!_.isUndefined(this.currentMapData)) {
+                if (!_.isUndefined(this.currentMapData.attributes.data)) {
+                    var mapInfo = this.currentMapData.attributes;
+                    // console.log($.parseJSON(this.currentMapData.attributes.data));
+                    this.jsonMapObject = {
+                        "title": mapInfo.title,
+                        "author": "",  
+                        "width": mapInfo.width,   
+                        "height": mapInfo.height,  
+                        "x": mapInfo.x,       
+                        "y": mapInfo.y,       
+                        "events": mapInfo.events, 
+                        "data": $.parseJSON(mapInfo.data),
+                        "env": "" 
+                    }
+                }
+            }
+            console.log("jsonMapObject");
+            console.log(this.jsonMapObject);
             this.$el.empty().html(this.template({
             }));
             this.buildMapEditor();
-            var that = this;
-            setTimeout(function(){
-                for (var i = 0; i < 8; ++i) {
-                    for (var j = 0; j < 8; ++j) {
-                        //console.log(i+ ", "+j);
-                        that.drawPiece(22, i, j);
-                        //console.log(this.jsonMapObject);
-                    }
-                };
-            },100);
+            var self = this;
+            if (_.isUndefined(this.currentMap)) {
+                setTimeout(function(){
+                    for (var i = 0; i < 8; ++i) {
+                        for (var j = 0; j < 8; ++j) {
+                            //console.log(i+ ", "+j);
+                            self.drawPiece(22, i, j);
+                            //console.log(this.jsonMapObject);
+                        }
+                    };
+                },100);
+            }
             return this;
         },
         
@@ -250,8 +289,14 @@ define([
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
             this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
-            $.post('/rest/save-map', {'map' : JSON.stringify(this.jsonMapObject)}, function(response){
-                console.log(response);
+            var self = this;
+            $.post('/rest/save-map', {'map': JSON.stringify(this.jsonMapObject),
+                                      'map_id': this.currentMap}, function(response){
+                if (_.isUndefined(self.currentMap)) {
+
+                } else {
+                    self.currentMap = response['map_id']
+                }
             });
         },
         switchTiles: function(e){

@@ -26,6 +26,7 @@ define([
             '': 'dashboardRedirect',
             'dashboard': 'dashboard',
             'map-editor': 'editor',
+            'map-editor(/:id)': 'editorMap',
             'settings': 'settings'
         },
 
@@ -44,6 +45,15 @@ define([
             } else {
                 this.cleanup();
                 this.render(new EditorView(), 'editor');
+            }
+        },
+
+        editorMap: function(id) {
+            if(HAS_EDITOR_ACCOUNT === "None") {
+                this.navigate('#dashboard', {trigger: true, replace: true});
+            } else {
+                this.cleanup();
+                this.render(new EditorView({id:id}), 'editor');
             }
         },
 
