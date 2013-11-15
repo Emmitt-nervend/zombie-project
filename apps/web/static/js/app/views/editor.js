@@ -40,7 +40,6 @@ define([
             this.selectedRight = 0;
             this.showGrid = true;
             this.erase = false;
-<<<<<<< HEAD
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
                 this.jsonMapObject = { 
@@ -71,7 +70,6 @@ define([
                 this.currentMapData = new Map({id: this.currentMap})
                 this.currentMapData.on('change', this.render, this);
                 this.currentMapData.fetch();
-=======
             this.jsonMapObject = { 
                 "title": "",
                 "author": "",  
@@ -94,7 +92,6 @@ define([
               this.jsonMapObject.data.top[i] = [];
               this.jsonMapObject.data.middle[i] = [];
               this.jsonMapObject.data.bottom[i] = [];
->>>>>>> 8b6f675f03b12a8984ae3927c1a8616c5da3afce
             }
 
             this.maps = new Maps();
