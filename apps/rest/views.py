@@ -1,4 +1,5 @@
 import json
+import requests
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -97,8 +98,19 @@ class AdminRequest(generics.GenericAPIView):
 class SaveMap(generics.GenericAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	def post(self, request):
-		print request.POST['map']
-		return Response('success', status=status.HTTP_200_OK)
+		url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
+		headers = {'content-type': 'application/json'}
+		map_dict = json.loads(request.POST['map'])
+		json_map = json.dumps({'map':map_dict})
+		r = requests.post(url, data=json_map, headers=headers)
+		response_dict = json.loads(r.text)
+		if r.status_code is 200:
+			response = {}
+			response['message'] = 'success'
+			response['url'] = response_dict['url']
+			return Response(response, status=status.HTTP_200_OK)
+		else:
+			return Response('Unkown error, you suck!', status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 def api(request):
