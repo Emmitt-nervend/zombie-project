@@ -42,7 +42,7 @@ define([
             this.erase = false;
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
-                this.jsonMapObject = { 
+                    this.jsonMapObject = { 
                     "title": "",
                     "author": "",  
                     "width": 0,   
@@ -63,36 +63,15 @@ define([
                     this.jsonMapObject.data.middle[i] = [];
                     this.jsonMapObject.data.bottom[i] = [];
                 }
-                console.log("jsonMapObject");
-                console.log(this.jsonMapObject);
             } else {
                 // Load the map if we are editing a map
                 this.currentMapData = new Map({id: this.currentMap})
                 this.currentMapData.on('change', this.render, this);
                 this.currentMapData.fetch();
-            this.jsonMapObject = { 
-                "title": "",
-                "author": "",  
-                "width": 0,   
-                "height": 0,  
-                "x": 0,       
-                "y": 0,       
-                "data": {
-                    "bottom": [],  
-                    "middle": [],  
-                    "top": [],     
-                },
-                "events": [], 
-                "env": ""    
-                };
+            }
             this.actionHistory = [];  
             this.actionHistoryIndex = 0;
-            for(i = 0; i < this.COLS; i++)
-            {
-              this.jsonMapObject.data.top[i] = [];
-              this.jsonMapObject.data.middle[i] = [];
-              this.jsonMapObject.data.bottom[i] = [];
-            }
+            
 
             this.maps = new Maps();
             this.maps.on('change', this.render, this);
@@ -116,7 +95,6 @@ define([
             if (!_.isUndefined(this.currentMapData)) {
                 if (!_.isUndefined(this.currentMapData.attributes.data)) {
                     var mapInfo = this.currentMapData.attributes;
-                    // console.log($.parseJSON(this.currentMapData.attributes.data));
                     this.jsonMapObject = {
                         "title": mapInfo.title,
                         "author": "",  
@@ -130,19 +108,44 @@ define([
                     }
                 }
             }
-            console.log("jsonMapObject");
-            console.log(this.jsonMapObject);
             this.$el.empty().html(this.template({
             }));
             this.buildMapEditor();
             var self = this;
-            setTimeout(function(){
-                for (var i = 0; i < 8; ++i) {
-                    for (var j = 0; j < 8; ++j) {
-                        that.drawPiece(22, i, j, "tilesBottom");
+            if (_.isUndefined(this.currentMap)) {
+                setTimeout(function(){
+                    for (var i = 0; i < 8; ++i) {
+                        for (var j = 0; j < 8; ++j) {
+                            self.drawPiece(22, i, j, "tilesBottom");
+                        }
+                    };
+                },100);
+            } else if (!_.isUndefined(this.jsonMapObject)) {
+                console.log(self.jsonMapObject);
+                setTimeout(function() {
+                    for (var i = 0; i < 8; ++i) {
+                        for (var j = 0; j < 8; ++j) {
+                            self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom")
+                        }
                     }
-                };
-            },100);
+                    for (var i = 0; i < 8; ++i) {
+                        for (var j = 0; j < 8; ++j) {
+                            self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle")
+                        }
+                    }
+                    for (var i = 0; i < 8; ++i) {
+                        for (var j = 0; j < 8; ++j) {
+                            self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop")
+                        }
+                    }
+                    // for (var i = 0; i < 8; ++i) {
+                    //     for (var j = 0; j < 8; ++j) {
+                    //         self.drawPiece(this.jsonMapObject.data.bottom[j][i], i, j, "tilesEvents")
+                    //     }
+                    // }
+
+                }, 100);
+            }
             return this;
         },
         
