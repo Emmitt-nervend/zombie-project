@@ -114,15 +114,13 @@ define([
             }));
             this.buildMapEditor();
             var self = this;
-            if (_.isUndefined(this.currentMap)) {
-                setTimeout(function(){
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
-                            self.drawPiece(22, i, j);
-                        }
-                    };
-                },100);
-            }
+            setTimeout(function(){
+                for (var i = 0; i < 8; ++i) {
+                    for (var j = 0; j < 8; ++j) {
+                        self.drawPiece(22, i, j);
+                    }
+                };
+            },100);
             return this;
         },
         
@@ -258,10 +256,8 @@ define([
             this.$('.tileSet').hide();
             this.$('.displayed').show();
             this.$('#draw').hide();
-            
         },
         drawTiletoMap: function(e){
-
             var clickedRight = false;
             var clickedLeft = false;
             if (e.which === 1) clickedLeft = true;
@@ -283,6 +279,7 @@ define([
             $('#grid')[func]('hidden');
         },
         saveMapToServer: function(){
+            console.log(this.jsonMapObject);
             this.jsonMapObject.title = $('#mapTitle').val();
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
