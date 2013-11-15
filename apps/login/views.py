@@ -194,8 +194,8 @@ def change_password(request, token):
 
 def guest(request):
 	map = {
-		'title':'default map',
-		'author': 'dave',
+		'title':'Guest Map',
+		'author': 'Zombie Attack',
 		'width': 15,
 		'height': 15,
 		'x': 4,
@@ -231,5 +231,56 @@ def guest(request):
 	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
 
 	python_response = json.loads(r.text)
-	
+
 	return render(request, 'guest.html', {'url':python_response['url']})
+
+
+
+
+import random
+
+def random(request):
+	# a = 
+	# b = 
+	n = random.randint(a,b) # returns a random integer
+
+	map = {
+		'title':'Random Map',
+		'author': 'Zombie Attack',
+		'width': 15,
+		'height': 15,
+		'x': 4,
+		'y': 4,
+		'data': {
+			'bottom': [
+				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
+				[22, 0, 8,16,22,22,22,22,22,22,22,22,22,22,22],
+				[22, 1, 9, 8,16,22,22,22,22,22,22,22,22,22,22],
+				[22, 1, 9, 9,17,22,22,22,22,22,22,22,22,22,22],
+				[22, 2, 0, 9, 8,16,22,22,22,22,22,22,22,22,22],
+				[22,22, 1, 9, 9, 8, 8,16,22,22,22,22,22,22,22],
+				[22,22, 2, 4, 9, 9, 9, 8,16,22,22,22,22,22,22],
+				[22,22,22, 2,10, 4, 9, 9, 8,16,22,22,22,22,22],
+				[22,22,22,22,22, 2, 4, 9, 9,17,22,22,22,22,22],
+				[22,22,22,22,22,22, 2, 4, 9,17,22,22,22,22,22],
+				[22,22,22,22,22,22,22, 2,10,18,22,22,22,22,22],
+				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
+				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
+				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
+				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22]
+			],
+		'middle':[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+		'top':[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+		},
+		'events': [],
+		'env': 'normal'
+	}
+
+	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
+	headers = {'content-type': 'application/json'}
+
+	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
+
+	python_response = json.loads(r.text)
+
+	return render(request, 'guest.html', {'url':python_response['url']})	
