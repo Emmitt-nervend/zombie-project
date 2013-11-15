@@ -82,9 +82,7 @@ define([
             setTimeout(function(){
                 for (var i = 0; i < 8; ++i) {
                     for (var j = 0; j < 8; ++j) {
-                        //console.log(i+ ", "+j);
                         that.drawPiece(22, i, j, "tilesBottom");
-                        //console.log(this.jsonMapObject);
                     }
                 };
             },100);
@@ -220,6 +218,10 @@ define([
         },
         /*Event Functions*/
         tileClick: function(e){
+            if(this.erase)
+            {
+               $("#draw").click();
+            }
             if (e.which == 1)
                 this.selectedLeft = e.target.getAttribute('id');
             if (e.which == 3)
