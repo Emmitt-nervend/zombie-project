@@ -132,11 +132,13 @@ define([
                     }
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
+                            if(self.jsonMapObject.data.middle[j][i])
                             self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle")
                         }
                     }
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
+                            if(self.jsonMapObject.data.top[j][i])
                             self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop")
                         }
                     }
