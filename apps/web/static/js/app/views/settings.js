@@ -52,6 +52,7 @@ define([
             }
             this.$el.empty().html(this.template({
                 user_info: this.user.attributes,
+                staff: this.user.attributes.is_staff,
                 zombie_user_account: this.zombieUser.attributes.account_type,
                 user: USER,
                 profilePic: this.zombieUser.attributes.profile_pic
@@ -115,6 +116,7 @@ define([
         },
 
         changePassword: function(e) {
+            console.log(this.user_info);
             var formData = $("#passwordForm").serializeArray();
             var response = $.post( "/rest/change-password", {current_password: formData[0].value,
                                                              new_password: formData[1].value,
