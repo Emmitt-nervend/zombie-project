@@ -101,12 +101,13 @@ class SaveMap(generics.GenericAPIView):
 		url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
 		headers = {'content-type': 'application/json'}
 		map_dict = json.loads(request.POST['map'])
+		print(type(map_dict['events']))
+		print(map_dict['events'])
+		if map_dict['events'] == '[None]':
+			print('here')
+			map_dict['events'] = []
 		json_map = json.dumps({'map':map_dict})
 		r = requests.post(url, data=json_map, headers=headers)
-		print(dir(r))
-		print(r)
-		print(r.text)
-		print(r.reason)
 		response_dict = json.loads(r.text)
 		if r.status_code is 200:
 			response = {}
