@@ -88,7 +88,8 @@ define([
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
             'click .tileSetSwitch': 'switchTiles',
-            'click .funcSwitcher': 'changeFunctions'
+            'click .funcSwitcher': 'changeFunctions',
+            'click .historyAction': 'historyAction'
         },
 
         render: function() {
@@ -102,7 +103,7 @@ define([
                         "height": mapInfo.height,  
                         "x": mapInfo.x,       
                         "y": mapInfo.y,       
-                        "events": mapInfo.events, 
+                        "events": $.parseJSON(mapInfo.events), 
                         "data": $.parseJSON(mapInfo.data),
                         "env": "" 
                     }
@@ -148,7 +149,7 @@ define([
                             if(eventIndex>=0)
                             {
                                 var tileId;
-                                var eventId=self.jsonMapObject.data.events[eventIndex].id;
+                                var eventId=self.jsonMapObject.events[eventIndex].id;
                                 if(eventId=="treasure")
                                 {
                                     tileId=0;
@@ -165,7 +166,7 @@ define([
                                 {Index
                                     tileId=3;
                                 }
-                                this.jsonMapObject.events.splice(eventIndex, 1);
+                                self.jsonMapObject.events.splice(eventIndex, 1);
                                 self.drawPiece(tileId, i, j, "tilesEvents")
                             }
                          }
@@ -225,18 +226,21 @@ define([
             {
                 var ctx = this.$('#mapBottom')[0].getContext('2d');
                 var source = this.SRCBOTTOM;
+                var previousValue = this.jsonMapObject.data.bottom[y][x];
                 this.jsonMapObject.data.bottom[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesMiddle")
             {
                 var ctx = this.$('#mapMiddle')[0].getContext('2d');
                 var source = this.SRCMIDDLE;
+                var previousValue = this.jsonMapObject.data.middle[y][x];
                 this.jsonMapObject.data.middle[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesTop")
             {
                 var ctx = this.$('#mapTop')[0].getContext('2d');
                 var source = this.SRCTOP;
+                var previousValue = this.jsonMapObject.data.bottom[y][x];
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesEvents")
@@ -245,6 +249,7 @@ define([
                 var yCoordinate = y;
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
                 var source = this.SRCEVENTS;
+                var previousValue = this.jsonMapObject.events[this.findMatchingEvent(x,y)];
                 if(id==0)
                 {
                     this.jsonMapObject.events.push(
@@ -294,9 +299,11 @@ define([
                 "action": "add",
                 "x": x,
                 "y": y,
-                "tileId": id
+                "tileId": id,
+                "previousValue": previousValue
             };
             this.actionHistory.push(historyItem);
+            this.actionHistoryIndex++;
             var img=document.createElement('image');
             img.src=source;
             var xOffset = id % this.COLS * this.SIZE;
@@ -452,21 +459,28 @@ define([
             var eventIndex = this.findMatchingEvent(x,y);
             if(eventIndex>=0)
             {
+                var id = this.jsonMapObject.events[eventIndex];
                 this.jsonMapObject.events.splice(eventIndex, 1);
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
+                var tileSet = "tilesEvents";
             }
             else if(this.jsonMapObject.data.top[y][x])
             {
+                var id = this.jsonMapObject.data.top[y][x];
                 var ctx = this.$('#mapTop')[0].getContext('2d');
                 this.jsonMapObject.data.top[y][x] = null;
+                var tileSet = "tilesTop";
             }
             else if(this.jsonMapObject.data.middle[y][x])
             {
+                var id = this.jsonMapObject.data.middle[y][x];
                 var ctx = this.$('#mapMiddle')[0].getContext('2d');
                 this.jsonMapObject.data.middle[y][x] = null;
+                var tileSet = "tilesMiddle";
             }
             else if(this.jsonMapObject.data.bottom[y][x] != 22)
             {
+                var id = this.jsonMapObject.data.bottom[y][x];
                 var ctx = this.$('#mapBottom')[0].getContext('2d');
                 this.jsonMapObject.data.bottom[y][x] = 22;
                 var source = this.SRCBOTTOM;
@@ -475,16 +489,35 @@ define([
                 var xOffset = 22 % this.COLS * this.SIZE;
                 var yOffset = Math.floor(22 / this.COLS) * this.SIZE;
                 ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
+                var historyItem = {
+                    "layer": tileSet,
+                    "action": "erase",
+                    "x": x,
+                    "y": y,
+                    "tileId": id
+                };
+                this.actionHistory.push(historyItem);
+                this.actionHistoryIndex++;
                 return false;
             }
             if(!ctx)
             {
                 return false;
             }
+            var historyItem = {
+                "layer": tileSet,
+                "action": "erase",
+                "x": x,
+                "y": y,
+                "tileId": id
+            };
+            this.actionHistory.push(historyItem);
+            this.actionHistoryIndex++;
             ctx.clearRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE)
         },
         findMatchingEvent: function(x, y)
         {
+            //var self = this;
             var eventArray = this.jsonMapObject.events;
             for (eventObject in eventArray)
             {
@@ -494,6 +527,41 @@ define([
                 }
             }
             return -1;
+        },
+        historyAction: function(e)
+        {
+            var funct = e.target.id;
+            var call = funct =="undo" ? this.undo() : this.redo(); 
+        },
+        undo: function()
+        {
+            var self = this;
+            var lastAction=this.actionHistory[this.actionHistoryIndex-1];
+            if(lastAction.action=="erase")
+            {
+                var dud=0;
+            }
+            else if(lastAction.action=="add")
+            {
+                if(lastAction.previousValue)
+                {
+                    self.drawPiece(lastAction.previousValue, lastAction.x, lastAction.y, lastAction.layer);
+                    self.actionHistoryIndex--;
+                }
+                var dud=0;
+            }
+        },
+        redo: function()
+        {
+            var lastAction=this.actionHistory[this.actionHistoryIndex-1];
+            if(lastAction.action=="erase")
+            {
+                var dud=0;
+            }
+            else if(lastAction.action=="add")
+            {
+                var dud=0;
+            }
         }
 
     });
