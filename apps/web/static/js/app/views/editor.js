@@ -47,15 +47,15 @@ define([
                     "author": "",  
                     "width": 0,   
                     "height": 0,  
-                    "x": 0,       
-                    "y": 0,       
+                    "x": 4,       
+                    "y": 4,       
                     "events": [Event], 
                     "data": {
                         "bottom": [],  
                         "middle": [],  
                         "top": [],     
                     },
-                    "env": ""    
+                    "env": "normal"    
                 };
                 for(i = 0; i < this.COLS; i++)
                 {
@@ -108,8 +108,10 @@ define([
                     }
                 }
             }
+
             this.$el.empty().html(this.template({
             }));
+
             this.buildMapEditor();
             var self = this;
             if (_.isUndefined(this.currentMap)) {
@@ -143,7 +145,7 @@ define([
                     //         self.drawPiece(this.jsonMapObject.data.bottom[j][i], i, j, "tilesEvents")
                     //     }
                     // }
-
+                    $('#mapTitle').val(self.jsonMapObject.title);
                 }, 100);
             }
             return this;
@@ -365,11 +367,19 @@ define([
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
             this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
             var self = this;
-            $.post('/rest/save-map', {'map': JSON.stringify(this.jsonMapObject),
-                                      'map_id': this.currentMap}, function(response){
+            if (!_.isUndefined(this.currentMap)) {
+                data = {'map': JSON.stringify(this.jsonMapObject), 'map_id': this.currentMap}
+            } else {
+                data = {'map': JSON.stringify(this.jsonMapObject)}
+            }
+            $.post('/rest/save-map', data, function(response){
                 if (_.isUndefined(self.currentMap)) {
-
+                    // this.currentMap = response
+                    console.log(response['map_id']);
+                    self.currentMap = response['map_id'];
+                    Backbone.history.navigate('#map-editor/'+response['map_id'])
                 } else {
+                    console.log(response);
                     self.currentMap = response['map_id']
                 }
             });

@@ -103,6 +103,10 @@ class SaveMap(generics.GenericAPIView):
 		map_dict = json.loads(request.POST['map'])
 		json_map = json.dumps({'map':map_dict})
 		r = requests.post(url, data=json_map, headers=headers)
+		print(dir(r))
+		print(r)
+		print(r.text)
+		print(r.reason)
 		response_dict = json.loads(r.text)
 		if r.status_code is 200:
 			response = {}
@@ -144,7 +148,6 @@ class SaveMap(generics.GenericAPIView):
 			return Response(response, status=status.HTTP_200_OK)
 		else:
 			return Response('Unkown error, you suck!', status=status.HTTP_406_NOT_ACCEPTABLE)
-
 
 def api(request):
 	return render(request, "api.html", {})
