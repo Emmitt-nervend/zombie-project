@@ -88,7 +88,8 @@ define([
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
             'click .tileSetSwitch': 'switchTiles',
-            'click .funcSwitcher': 'changeFunctions'
+            'click .funcSwitcher': 'changeFunctions',
+            'click .toolbox-toggle': 'toggleToolbox'
         },
 
         render: function() {
@@ -123,7 +124,6 @@ define([
                     };
                 },100);
             } else if (!_.isUndefined(this.jsonMapObject)) {
-                console.log(self.jsonMapObject);
                 setTimeout(function() {
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
@@ -142,6 +142,7 @@ define([
                             self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop")
                         }
                     }
+                    console.log(self.jsonMapObject);
                     // for (var i = 0; i < 8; ++i) {
                     //     for (var j = 0; j < 8; ++j) {
                     //         self.drawPiece(this.jsonMapObject.data.bottom[j][i], i, j, "tilesEvents")
@@ -150,6 +151,7 @@ define([
                     $('#mapTitle').val(self.jsonMapObject.title);
                 }, 100);
             }
+            $("#toolbox").hide();
             return this;
         },
         
@@ -363,7 +365,6 @@ define([
             $('#grid')[func]('hidden');
         },
         saveMapToServer: function(){
-            console.log(this.jsonMapObject);
             this.jsonMapObject.title = $('#mapTitle').val();
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
@@ -377,11 +378,9 @@ define([
             $.post('/rest/save-map', data, function(response){
                 if (_.isUndefined(self.currentMap)) {
                     // this.currentMap = response
-                    console.log(response['map_id']);
                     self.currentMap = response['map_id'];
                     Backbone.history.navigate('#map-editor/'+response['map_id'])
                 } else {
-                    console.log(response);
                     self.currentMap = response['map_id']
                 }
             });
@@ -458,8 +457,7 @@ define([
             }
             ctx.clearRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE)
         },
-        findMatchingEvent: function(x, y)
-        {
+        findMatchingEvent: function(x, y) {
             var eventArray = this.jsonMapObject.events;
             for (eventObject in eventArray)
             {
@@ -470,7 +468,12 @@ define([
                 }
             }
             return false;
+        },
+        toggleToolbox: function(e) {
+            console.log("here");
+            $("#toolbox").toggle("slide", {direction: "up"});
         }
+
 
     });
     return EditorView;

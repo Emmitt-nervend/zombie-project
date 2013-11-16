@@ -1,19 +1,41 @@
 <label for="mapTitle">Title:</label><input type="text" id="mapTitle">
-<button id="showBottomTiles" class="tileSetSwitch left-tab">Ground</button>
-<button id="showMiddleTiles" class="tileSetSwitch bottom-tab">Middle</button>
-<button id="showTopTiles" class="tileSetSwitch right-tab">Top</button>
-<button id="showEventTiles" class="tileSetSwitch">Events</button>
-<button id="eraser" class="funcSwitcher showing">Erase</button>
-<button id="draw" class="funcSwitcher">Draw</button>
-<button id="undo" class="historyAction">Undo</button>
-<button id="redo" class="historyAction">Redo</button>
-<div id="tilesBottom" class="displayed tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
-<div id="tilesMiddle" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
-<div id="tilesTop" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
-<div id="tilesEvents" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
-<button id="toggle">Toggle Grid</button>
-<button id="testMap">Test It!</button>
-<button id="saveMap">Save Map</button>
+<button id="showBottomTiles" class="tileSetSwitch left-tab btn btn-danger">Ground Tiles</button>
+<button id="showMiddleTiles" class="tileSetSwitch bottom-tab btn btn-danger">Middle Tiles</button>
+<button id="showTopTiles" class="tileSetSwitch right-tab btn btn-danger">Top Tiles</button>
+<button id="showEventTiles" class="tileSetSwitch btn btn-danger">Events</button>
+
+<div class="bottom-left">
+	Left Click
+	<div>
+		<canvas id="leftClickTile" oncontextmenu="return false" width="75" height="75"></canvas>
+	</div>
+</div>
+
+<div class="bottom-right">
+	Right Click
+	<div>
+		<canvas id="rightClickTile" oncontextmenu="return false" width="75" height="75"></canvas>
+	</div>
+</div>
+
+<div class="">
+	<div id="tilesBottom" class="displayed tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+	<div id="tilesMiddle" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+	<div id="tilesTop" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+	<div id="tilesEvents" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+</div>
+
+<button class="btn btn-danger toolbox-toggle">Toolbox</button>
+<div id="toolbox">
+	<button id="eraser" class="funcSwitcher showing btn btn-danger">Erase</button>
+	<button id="draw" class="funcSwitcher btn btn-danger">Draw</button>
+	<button id="undo" class="historyAction btn btn-danger">Undo</button>
+	<button id="redo" class="historyAction btn btn-danger">Redo</button>
+	<button id="toggle" class="btn btn-danger">Toggle Grid</button>
+	<button id="testMap" class="btn btn-danger">Test It!</button>
+	<button id="saveMap" class="btn btn-danger">Save Map</button>
+</div>
+
 <canvas id="mapBottom" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
 <canvas id="mapMiddle" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
 <canvas id="mapTop" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
