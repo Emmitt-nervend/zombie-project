@@ -21,7 +21,7 @@ class Map(models.Model):
 	id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=60)
 	url = models.CharField(max_length=500, null=True, blank=True)
-	owner = models.ForeignKey('ZombieUser', related_name='owners_maps')
+	owner = models.ForeignKey(User, related_name='owners_maps')
 	width = models.IntegerField()
 	height = models.IntegerField()
 	x = models.IntegerField()
@@ -31,7 +31,7 @@ class Map(models.Model):
 	environment = models.CharField(max_length=100)
 
 	def __unicode__(self):
-		return unicode(self.title)
+		return unicode(self.id)
 
 
 class ResetLink(models.Model):

@@ -8,6 +8,9 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+.white-text {
+	color: white;
+}
 
 h1, h2, h3, ul, label {
 	color: white;
@@ -99,6 +102,11 @@ li > a {
 	height:50px;
 	transition:width 1s, height 1s;
 	-webkit-transition:width 1s, height 1s, -webkit-transform 1s; /* Safari */
+}
+
+.top-right img:hover,
+.top-right:hover {
+	cursor: pointer;
 }
 
 .top-right-rotate { /*used to be the hover function*/
