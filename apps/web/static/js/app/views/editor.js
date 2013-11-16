@@ -49,7 +49,7 @@ define([
                     "height": 0,  
                     "x": 4,       
                     "y": 4,       
-                    "events": [Event], 
+                    "events": [], 
                     "data": {
                         "bottom": [],  
                         "middle": [],  
@@ -142,11 +142,34 @@ define([
                             self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop")
                         }
                     }
-                    // for (var i = 0; i < 8; ++i) {
-                    //     for (var j = 0; j < 8; ++j) {
-                    //         self.drawPiece(this.jsonMapObject.data.bottom[j][i], i, j, "tilesEvents")
-                    //     }
-                    // }
+                    for (var i = 0; i < 8; ++i) {
+                         for (var j = 0; j < 8; ++j) {
+                            var eventIndex = self.findMatchingEvent(i,j);
+                            if(eventIndex>=0)
+                            {
+                                var tileId;
+                                var eventId=self.jsonMapObject.data.events[eventIndex].id;
+                                if(eventId=="treasure")
+                                {
+                                    tileId=0;
+                                }
+                                else if(eventId=="bush")
+                                {
+                                    tileId=1;
+                                }
+                                else if(eventId=="hole"||id==4)
+                                {
+                                    tileId=2;
+                                }
+                                else if(eventId=="door")
+                                {Index
+                                    tileId=3;
+                                }
+                                this.jsonMapObject.events.splice(eventIndex, 1);
+                                self.drawPiece(tileId, i, j, "tilesEvents")
+                            }
+                         }
+                     }
                     $('#mapTitle').val(self.jsonMapObject.title);
                 }, 100);
             }
@@ -426,8 +449,10 @@ define([
         },
         eraseTile: function(x, y)
         {
-            if(this.findMatchingEvent(x,y))
+            var eventIndex = this.findMatchingEvent(x,y);
+            if(eventIndex>=0)
             {
+                this.jsonMapObject.events.splice(eventIndex, 1);
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
             }
             else if(this.jsonMapObject.data.top[y][x])
@@ -465,11 +490,10 @@ define([
             {
                 if(eventArray[eventObject].x == x && eventArray[eventObject].y == y)
                 {
-                    eventArray.splice(eventObject, 1);
-                    return true;
+                    return eventObject;
                 }
             }
-            return false;
+            return -1;
         }
 
     });
