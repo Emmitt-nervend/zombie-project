@@ -65,7 +65,8 @@ define([
             'click #password': 'revealPasswordForm',
             'click #admin': 'becomeAdmin',
             'click #changePassword': 'changePassword',
-            'click .change-profile': 'filepicker'
+            'click .change-profile': 'filepicker',
+            'click #delete-account': 'disableAccount'
         },
 
 
@@ -132,10 +133,25 @@ define([
 
         becomeAdmin: function(e) {
             $.get('/rest/admin-request', function (response){
-                console.log("MADE IT", response);
+                alert("Your request has been sent");
             }).fail(function (response){
-                console.log("failed");
+                alert("there was an error processesing your request, please check back later");
             });
+        },
+
+        disableAccount: function (e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to delete your account? It will be a pain to recover and you\'ll owe me candy!')) {
+                this.user.save({
+                    is_active: false}, {
+                        success: function(response) {
+                            alert("account removed");
+                        }
+                    });
+                window.location.replace('http://www.zombieattack.biz')
+            } else {
+                // Do nothing!
+            }
         },
 
         filepicker: function(e) {
