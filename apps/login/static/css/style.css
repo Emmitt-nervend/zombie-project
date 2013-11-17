@@ -8,7 +8,9 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 }
-
+.white-text {
+	color: white;
+}
 h1, h2, h3, ul, label {
 	color: white;
 	font-family: 'Walter Turncoat', cursive;
@@ -30,11 +32,9 @@ li > a {
 	font-family: 'Walter Turncoat', cursive;
 	letter-spacing: 2px;
 }
-
 .full-btn {
 	width: 100%;
 }
-
 .center-screen {
 	position: absolute;
 	border-radius: 2px;
@@ -48,26 +48,21 @@ li > a {
 	text-align: center;
 	background-color: rgba(22, 22,22, 0.6);
 }
-
 .head-spacing{
 	margin-top: 0px;
 }
-
 #homelogo {
 	width: 290px;
 }
-
 #myCanvas {
 	background: black;
     opacity: 0.6;
     width: 100%;
     height: 100%;
 }
-
 .checkbox label {
 	color: white;
 }
-
 
 /*********************************************************/
 /******* STYLE FOR NAV MENU (HAZARD SYMBOL) **************/
@@ -80,8 +75,6 @@ li > a {
 	height: 50px;
 	z-index: 100;
 }
-
-
 .top-right-form {
 	position: absolute;
 	width: 300px;
@@ -92,7 +85,6 @@ li > a {
 	.top-right-form form {
 		width: 300px;
 	}
-
 .top-right img,
 .top-right {
 	width:50px;
@@ -100,14 +92,16 @@ li > a {
 	transition:width 1s, height 1s;
 	-webkit-transition:width 1s, height 1s, -webkit-transform 1s; /* Safari */
 }
-
+.top-right img:hover,
+.top-right:hover {
+	cursor: pointer;
+}
 .top-right-rotate { /*used to be the hover function*/
 	width:50px;
 	height:50px;
 	transform:rotate(360deg);
 	-webkit-transform:rotate(360deg); /* Safari */
 }
-
 .top-right-panel {
 	position: absolute;
 	color: gray;
@@ -159,7 +153,6 @@ li > a {
 			background-image: url('/static/images/icons/glyphicons_063_power.png');	
 		}
 
-
 /*********************************************************/
 /******* STYLE FOR PROFILE & SETTINGS PAGE ***************/
 /*********************************************************/
@@ -174,7 +167,6 @@ li > a {
 	#content h1 {
 		text-align: center;
 	}
-
 .centered-img {
 	text-align: center;
 
@@ -182,7 +174,6 @@ li > a {
 	.logo {
 		width: 295px;
 	}
-
 .row > div {
 	text-align: center;
 	border-radius: 5px;
@@ -191,58 +182,45 @@ li > a {
 	.col-attrib {
 		background-color: rgba(100, 100,100, 0.8);
 	}
-
 .profile-pic img {
 	width: 100%;
 	border: 2px solid black;
 	margin: 10px auto 10px auto;
 }
-
 .box {
 	height: 100px;
 	border-radius: 5px;
 }
-
 #win {
 	background-color: green;
 }
-
 #loss {
 	background-color: red;
 }
-
 .full-height {
 	min-height: 500px;
 }
-
 .left-align {
 	text-align: left;
 }
-
 .padding-left {
 	padding-left: 15px;
 }
-
 .remove-margin {
 	margin: 0 !important;
 }
-
 .add-margin {
 	margin: 0 0 10px 0;
 }
-
 .red {
 	color: red;
 }
-
 .red:hover {
 	color: black;
 }
-
 table {
 	margin-left: 30px;
 }
-
 td {
 	padding-right: 35px;
 }
@@ -250,38 +228,92 @@ td {
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR PAGE ***********************/
 /*********************************************************/
+.left-tab {
+	position: fixed;
+	top: 300px;
+	left: 5px;
+	width: 100px;
+}
+.right-tab {
+	position: fixed;
+	top: 300px;
+	right: 5px;
+	width: 100px;
+}
+.bottom-tab {
+	position: fixed;
+	bottom: 5px;
+	left: 50%;
+	width: 100px;
+	margin-left: -50px;
+	width: 125px;
+}
+.right-tab {
+
+}
+#toolbox {
+	position: fixed;
+	top: 40px;
+	width: 200px;
+	left: 50%;
+	margin-left: -100px;
+}
+	.toolbox-toggle {
+		position: fixed;
+		top: 5px;
+		width: 100px;
+		left: 50%;
+		margin-left: -50px;
+	}
+.bottom-left {
+	position: fixed;
+	bottom: 5px;
+	left: 5px;
+	text-align: center;
+	color: white
+}
+	.bottom-left div {
+		position: relative;
+		bottom: 0px;
+		left: 0px;
+		background-color: yellow;
+	}
+.bottom-right {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+	text-align: center;
+	color: white;
+}
+	.bottom-right div {
+		position: relative;
+		bottom: 0px;
+		right: 0px;	
+		background-color: yellow;
+	}
 #map {
 	background-color: white;
 }
 	#content h1 {
 		color: black;	
 	}
-
-/*********************************************************/
-/******* STYLE FOR MAP EDITOR ****************************/
-/*********************************************************/
 #tiles {
  	display: inline-block;
  	width: 360px;
 }
-
 .tile {
  	border: 2px solid white;
  	display: inline-block;
 }
-
 .selected {
  	border: 2px solid black;
 }
-
 .mapEditorCanvas {
  	position: absolute;
 }
-
 #grid {
  	border: 1px solid;
 }
-
 #toggle {
 	display: inline-block;
  	/*position: absolute;
@@ -302,21 +334,18 @@ td {
 }
 .hidden {
  	opacity: 0;
- }
+}
 #tiles {
     display: inline-block;
     width: 360px;
 }
-
 .tile {
     border: 2px solid white;
     display: inline-block;
 }
-
 .selected {
     border: 2px solid black;
 }
-
 #grid {
     border: 1px solid;
 }

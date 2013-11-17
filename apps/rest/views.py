@@ -101,17 +101,53 @@ class SaveMap(generics.GenericAPIView):
 		url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
 		headers = {'content-type': 'application/json'}
 		map_dict = json.loads(request.POST['map'])
+		if map_dict['events'] == '[None]':
+			map_dict['events'] = []
+		else:
+			map_dict['events'] = json.dumps(map_dict['events'])
 		json_map = json.dumps({'map':map_dict})
 		r = requests.post(url, data=json_map, headers=headers)
 		response_dict = json.loads(r.text)
 		if r.status_code is 200:
 			response = {}
-			response['message'] = 'success'
-			response['url'] = response_dict['url']
+			# We are editing a map, not creating a new one
+			if 'map_id' in request.POST.keys():
+				try:
+					map_to_edit = Map.objects.get(id=request.POST['map_id'])
+				except Map.DoesNotExist:
+					return Response('There is no map with the id of ' + request.POST['map_id'], status=status.HTTP_406_NOT_ACCEPTABLE)
+				map_to_edit = Map(id=request.POST['map_id'],
+								  title=map_dict['title'],
+							      owner=request.user,
+							      width=map_dict['width'],
+							      height=map_dict['height'],
+							      x=map_dict['x'],
+							      y=map_dict['y'],
+							      events=map_dict['events'],
+							      data=map_dict['data'],
+							      environment=map_dict['env'])
+				map_to_edit.save()
+				response['map_id'] = map_to_edit.id
+				response['message'] = 'success'
+				response['url'] = response_dict['url']
+			# Looks like were creating a new map in the database
+			else:
+				new_map = Map(title=map_dict['title'],
+							  owner=request.user,
+							  width=map_dict['width'],
+							  height=map_dict['height'],
+							  x=map_dict['x'],
+							  y=map_dict['y'],
+							  events=map_dict['events'],
+							  data=map_dict['data'],
+							  environment=map_dict['env'])
+				new_map.save()
+				response['map_id'] = new_map.id
+				response['message'] = 'success'
+				response['url'] = response_dict['url']
 			return Response(response, status=status.HTTP_200_OK)
 		else:
 			return Response('Unkown error, you suck!', status=status.HTTP_406_NOT_ACCEPTABLE)
-
 
 def api(request):
 	return render(request, "api.html", {})

@@ -15,7 +15,7 @@
 		<label for="changePic">Change Profile Pic</label>
 		<input type="filepicker" name="changePic" id="changePic" value="Change Profile Pic" class="change-profile btn btn-success btn-block my-btn walter-turncoat">
 		<h2> Change your personal information here.</h2>
-		<a href="#" class="red">delete account</a>
+		<button type="button" class="btn btn-danger btn-xs btn-block" id="delete-account">delete account</button>
 	</div> 
 
  	<div class="col-md-8 col-md-offset-1 col-attrib full-height left-align"> 
@@ -30,7 +30,7 @@
 		<label for="email">Email: </label>
 		<input class="form-control add-margin" type="text" name="email" id="email" placeHolder="Email" value="{{user_info.email}}">
 		<div class="checkbox">
-			<input id="designer" type="checkbox" name="designer" {{#if zombie_user_account}}checked="true"{{/if}}><label for="designer">Check for map designer account</label>
+			<input id="designer" type="checkbox" name="designer" {{#if zombie_user_account}}checked="true"{{/if}}{{#if staff}}disabled="true" {{/if}}><label for="designer">Check for map designer account</label>
 		</div>
 		<div class="col-md-4">
 			<button type="button" id="apply" name="createUser" class="btn btn-danger btn-lg full-btn my-btn walter-turncoat">
@@ -62,4 +62,5 @@
     </form>
 
  	</div>
+
 </div>

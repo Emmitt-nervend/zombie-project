@@ -37,19 +37,13 @@ define([
         },
 
         events: {
-            'mouseover .top-right img': 'showPanel',
-            'mouseleave .top-right-panel': 'hidePanel'
+            'click .top-right': 'togglePanel'
         },
 
-        showPanel: function() {
-            $(".top-right img").addClass("top-right-rotate");
-            $(".top-right-panel").show("slide", {direction: "right"});
-        },
-
-        hidePanel: function() {
-            $(".top-right-panel").hide("slide", {direction: "right"});
-            $(".top-right img").removeClass("top-right-rotate");
-        }       
+        togglePanel: function() {
+            $(".top-right img").toggleClass("top-right-rotate");
+            $(".top-right-panel").toggle("slide", {direction: "right"});
+        }     
 
     });
 });
