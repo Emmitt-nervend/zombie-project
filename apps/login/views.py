@@ -235,13 +235,27 @@ def guest(request):
 
 	return render(request, 'guest.html', {'url':python_response['url']})
 
-def random(request):
+def randomplay(request):
+	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
+	headers = {'content-type': 'application/json'}
+
 	all_maps = Map.objects.all()
 	map_len = len(all_maps)
+	print(all_maps)
+	print(map_len)
 
 	if map_len > 0:	
+		map_len = map_len - 1
 		n = random.randint(0,map_len) # returns a random integer
+		print(map_len)
+		print(n)
+
 		map = {all_maps[n]}
+
+		# r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
+		# python_response = json.loads(r.text)
+
+		return render(request, 'guest.html', {'url':python_response['url']})
 	else:
 		print("There are no saved maps. \nUsing default map.")	
 		map = {
@@ -276,11 +290,11 @@ def random(request):
 			'env': 'normal'
 		}
 
-	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
-	headers = {'content-type': 'application/json'}
+		# url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
+		# headers = {'content-type': 'application/json'}
 
-	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
+		r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
 
-	python_response = json.loads(r.text)
+		python_response = json.loads(r.text)
 
-	return render(request, 'guest.html', {'url':python_response['url']})
+		return render(request, 'guest.html', {'url':python_response['url']})
