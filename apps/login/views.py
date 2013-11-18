@@ -247,13 +247,13 @@ def randomplay(request):
 	if map_len > 0:	
 		map_len = map_len - 1
 		n = random.randint(0,map_len) # returns a random integer
-		print(map_len)
-		print(n)
+		# print(map_len)
+		# print(n)
+		print(all_maps[n].data)
+		map = {all_maps[n].data}
 
-		map = {all_maps[n]}
-
-		# r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
-		# python_response = json.loads(r.text)
+		r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
+		python_response = json.loads(r.text)
 
 		return render(request, 'guest.html', {'url':python_response['url']})
 	else:
