@@ -6,7 +6,7 @@ from zombie.apps.login.models import Map, ZombieUser
 class AuthUserSerializer(serializers.ModelSerializer):
 
 	class Meta:
-		fields = ('id', 'username', 'email', 'first_name', 'last_name')
+		fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')
 		model = User
 
 
