@@ -229,7 +229,10 @@ def guest(request):
 	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
 	headers = {'content-type': 'application/json'}
 
-	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
+	json_map_data = json.dumps({'map':map})
+	print(type(json_map_data))
+	print(json_map_data)
+	r = requests.post(url, data=json_map_data, headers=headers)
 
 	python_response = json.loads(r.text)
 

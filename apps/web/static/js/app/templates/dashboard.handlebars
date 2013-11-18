@@ -3,9 +3,7 @@
 		<img src="/static/images/Logo.png" class="img-rounded logo">
 	</a>
 </div>
-
 <div class="row">
-
 	<div class="col-md-3 profile-pic col-attrib full-height">
 		{{#if profile_pic}}
 			<img src="{{profile_pic}}" class="img-rounded">
@@ -14,8 +12,7 @@
 		{{/if}}
 		<h2 class="remove-margin">
 			<a href="#settings">{{user}}'s profile</a>
-		</h2> 
-
+		</h2>
 		<div class="row">
  			<div class="col-md-6">
  				<div class="box" id="win">
@@ -27,7 +24,6 @@
  					{{/if}}
  				</div>
  			</div>
-
  			<div class="col-md-6">
  				<div class="box" id="loss">
  					<p>Losses</p>
@@ -38,11 +34,9 @@
  					{{/if}}
  				</div>
  			</div> 
-		</div>  {{!-- END OF LEFT SIDE BAR --}}
-	</div> 
-
+		</div>
+	</div>
  	<div class="col-md-8 col-md-push-1 col-attrib full-height"> 			
-
  		<h2 class="left-align">Created Maps</h2>
  		{{#unless maps}}
  			<h3>You have no maps! Create a map now by clicking <a href="/web/#map-editor">here</a></h3>
@@ -50,11 +44,9 @@
  		<table class="left-align">
  			{{#each maps}}
  				{{#with attributes}}
- 					<tr><td>{{title}}</td><td><a href="#">edit</a></td><td><a href="#">delete</td></tr>
+ 					<tr><td>{{title}}</td><td><a href="#map-editor/{{id}}">edit</a></td><td><a href="#">delete</td></tr>
  				{{/with}}
  			{{/each}}
  		</table>
-
  	</div>
-
 </div>
