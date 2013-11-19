@@ -228,42 +228,27 @@ td {
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR PAGE ***********************/
 /*********************************************************/
-.left-tab {
+.top-left {
 	position: fixed;
-	top: 300px;
+	top: 15px;
 	left: 5px;
-	width: 100px;
 }
-.right-tab {
-	position: fixed;
-	top: 300px;
-	right: 5px;
-	width: 100px;
-}
-.bottom-tab {
-	position: fixed;
-	bottom: 5px;
-	left: 50%;
-	width: 100px;
-	margin-left: -50px;
-	width: 125px;
-}
-.right-tab {
-
+.inline-block {
+	display: inline-block;
 }
 #toolbox {
-	position: fixed;
-	top: 40px;
-	width: 200px;
-	left: 50%;
-	margin-left: -100px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
-	.toolbox-toggle {
-		position: fixed;
-		top: 5px;
-		width: 100px;
-		left: 50%;
-		margin-left: -50px;
+#content .navbar {
+	min-height: 35px !important;
+	padding: 5px;
+}
+	.bottom-left div {
+		position: relative;
+		bottom: 0px;
+		left: 0px;
+		background-color: yellow;
 	}
 .bottom-left {
 	position: fixed;
@@ -272,12 +257,6 @@ td {
 	text-align: center;
 	color: white
 }
-	.bottom-left div {
-		position: relative;
-		bottom: 0px;
-		left: 0px;
-		background-color: yellow;
-	}
 .bottom-right {
 	position: fixed;
 	bottom: 5px;
