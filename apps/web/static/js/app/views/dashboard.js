@@ -47,7 +47,6 @@ define([
             if(!_.isUndefined(this.zombieUser)) {
                 current_user = this.zombieUser.toJSON();
             }
-            console.log(current_user);
             this.$el.empty().html(this.template({
                 userinfo: current_user,
                 user: USER,
@@ -58,7 +57,8 @@ define([
         },
 
         events: {
-            'click #submit': 'gamesWon'
+            'click #submit': 'gamesWon',
+            'click .delete': 'deleteMap'
         },
 
         gamesWon: function(e) {
@@ -66,6 +66,11 @@ define([
             var data = $('#gamesWon').val();
             var current_user = this.zombieUsers.get(USER_ID);
             current_user.save({games_won: data});
+        },
+
+        deleteMap: function(e) {
+            e.preventDefault();
+            var $target = $(e.target);
         }
 
     });

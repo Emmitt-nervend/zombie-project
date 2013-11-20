@@ -1,7 +1,49 @@
-<div id="tiles" oncontextmenu = "return false" style = "display: inline-block;"></div>
-<canvas id="map" class="mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
-<canvas id="grid" class="grid mapEditorCanvas" oncontextmenu = "return false" width="320" height="320"></canvas>
+<div class="row">
+	<div class="navbar navbar-inverse col-lg-8">
+		<label for="mapTitle">Title:</label><input type="text" id="mapTitle" class="">
+		<button id="showBottomTiles" class="tileSetSwitch btn btn-danger">Ground Tiles</button>
+		<button id="showMiddleTiles" class="tileSetSwitch btn btn-danger">Middle Tiles</button>
+		<button id="showTopTiles" class="tileSetSwitch btn btn-danger">Top Tiles</button>
+		<button id="showEventTiles" class="tileSetSwitch btn btn-danger">Events</button>
+		<button class="btn btn-danger toolbox-toggle">Toolbox</button>
+		<div id="toolbox">
+			<button id="eraser" class="funcSwitcher showing btn btn-danger">Erase</button>
+			<button id="draw" class="funcSwitcher btn btn-danger">Draw</button>
+			<button id="undo" class="historyAction btn btn-danger">Undo</button>
+			<button id="redo" class="historyAction btn btn-danger">Redo</button>
+			<button id="toggle" class="btn btn-danger">Toggle Grid</button>
+			<button id="testMap" class="btn btn-danger">Test It!</button>
+			<button id="saveMap" class="btn btn-danger">Save Map</button>
+		</div>
+	</div>
+</div>
 
-<button id="toggle">Toggle Grid</button>
-<button id="testMap">Test It!</button>
-<button id="saveMap">Save Map</button>
+
+
+
+<div class="">
+	<div id="tilesBottom" class="displayed tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+	<div id="tilesMiddle" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+	<div id="tilesTop" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+	<div id="tilesEvents" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
+</div>
+
+<canvas id="mapBottom" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
+<canvas id="mapMiddle" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
+<canvas id="mapTop" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
+<canvas id="mapEvents" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
+<canvas id="grid" class="grid mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
+
+<div class="bottom-left">
+	Left Click
+	<div>
+		<canvas id="leftClickTile" oncontextmenu="return false" width="75" height="75"></canvas>
+	</div>
+</div>
+
+<div class="bottom-right">
+	Right Click
+	<div>
+		<canvas id="rightClickTile" oncontextmenu="return false" width="75" height="75"></canvas>
+	</div>
+</div>
