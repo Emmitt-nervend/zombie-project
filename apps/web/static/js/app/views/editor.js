@@ -25,6 +25,8 @@ define([
         initialize: function() {
             var self = this;
             this.constructor.__super__.initialize.apply(this, [this.options]);
+            _.bindAll(this);
+            $(document).bind('keypress', this.keypressed);
             this.render();
         },
 
@@ -35,6 +37,7 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
+            'mousemove canvas':'drawTiletoMap',
             'click #toggle': 'toggleGrid'
         },
 
@@ -81,6 +84,7 @@ define([
 
           ctx.drawImage(img, xOffset, yOffset, SIZE, SIZE, x * SIZE, y * SIZE, SIZE, SIZE);
         },
+
         /*Event Functions*/
         tileClick: function(e){
           if (e.which == 1)
@@ -92,6 +96,7 @@ define([
           $('#' + selectedLeft).addClass('selected');
           $('#' + selectedRight).addClass('selected');
         },
+
         buildMapEditor: function(){
           var clickedLeft = false;
           var clickedRight = false;
@@ -130,6 +135,7 @@ define([
             };
             
         },
+
       drawTiletoMap: function(e){
           var clickedRight = false;
           var clickedLeft = false;
@@ -142,13 +148,24 @@ define([
           else if (clickedRight)
               this.drawPiece(selectedRight, x, y);
       },
+
       toggleGrid: function(){
          this.showGrid = !this.showGrid;
 
         var func = this.showGrid ? 'removeClass' : 'addClass';
 
         $('#grid')[func]('hidden');
+      },
+
+      keypressed: function (e) {
+        e.preventDefault();
+        // console.log("KEY PRESSED");
+        console.log(e);
+        if(e.which == 103){this.toggleGrid()}
+        if(e.which == 115){console.log("SAVE MAP")}
+        if(e.which == 116){console.log("TEST IT")}
       }
+
     });
     return EditorView;
 });
