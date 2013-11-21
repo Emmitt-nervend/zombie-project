@@ -40,6 +40,7 @@ define([
             this.selectedRight = 0;
             this.showGrid = true;
             this.erase = false;
+            this.addEventToHistory = true;
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
                     this.jsonMapObject = { 
@@ -70,9 +71,8 @@ define([
                 this.currentMapData.fetch();
             }
             this.actionHistory = [];  
+            this.undoneActions = [];
             this.actionHistoryIndex = 0;
-            
-
             this.maps = new Maps();
             this.maps.on('change', this.render, this);
             this.maps.fetch();
@@ -89,7 +89,7 @@ define([
             'click #saveMap': 'saveMapToServer',
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
-            'click .historyAction': 'historyAction'
+            'click .historyAction': 'historyAction',
             'click .toolbox-toggle': 'toggleToolbox'
         },
 
@@ -271,7 +271,7 @@ define([
                         "y": yCoordinate   
                     });
                 }
-                else if(id==2||id==4)
+                else if(id==2)
                 {
                     this.jsonMapObject.events.push(
                     {
@@ -283,7 +283,7 @@ define([
                         "d_y":  Number,  // the destination y of where it sends you
                     });
                 }
-                else if(id==3)
+                else if(id==3||id==4)
                 {
                     this.jsonMapObject.events.push(
                     {
@@ -296,16 +296,19 @@ define([
                     });
                 }
             }
-            var historyItem = {
-                "layer": tileSet,
-                "action": "add",
-                "x": x,
-                "y": y,
-                "tileId": id,
-                "previousValue": previousValue
-            };
-            this.actionHistory.push(historyItem);
-            this.actionHistoryIndex++;
+            if(this.addEventToHistory)
+            {
+                var historyItem = {
+                    "layer": tileSet,
+                    "action": "add",
+                    "x": x,
+                    "y": y,
+                    "tileId": id,
+                    "previousValue": previousValue
+                };
+                this.actionHistory[this.actionHistoryIndex] = historyItem;
+                this.actionHistoryIndex++;
+            }
             var img=document.createElement('image');
             img.src=source;
             var xOffset = id % this.COLS * this.SIZE;
@@ -488,6 +491,26 @@ define([
                 var xOffset = 22 % this.COLS * this.SIZE;
                 var yOffset = Math.floor(22 / this.COLS) * this.SIZE;
                 ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
+                if(this.addEventToHistory)
+                {
+                    var historyItem = {
+                        "layer": "tilesBottom",
+                        "action": "erase",
+                        "x": x,
+                        "y": y,
+                        "tileId": id
+                    };
+                    this.actionHistory[this.actionHistoryIndex] = historyItem;
+                    this.actionHistoryIndex++;
+                }
+                return false;
+            }
+            if(!ctx)
+            {
+                return false;
+            }
+            if(this.addEventToHistory)
+            {
                 var historyItem = {
                     "layer": tileSet,
                     "action": "erase",
@@ -495,23 +518,9 @@ define([
                     "y": y,
                     "tileId": id
                 };
-                this.actionHistory.push(historyItem);
+                this.actionHistory[this.actionHistoryIndex]=historyItem;
                 this.actionHistoryIndex++;
-                return false;
             }
-            if(!ctx)
-            {
-                return false;
-            }
-            var historyItem = {
-                "layer": tileSet,
-                "action": "erase",
-                "x": x,
-                "y": y,
-                "tileId": id
-            };
-            this.actionHistory.push(historyItem);
-            this.actionHistoryIndex++;
             ctx.clearRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE)
         },
         findMatchingEvent: function(x, y) {
@@ -532,41 +541,90 @@ define([
         },
         undo: function()
         {
+            if(this.actionHistoryIndex<=this.EditorColums*this.EditorRows)
+            {
+                console.log("Can't undo anymore.");
+                return false;
+            }
+            this.addEventToHistory = false;
             var self = this;
             var lastAction=this.actionHistory[this.actionHistoryIndex-1];
+            this.undoneActions.unshift(lastAction);
+            this.actionHistory.splice(this.actionHistoryIndex-1, 1)
             if(lastAction.action=="erase")
             {
-                var dud=0;
+                self.drawPiece(lastAction.tileId, lastAction.x, lastAction.y, lastAction.layer);
+                
             }
             else if(lastAction.action=="add")
             {
                 if(lastAction.previousValue)
                 {
                     self.drawPiece(lastAction.previousValue, lastAction.x, lastAction.y, lastAction.layer);
-                    self.actionHistoryIndex--;
                 }
-                var dud=0;
+                else
+                {
+                    self.undoTileAdd(lastAction.x, lastAction.y, lastAction.layer, lastAction.tileId)
+                }
             }
+            self.actionHistoryIndex--;
+            this.addEventToHistory = true;
+        },
+        undoTileAdd: function(x, y, layer, id)
+        {
+            if(layer=="tilesEvents")
+            {
+                var eventIndex = this.findMatchingEvent(x,y);
+                this.jsonMapObject.events.splice(eventIndex, 1);
+                var ctx = this.$('#mapEvents')[0].getContext('2d');
+            }
+            else if(layer=="tilesTop")
+            {
+                var ctx = this.$('#mapTop')[0].getContext('2d');
+            }
+            else if(layer=="tilesMiddle")
+            {
+                var ctx = this.$('#mapTop')[0].getContext('2d');
+            }
+            if(this.addEventToHistory)
+            {
+                var historyItem = {
+                    "layer": layer,
+                    "action": "erase",
+                    "x": x,
+                    "y": y,
+                    "tileId": id
+                };
+                this.actionHistory[this.actionHistoryIndex]=historyItem;
+                this.actionHistoryIndex++;
+            }
+            ctx.clearRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE)
         },
         redo: function()
         {
-            var lastAction=this.actionHistory[this.actionHistoryIndex-1];
-            if(lastAction.action=="erase")
+            //if(this.actionHistoryIndex>=this.actionHistory.length)
+            //{
+              //  console.log("nothing to re-do");
+                //return false;
+            //}
+            //this.addEventToHistory = false;
+            var self = this;
+            var nextAction=this.undoneActions[0];
+            if(nextAction.action=="erase")
             {
-                var dud=0;
+                self.undoTileAdd(nextAction.x, nextAction.y, nextAction.layer, nextAction.tileId);
             }
-            else if(lastAction.action=="add")
+            else if(nextAction.action=="add")
             {
-                var dud=0;
+                self.drawPiece(parseInt(nextAction.tileId), nextAction.x, nextAction.y, nextAction.layer);
             }
-            return false;
+            this.undoneActions.splice(0,1);
+            //this.actionHistoryIndex++;
         },
         toggleToolbox: function(e) {
             console.log("here");
             $("#toolbox").toggle("slide", {direction: "up"});
         }
-
-
     });
     return EditorView;
 });
