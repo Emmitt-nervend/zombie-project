@@ -23,6 +23,8 @@ define([
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.currentMap = this.options['id'];
+            _.bindAll(this);
+           $(document).bind('keyup', this.keypressed);
             // Initialize editor constants
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
@@ -85,6 +87,7 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
+            'mousemove' : 'drawTiletoMap',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
             'click .tileSetSwitch': 'switchTiles',
@@ -624,6 +627,14 @@ define([
         toggleToolbox: function(e) {
             console.log("here");
             $("#toolbox").toggle("slide", {direction: "up"});
+        },
+
+        keypressed: function(e) {
+          e.preventDefault();
+          console.log(e.which);
+          if(e.which==71){this.toggleGrid();}
+          if(e.which==83){this.saveMapToServer();}
+          if(e.which==84){console.log("TEST MAP")}
         }
     });
     return EditorView;
