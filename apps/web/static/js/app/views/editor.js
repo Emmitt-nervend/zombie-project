@@ -42,7 +42,7 @@ define([
             this.selectedRight = 0;
             this.showGrid = true;
             this.erase = false;
-            this.addEventToHistory = true;
+            this.copy = false;
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
                     this.jsonMapObject = { 
@@ -87,13 +87,15 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
-            'mousemove' : 'drawTiletoMap',
+            'mousemove cavnas' : 'drawTiletoMap',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
             'click .historyAction': 'historyAction',
-            'click .toolbox-toggle': 'toggleToolbox'
+            'click .toolbox-toggle': 'toggleToolbox',
+            'click #copy': 'preparecopy',
+            'click #paste': 'paste'
         },
 
         render: function() {
@@ -123,27 +125,32 @@ define([
                 setTimeout(function(){
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
-                            self.drawPiece(22, i, j, "tilesBottom");
+                            self.drawPiece(22, i, j, "tilesBottom", false);
                         }
                     };
                 },100);
+
             } else if (!_.isUndefined(this.jsonMapObject)) {
                 setTimeout(function() {
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
-                            self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom")
+                            self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom", false)
                         }
                     }
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
                             if(self.jsonMapObject.data.middle[j][i])
-                            self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle")
+                            {
+                                self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle", false)
+                            }
                         }
                     }
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
                             if(self.jsonMapObject.data.top[j][i])
-                            self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop")
+                            {
+                                self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop", false)
+                            }
                         }
                     }
                     for (var i = 0; i < 8; ++i) {
@@ -170,7 +177,7 @@ define([
                                     tileId=3;
                                 }
                                 self.jsonMapObject.events.splice(eventIndex, 1);
-                                self.drawPiece(tileId, i, j, "tilesEvents")
+                                self.drawPiece(tileId, i, j, "tilesEvents", false)
                             }
                          }
                      }
@@ -226,7 +233,7 @@ define([
                 tile.hide();
             }
         },
-        drawPiece:function(id, x, y, tileSet) {
+        drawPiece:function(id, x, y, tileSet, addEventToHistory) {
             if(tileSet =="tilesBottom")
             {
                 var ctx = this.$('#mapBottom')[0].getContext('2d');
@@ -299,7 +306,7 @@ define([
                     });
                 }
             }
-            if(this.addEventToHistory)
+            if(addEventToHistory)
             {
                 var historyItem = {
                     "layer": tileSet,
@@ -324,13 +331,44 @@ define([
             {
                $("#draw").click();
             }
+            var tileSet = this.$('.displayed').attr('id');
+            if(tileSet=="tilesBottom")
+            {
+                var source=this.SRCBOTTOM;
+            }
+            else if(tileSet=="tilesMiddle")
+            {
+                var source=this.SRCMIDDLE;   
+            }
+            else if(tileSet=="tilesTop")
+            {
+                var source=this.SRCTOP;
+            }
+            else if(tileSet=="tilesEvents")
+            {
+                var source=this.SRCEVENTS
+            }
+
             if (e.which == 1)
+            {
                 this.selectedLeft = e.target.getAttribute('id');
+                var ctx = this.$('#leftClickTile')[0].getContext('2d');
+                var id = this.selectedLeft;
+            }
             if (e.which == 3)
+            {
                 this.selectedRight = e.target.getAttribute('id');
+                var ctx = this.$('#rightClickTile')[0].getContext('2d');
+                var id = this.selectedRight;
+            }
             $('.selected').removeClass('selected');
             $('#' + this.selectedLeft).addClass('selected');
             $('#' + this.selectedRight).addClass('selected');
+            var img=document.createElement('image');
+            img.src=source;
+            var xOffset = id % this.COLS * this.SIZE;
+            var yOffset = Math.floor(id / this.COLS) * this.SIZE;
+            ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, 0, 0, this.SIZE, this.SIZE);
         },
         buildMapEditor: function(){
             var clickedLeft = false;
@@ -387,13 +425,13 @@ define([
             var y = Math.floor(e.offsetY / this.SIZE);
             if(this.erase == true)
             {
-                this.eraseTile(x,y);
+                this.eraseTile(x,y, true);
                 return false;
             }
             if (clickedLeft)
-                this.drawPiece(this.selectedLeft, x, y, tileSet);
+                this.drawPiece(this.selectedLeft, x, y, tileSet, true);
             else if (clickedRight)
-                this.drawPiece(this.selectedRight, x, y, tileSet);
+                this.drawPiece(this.selectedRight, x, y, tileSet, true);
         },
         toggleGrid: function(){
             this.showGrid = !this.showGrid;
@@ -459,7 +497,7 @@ define([
                 this.$('#draw').hide();
             }
         },
-        eraseTile: function(x, y)
+        eraseTile: function(x, y, addEventToHistory)
         {
             var eventIndex = this.findMatchingEvent(x,y);
             if(eventIndex>=0)
@@ -494,7 +532,7 @@ define([
                 var xOffset = 22 % this.COLS * this.SIZE;
                 var yOffset = Math.floor(22 / this.COLS) * this.SIZE;
                 ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
-                if(this.addEventToHistory)
+                if(addEventToHistory)
                 {
                     var historyItem = {
                         "layer": "tilesBottom",
@@ -512,7 +550,7 @@ define([
             {
                 return false;
             }
-            if(this.addEventToHistory)
+            if(addEventToHistory)
             {
                 var historyItem = {
                     "layer": tileSet,
@@ -544,34 +582,32 @@ define([
         },
         undo: function()
         {
-            if(this.actionHistoryIndex<=this.EditorColums*this.EditorRows)
+            if(this.actionHistoryIndex<=0)
             {
                 console.log("Can't undo anymore.");
                 return false;
             }
-            this.addEventToHistory = false;
             var self = this;
             var lastAction=this.actionHistory[this.actionHistoryIndex-1];
             this.undoneActions.unshift(lastAction);
             this.actionHistory.splice(this.actionHistoryIndex-1, 1)
             if(lastAction.action=="erase")
             {
-                self.drawPiece(lastAction.tileId, lastAction.x, lastAction.y, lastAction.layer);
+                self.drawPiece(lastAction.tileId, lastAction.x, lastAction.y, lastAction.layer, false);
                 
             }
             else if(lastAction.action=="add")
             {
                 if(lastAction.previousValue)
                 {
-                    self.drawPiece(lastAction.previousValue, lastAction.x, lastAction.y, lastAction.layer);
+                    self.drawPiece(lastAction.previousValue, lastAction.x, lastAction.y, lastAction.layer, false);
                 }
                 else
                 {
-                    self.undoTileAdd(lastAction.x, lastAction.y, lastAction.layer, lastAction.tileId)
+                    self.undoTileAdd(lastAction.x, lastAction.y, lastAction.layer, lastAction.tileId, false)
                 }
             }
             self.actionHistoryIndex--;
-            this.addEventToHistory = true;
         },
         undoTileAdd: function(x, y, layer, id)
         {
@@ -589,7 +625,7 @@ define([
             {
                 var ctx = this.$('#mapTop')[0].getContext('2d');
             }
-            if(this.addEventToHistory)
+            if(addEventToHistory)
             {
                 var historyItem = {
                     "layer": layer,
@@ -615,11 +651,11 @@ define([
             var nextAction=this.undoneActions[0];
             if(nextAction.action=="erase")
             {
-                self.undoTileAdd(nextAction.x, nextAction.y, nextAction.layer, nextAction.tileId);
+                self.undoTileAdd(nextAction.x, nextAction.y, nextAction.layer, nextAction.tileId, true);
             }
             else if(nextAction.action=="add")
             {
-                self.drawPiece(parseInt(nextAction.tileId), nextAction.x, nextAction.y, nextAction.layer);
+                self.drawPiece(parseInt(nextAction.tileId), nextAction.x, nextAction.y, nextAction.layer, true);
             }
             this.undoneActions.splice(0,1);
             //this.actionHistoryIndex++;
@@ -635,6 +671,14 @@ define([
           if(e.which==71){this.toggleGrid();}
           if(e.which==83){this.saveMapToServer();}
           if(e.which==84){console.log("TEST MAP")}
+        },
+        preparecopy: function()
+        {
+
+        },
+        paste: function()
+        {
+
         }
     });
     return EditorView;

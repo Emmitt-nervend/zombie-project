@@ -11,9 +11,12 @@
 			<button id="draw" class="funcSwitcher btn btn-danger">Draw</button>
 			<button id="undo" class="historyAction btn btn-danger">Undo</button>
 			<button id="redo" class="historyAction btn btn-danger">Redo</button>
+			<button id="copy" class="btn btn-danger">Copy</button>
+			<button id="paste" class="btn btn-danger">Paste</button>
 			<button id="toggle" class="btn btn-danger">Toggle Grid</button>
 			<button id="testMap" class="btn btn-danger">Test It!</button>
 			<button id="saveMap" class="btn btn-danger">Save Map</button>
+
 		</div>
 	</div>
 </div>
@@ -33,17 +36,18 @@
 <canvas id="mapTop" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
 <canvas id="mapEvents" class="mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
 <canvas id="grid" class="grid mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
+<canvas id="copyCanvas" class="grid mapEditorCanvas" oncontextmenu="return false" width="320" height="320"></canvas>
 
 <div class="bottom-left">
 	Left Click
 	<div>
-		<canvas id="leftClickTile" oncontextmenu="return false" width="75" height="75"></canvas>
+		<canvas id="leftClickTile" oncontextmenu="return false" width="40" height="40"></canvas>
 	</div>
 </div>
 
 <div class="bottom-right">
 	Right Click
 	<div>
-		<canvas id="rightClickTile" oncontextmenu="return false" width="75" height="75"></canvas>
+		<canvas id="rightClickTile" oncontextmenu="return false" width="40" height="40"></canvas>
 	</div>
 </div>
