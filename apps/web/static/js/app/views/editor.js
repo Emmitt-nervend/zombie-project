@@ -43,6 +43,7 @@ define([
             this.showGrid = true;
             this.erase = false;
             this.copy = false;
+            this.pasteTiles = [];
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
                     this.jsonMapObject = { 
@@ -95,7 +96,8 @@ define([
             'click .historyAction': 'historyAction',
             'click .toolbox-toggle': 'toggleToolbox',
             'click #copy': 'preparecopy',
-            'click #paste': 'paste'
+            'click #paste': 'preparePaste',
+            'keyup document': 'keyup'
         },
 
         render: function() {
@@ -423,9 +425,19 @@ define([
             if (e.which === 3) clickedRight = true;
             var x = Math.floor(e.offsetX / this.SIZE);
             var y = Math.floor(e.offsetY / this.SIZE);
-            if(this.erase == true)
+            if(this.erase)
             {
                 this.eraseTile(x,y, true);
+                return false;
+            }
+            if(this.copy)
+            {
+                this.copyFunction(x,y);
+                return false;
+            }
+            if(this.paste)
+            {
+                this.pasteTile(x,y);
                 return false;
             }
             if (clickedLeft)
@@ -485,6 +497,8 @@ define([
             if(e.target.id=="eraser")
             {
                 this.erase = true;
+                this.copy = false;
+                this.paste = false;
                 this.$('.mapEditorCanvas').css({cursor:"crosshair"});
                 this.$('#eraser').hide();
                 this.$('#draw').show();
@@ -492,6 +506,8 @@ define([
             if(e.target.id=="draw")
             {
                 this.erase = false;
+                this.copy = false;
+                this.paste = false;
                 this.$('.mapEditorCanvas').css({cursor: "default"});
                 this.$('#eraser').show();
                 this.$('#draw').hide();
@@ -641,12 +657,6 @@ define([
         },
         redo: function()
         {
-            //if(this.actionHistoryIndex>=this.actionHistory.length)
-            //{
-              //  console.log("nothing to re-do");
-                //return false;
-            //}
-            //this.addEventToHistory = false;
             var self = this;
             var nextAction=this.undoneActions[0];
             if(nextAction.action=="erase")
@@ -658,7 +668,6 @@ define([
                 self.drawPiece(parseInt(nextAction.tileId), nextAction.x, nextAction.y, nextAction.layer, true);
             }
             this.undoneActions.splice(0,1);
-            //this.actionHistoryIndex++;
         },
         toggleToolbox: function(e) {
             console.log("here");
@@ -666,19 +675,101 @@ define([
         },
 
         keypressed: function(e) {
-          e.preventDefault();
-          console.log(e.which);
-          if(e.which==71){this.toggleGrid();}
-          if(e.which==83){this.saveMapToServer();}
-          if(e.which==84){console.log("TEST MAP")}
+            e.preventDefault();
+            console.log(e.which);
+            if(e.which==71){this.toggleGrid();}
+            if(e.which==83){this.saveMapToServer();}
+            if(e.which==84){console.log("TEST MAP")}
+            if(e.which==16){this.copy= true;}
+        },
+        keyup:function(e)
+        {
+            if(e.which==16){this.copy= false;}  
         },
         preparecopy: function()
         {
-
+            this.copy = true;
+            this.erase = false;
+            this.paste = false;
         },
-        paste: function()
+        preparePaste: function()
+        {   
+            this.copy = false;
+            this.erase =false;
+            this.paste = true;
+        },
+        pasteTile: function(x,y)
         {
+            var self =this;
+            var xBase = x>this.pasteTiles[0].x ? x-this.pasteTiles[0].x : this.pasteTiles[0].x-x;
+            var yBase = y>this.pasteTiles[0].y ? y-this.pasteTiles[0].y : this.pasteTiles[0].y-y;
+            var shiftDown =  x > this.pasteTiles[0].x ? true : false;
+            var shiftRight =  y > this.pasteTiles[0].y ? true : false;
+            this.pasteTiles.forEach(function(newTile){
+                var newX = shiftDown ? newTile.x+xBase : newTile.x-xBase;
+                var newY = shiftRight ? newTile.y + yBase : newTile.y - yBase
+                self.drawPiece(newTile.id, newX, newY, newTile.tileSet, true)
+            })
+            ctx = this.$('#copyCanvas')[0].getContext('2d');
+            for (var i = 0; i < this.EditorColums; ++i) {
+                for (var j = 0; j < this.EditorRows; ++j) {
+                    ctx.clearRect(i*this.SIZE, j*this.SIZE, this.SIZE, this.SIZE);
+                }
+            };
+            this.pasteTiles=[];
+        },
+        copyFunction: function(x,y)
+        {
+            // var eventIndex = this.findMatchingEvent(x,y);
+            // if(eventIndex>=0)
+            // {
+            //     var id = this.jsonMapObject.events[eventIndex];
+            //     var tileSet = "tilesEvents";
+            //     var copyTile = {
+            //         "id": id,
+            //         "x": x,
+            //         "y": y,
+            //         "tileSet": tileSet
+            //     }
+            //     this.pasteTiles.push(copyTile);
 
+            // }
+            if(this.jsonMapObject.data.top[y][x])
+            {
+                var id = this.jsonMapObject.data.top[y][x];
+                var tileSet = "tilesTop";
+                 var copyTile = {
+                    "id": id,
+                    "x": x,
+                    "y": y,
+                    "tileSet": tileSet
+                }
+                this.pasteTiles.push(copyTile);
+            }
+            if(this.jsonMapObject.data.middle[y][x])
+            {
+                var id = this.jsonMapObject.data.middle[y][x];
+                var tileSet = "tilesMiddle";
+                var copyTile = {
+                    "id": id,
+                    "x": x,
+                    "y": y,
+                    "tileSet": tileSet
+                }
+                this.pasteTiles.push(copyTile);
+            }
+            var id = this.jsonMapObject.data.bottom[y][x];
+            var tileSet = "tilesBottom";
+            var copyTile = {
+                "id": id,
+                "x": x,
+                "y": y,
+                "tileSet": tileSet
+            }
+            this.pasteTiles.push(copyTile);
+            ctx = this.$('#copyCanvas')[0].getContext('2d');
+            ctx.strokeStyle = '#ff0000';
+            ctx.strokeRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE);
         }
     });
     return EditorView;
