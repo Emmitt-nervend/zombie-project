@@ -71,6 +71,12 @@ define([
         deleteMap: function(e) {
             e.preventDefault();
             var $target = $(e.target);
+            var mapIdToDelete = $target.attr('data-id');
+            var self = this;
+            this.maps.get(mapIdToDelete).destroy({success: function(model, response) {
+                self.render();
+            }});
+            console.log(mapIdToDelete);
         }
 
     });
