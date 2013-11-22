@@ -96,8 +96,7 @@ define([
             'click .historyAction': 'historyAction',
             'click .toolbox-toggle': 'toggleToolbox',
             'click #copy': 'preparecopy',
-            'click #paste': 'preparePaste',
-            'keyup document': 'keyup'
+            'click #paste': 'preparePaste'
         },
 
         render: function() {
@@ -625,7 +624,7 @@ define([
             }
             self.actionHistoryIndex--;
         },
-        undoTileAdd: function(x, y, layer, id)
+        undoTileAdd: function(x, y, layer, id, addEventToHistory)
         {
             if(layer=="tilesEvents")
             {
@@ -680,11 +679,7 @@ define([
             if(e.which==71){this.toggleGrid();}
             if(e.which==83){this.saveMapToServer();}
             if(e.which==84){console.log("TEST MAP")}
-            if(e.which==16){this.copy= true;}
-        },
-        keyup:function(e)
-        {
-            if(e.which==16){this.copy= false;}  
+            if(e.which==67){this.copy= true;}
         },
         preparecopy: function()
         {
@@ -695,6 +690,7 @@ define([
         },
         preparePaste: function()
         {   
+            this.$('.mapEditorCanvas').css({cursor:"crosshair"});
             this.copy = false;
             this.erase =false;
             this.paste = true;
@@ -711,29 +707,17 @@ define([
                 var newY = shiftRight ? newTile.y + yBase : newTile.y - yBase
                 self.drawPiece(newTile.id, newX, newY, newTile.tileSet, true)
             })
+            this.$('.mapEditorCanvas').css({cursor:"default"});
             ctx = this.$('#copyCanvas')[0].getContext('2d');
             for (var i = 0; i < this.EditorColums; ++i) {
                 for (var j = 0; j < this.EditorRows; ++j) {
                     ctx.clearRect(i*this.SIZE, j*this.SIZE, this.SIZE, this.SIZE);
                 }
             };
+            this.paste = false;
         },
         copyFunction: function(x,y)
         {
-            // var eventIndex = this.findMatchingEvent(x,y);
-            // if(eventIndex>=0)
-            // {
-            //     var id = this.jsonMapObject.events[eventIndex];
-            //     var tileSet = "tilesEvents";
-            //     var copyTile = {
-            //         "id": id,
-            //         "x": x,
-            //         "y": y,
-            //         "tileSet": tileSet
-            //     }
-            //     this.pasteTiles.push(copyTile);
-
-            // }
             if(this.jsonMapObject.data.top[y][x])
             {
                 var id = this.jsonMapObject.data.top[y][x];
