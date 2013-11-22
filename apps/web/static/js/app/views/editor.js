@@ -23,6 +23,8 @@ define([
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.currentMap = this.options['id'];
+            _.bindAll(this);
+           $(document).bind('keyup', this.keypressed);
             // Initialize editor constants
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
@@ -40,6 +42,7 @@ define([
             this.selectedRight = 0;
             this.showGrid = true;
             this.erase = false;
+            this.copy = false;
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
                     this.jsonMapObject = { 
@@ -49,7 +52,7 @@ define([
                     "height": 0,  
                     "x": 4,       
                     "y": 4,       
-                    "events": [Event], 
+                    "events": [], 
                     "data": {
                         "bottom": [],  
                         "middle": [],  
@@ -70,9 +73,8 @@ define([
                 this.currentMapData.fetch();
             }
             this.actionHistory = [];  
+            this.undoneActions = [];
             this.actionHistoryIndex = 0;
-            
-
             this.maps = new Maps();
             this.maps.on('change', this.render, this);
             this.maps.fetch();
@@ -85,11 +87,15 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
+            'mousemove cavnas' : 'drawTiletoMap',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
-            'click .toolbox-toggle': 'toggleToolbox'
+            'click .historyAction': 'historyAction',
+            'click .toolbox-toggle': 'toggleToolbox',
+            'click #copy': 'preparecopy',
+            'click #paste': 'paste'
         },
 
         render: function() {
@@ -103,7 +109,7 @@ define([
                         "height": mapInfo.height,  
                         "x": mapInfo.x,       
                         "y": mapInfo.y,       
-                        "events": mapInfo.events, 
+                        "events": $.parseJSON(mapInfo.events), 
                         "data": $.parseJSON(mapInfo.data),
                         "env": "" 
                     }
@@ -119,35 +125,63 @@ define([
                 setTimeout(function(){
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
-                            self.drawPiece(22, i, j, "tilesBottom");
+                            self.drawPiece(22, i, j, "tilesBottom", false);
                         }
                     };
                 },100);
+
             } else if (!_.isUndefined(this.jsonMapObject)) {
                 setTimeout(function() {
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
-                            self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom")
+                            self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom", false)
                         }
                     }
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
                             if(self.jsonMapObject.data.middle[j][i])
-                            self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle")
+                            {
+                                self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle", false)
+                            }
                         }
                     }
                     for (var i = 0; i < 8; ++i) {
                         for (var j = 0; j < 8; ++j) {
                             if(self.jsonMapObject.data.top[j][i])
-                            self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop")
+                            {
+                                self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop", false)
+                            }
                         }
                     }
+                    for (var i = 0; i < 8; ++i) {
+                         for (var j = 0; j < 8; ++j) {
+                            var eventIndex = self.findMatchingEvent(i,j);
+                            if(eventIndex>=0)
+                            {
+                                var tileId;
+                                var eventId=self.jsonMapObject.events[eventIndex].id;
+                                if(eventId=="treasure")
+                                {
+                                    tileId=0;
+                                }
+                                else if(eventId=="bush")
+                                {
+                                    tileId=1;
+                                }
+                                else if(eventId=="hole"||id==4)
+                                {
+                                    tileId=2;
+                                }
+                                else if(eventId=="door")
+                                {Index
+                                    tileId=3;
+                                }
+                                self.jsonMapObject.events.splice(eventIndex, 1);
+                                self.drawPiece(tileId, i, j, "tilesEvents", false)
+                            }
+                         }
+                     }
                     console.log(self.jsonMapObject);
-                    // for (var i = 0; i < 8; ++i) {
-                    //     for (var j = 0; j < 8; ++j) {
-                    //         self.drawPiece(this.jsonMapObject.data.bottom[j][i], i, j, "tilesEvents")
-                    //     }
-                    // }
                     $('#mapTitle').val(self.jsonMapObject.title);
                 }, 100);
             }
@@ -199,23 +233,26 @@ define([
                 tile.hide();
             }
         },
-        drawPiece:function(id, x, y, tileSet) {
+        drawPiece:function(id, x, y, tileSet, addEventToHistory) {
             if(tileSet =="tilesBottom")
             {
                 var ctx = this.$('#mapBottom')[0].getContext('2d');
                 var source = this.SRCBOTTOM;
+                var previousValue = this.jsonMapObject.data.bottom[y][x];
                 this.jsonMapObject.data.bottom[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesMiddle")
             {
                 var ctx = this.$('#mapMiddle')[0].getContext('2d');
                 var source = this.SRCMIDDLE;
+                var previousValue = this.jsonMapObject.data.middle[y][x];
                 this.jsonMapObject.data.middle[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesTop")
             {
                 var ctx = this.$('#mapTop')[0].getContext('2d');
                 var source = this.SRCTOP;
+                var previousValue = this.jsonMapObject.data.bottom[y][x];
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesEvents")
@@ -224,6 +261,7 @@ define([
                 var yCoordinate = y;
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
                 var source = this.SRCEVENTS;
+                var previousValue = this.jsonMapObject.events[this.findMatchingEvent(x,y)];
                 if(id==0)
                 {
                     this.jsonMapObject.events.push(
@@ -243,7 +281,7 @@ define([
                         "y": yCoordinate   
                     });
                 }
-                else if(id==2||id==4)
+                else if(id==2)
                 {
                     this.jsonMapObject.events.push(
                     {
@@ -255,7 +293,7 @@ define([
                         "d_y":  Number,  // the destination y of where it sends you
                     });
                 }
-                else if(id==3)
+                else if(id==3||id==4)
                 {
                     this.jsonMapObject.events.push(
                     {
@@ -268,14 +306,19 @@ define([
                     });
                 }
             }
-            var historyItem = {
-                "layer": tileSet,
-                "action": "add",
-                "x": x,
-                "y": y,
-                "tileId": id
-            };
-            this.actionHistory.push(historyItem);
+            if(addEventToHistory)
+            {
+                var historyItem = {
+                    "layer": tileSet,
+                    "action": "add",
+                    "x": x,
+                    "y": y,
+                    "tileId": id,
+                    "previousValue": previousValue
+                };
+                this.actionHistory[this.actionHistoryIndex] = historyItem;
+                this.actionHistoryIndex++;
+            }
             var img=document.createElement('image');
             img.src=source;
             var xOffset = id % this.COLS * this.SIZE;
@@ -288,13 +331,44 @@ define([
             {
                $("#draw").click();
             }
+            var tileSet = this.$('.displayed').attr('id');
+            if(tileSet=="tilesBottom")
+            {
+                var source=this.SRCBOTTOM;
+            }
+            else if(tileSet=="tilesMiddle")
+            {
+                var source=this.SRCMIDDLE;   
+            }
+            else if(tileSet=="tilesTop")
+            {
+                var source=this.SRCTOP;
+            }
+            else if(tileSet=="tilesEvents")
+            {
+                var source=this.SRCEVENTS
+            }
+
             if (e.which == 1)
+            {
                 this.selectedLeft = e.target.getAttribute('id');
+                var ctx = this.$('#leftClickTile')[0].getContext('2d');
+                var id = this.selectedLeft;
+            }
             if (e.which == 3)
+            {
                 this.selectedRight = e.target.getAttribute('id');
+                var ctx = this.$('#rightClickTile')[0].getContext('2d');
+                var id = this.selectedRight;
+            }
             $('.selected').removeClass('selected');
             $('#' + this.selectedLeft).addClass('selected');
             $('#' + this.selectedRight).addClass('selected');
+            var img=document.createElement('image');
+            img.src=source;
+            var xOffset = id % this.COLS * this.SIZE;
+            var yOffset = Math.floor(id / this.COLS) * this.SIZE;
+            ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, 0, 0, this.SIZE, this.SIZE);
         },
         buildMapEditor: function(){
             var clickedLeft = false;
@@ -351,13 +425,13 @@ define([
             var y = Math.floor(e.offsetY / this.SIZE);
             if(this.erase == true)
             {
-                this.eraseTile(x,y);
+                this.eraseTile(x,y, true);
                 return false;
             }
             if (clickedLeft)
-                this.drawPiece(this.selectedLeft, x, y, tileSet);
+                this.drawPiece(this.selectedLeft, x, y, tileSet, true);
             else if (clickedRight)
-                this.drawPiece(this.selectedRight, x, y, tileSet);
+                this.drawPiece(this.selectedRight, x, y, tileSet, true);
         },
         toggleGrid: function(){
             this.showGrid = !this.showGrid;
@@ -423,24 +497,33 @@ define([
                 this.$('#draw').hide();
             }
         },
-        eraseTile: function(x, y)
+        eraseTile: function(x, y, addEventToHistory)
         {
-            if(this.findMatchingEvent(x,y))
+            var eventIndex = this.findMatchingEvent(x,y);
+            if(eventIndex>=0)
             {
+                var id = this.jsonMapObject.events[eventIndex];
+                this.jsonMapObject.events.splice(eventIndex, 1);
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
+                var tileSet = "tilesEvents";
             }
             else if(this.jsonMapObject.data.top[y][x])
             {
+                var id = this.jsonMapObject.data.top[y][x];
                 var ctx = this.$('#mapTop')[0].getContext('2d');
                 this.jsonMapObject.data.top[y][x] = null;
+                var tileSet = "tilesTop";
             }
             else if(this.jsonMapObject.data.middle[y][x])
             {
+                var id = this.jsonMapObject.data.middle[y][x];
                 var ctx = this.$('#mapMiddle')[0].getContext('2d');
                 this.jsonMapObject.data.middle[y][x] = null;
+                var tileSet = "tilesMiddle";
             }
             else if(this.jsonMapObject.data.bottom[y][x] != 22)
             {
+                var id = this.jsonMapObject.data.bottom[y][x];
                 var ctx = this.$('#mapBottom')[0].getContext('2d');
                 this.jsonMapObject.data.bottom[y][x] = 22;
                 var source = this.SRCBOTTOM;
@@ -449,11 +532,35 @@ define([
                 var xOffset = 22 % this.COLS * this.SIZE;
                 var yOffset = Math.floor(22 / this.COLS) * this.SIZE;
                 ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
+                if(addEventToHistory)
+                {
+                    var historyItem = {
+                        "layer": "tilesBottom",
+                        "action": "erase",
+                        "x": x,
+                        "y": y,
+                        "tileId": id
+                    };
+                    this.actionHistory[this.actionHistoryIndex] = historyItem;
+                    this.actionHistoryIndex++;
+                }
                 return false;
             }
             if(!ctx)
             {
                 return false;
+            }
+            if(addEventToHistory)
+            {
+                var historyItem = {
+                    "layer": tileSet,
+                    "action": "erase",
+                    "x": x,
+                    "y": y,
+                    "tileId": id
+                };
+                this.actionHistory[this.actionHistoryIndex]=historyItem;
+                this.actionHistoryIndex++;
             }
             ctx.clearRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE)
         },
@@ -463,18 +570,116 @@ define([
             {
                 if(eventArray[eventObject].x == x && eventArray[eventObject].y == y)
                 {
-                    eventArray.splice(eventObject, 1);
-                    return true;
+                    return eventObject;
                 }
             }
-            return false;
+            return -1;
+        },
+        historyAction: function(e)
+        {
+            var funct = e.target.id;
+            var call = funct =="undo" ? this.undo() : this.redo(); 
+        },
+        undo: function()
+        {
+            if(this.actionHistoryIndex<=0)
+            {
+                console.log("Can't undo anymore.");
+                return false;
+            }
+            var self = this;
+            var lastAction=this.actionHistory[this.actionHistoryIndex-1];
+            this.undoneActions.unshift(lastAction);
+            this.actionHistory.splice(this.actionHistoryIndex-1, 1)
+            if(lastAction.action=="erase")
+            {
+                self.drawPiece(lastAction.tileId, lastAction.x, lastAction.y, lastAction.layer, false);
+                
+            }
+            else if(lastAction.action=="add")
+            {
+                if(lastAction.previousValue)
+                {
+                    self.drawPiece(lastAction.previousValue, lastAction.x, lastAction.y, lastAction.layer, false);
+                }
+                else
+                {
+                    self.undoTileAdd(lastAction.x, lastAction.y, lastAction.layer, lastAction.tileId, false)
+                }
+            }
+            self.actionHistoryIndex--;
+        },
+        undoTileAdd: function(x, y, layer, id)
+        {
+            if(layer=="tilesEvents")
+            {
+                var eventIndex = this.findMatchingEvent(x,y);
+                this.jsonMapObject.events.splice(eventIndex, 1);
+                var ctx = this.$('#mapEvents')[0].getContext('2d');
+            }
+            else if(layer=="tilesTop")
+            {
+                var ctx = this.$('#mapTop')[0].getContext('2d');
+            }
+            else if(layer=="tilesMiddle")
+            {
+                var ctx = this.$('#mapTop')[0].getContext('2d');
+            }
+            if(addEventToHistory)
+            {
+                var historyItem = {
+                    "layer": layer,
+                    "action": "erase",
+                    "x": x,
+                    "y": y,
+                    "tileId": id
+                };
+                this.actionHistory[this.actionHistoryIndex]=historyItem;
+                this.actionHistoryIndex++;
+            }
+            ctx.clearRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE)
+        },
+        redo: function()
+        {
+            //if(this.actionHistoryIndex>=this.actionHistory.length)
+            //{
+              //  console.log("nothing to re-do");
+                //return false;
+            //}
+            //this.addEventToHistory = false;
+            var self = this;
+            var nextAction=this.undoneActions[0];
+            if(nextAction.action=="erase")
+            {
+                self.undoTileAdd(nextAction.x, nextAction.y, nextAction.layer, nextAction.tileId, true);
+            }
+            else if(nextAction.action=="add")
+            {
+                self.drawPiece(parseInt(nextAction.tileId), nextAction.x, nextAction.y, nextAction.layer, true);
+            }
+            this.undoneActions.splice(0,1);
+            //this.actionHistoryIndex++;
         },
         toggleToolbox: function(e) {
             console.log("here");
             $("#toolbox").toggle("slide", {direction: "up"});
+        },
+
+        keypressed: function(e) {
+          e.preventDefault();
+          console.log(e.which);
+          if(e.which==71){this.toggleGrid();}
+          if(e.which==83){this.saveMapToServer();}
+          if(e.which==84){console.log("TEST MAP")}
+        },
+        preparecopy: function()
+        {
+
+        },
+        paste: function()
+        {
+
         }
-
-
     });
     return EditorView;
 });

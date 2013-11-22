@@ -322,9 +322,9 @@ td {
     border: 2px solid white;
     display: inline-block;
 }
-.selected {
+/*.selected {
     border: 2px solid black;
-}
+}*/
 #grid {
     border: 1px solid;
 }
