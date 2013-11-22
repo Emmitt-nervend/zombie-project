@@ -76,7 +76,6 @@ define([
             this.maps.get(mapIdToDelete).destroy({success: function(model, response) {
                 self.render();
             }});
-            console.log(mapIdToDelete);
         }
 
     });
