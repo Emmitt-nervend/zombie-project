@@ -36,8 +36,8 @@ define([
             this.SRCEVENTS = '/static/images/events.png';
             this.SRCMIDDLE = '/static/images/middle.png';
             this.SRCTOP = '/static/images/upper.png';
-            this.EditorColums = 8;
-            this.EditorRows = 8; 
+            this.EditorColums = 15;
+            this.EditorRows = 15; 
             this.selectedLeft = 0;
             this.selectedRight = 0;
             this.showGrid = true;
@@ -61,7 +61,7 @@ define([
                     },
                     "env": "normal"    
                 };
-                for(i = 0; i < this.COLS; i++)
+                for(i = 0; i < this.EditorColums; i++)
                 {
                     this.jsonMapObject.data.top[i] = [];
                     this.jsonMapObject.data.middle[i] = [];
@@ -125,8 +125,8 @@ define([
             var self = this;
             if (_.isUndefined(this.currentMap)) {
                 setTimeout(function(){
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             self.drawPiece(22, i, j, "tilesBottom", false);
                         }
                     };
@@ -134,29 +134,29 @@ define([
 
             } else if (!_.isUndefined(this.jsonMapObject)) {
                 setTimeout(function() {
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom", false)
                         }
                     }
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             if(self.jsonMapObject.data.middle[j][i])
                             {
                                 self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle", false)
                             }
                         }
                     }
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             if(self.jsonMapObject.data.top[j][i])
                             {
                                 self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop", false)
                             }
                         }
                     }
-                    for (var i = 0; i < 8; ++i) {
-                         for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                         for (var j = 0; j < self.EditorRows; ++j) {
                             var eventIndex = self.findMatchingEvent(i,j);
                             if(eventIndex>=0)
                             {
@@ -691,6 +691,7 @@ define([
             this.copy = true;
             this.erase = false;
             this.paste = false;
+            this.pasteTiles=[];
         },
         preparePaste: function()
         {   
@@ -716,7 +717,6 @@ define([
                     ctx.clearRect(i*this.SIZE, j*this.SIZE, this.SIZE, this.SIZE);
                 }
             };
-            this.pasteTiles=[];
         },
         copyFunction: function(x,y)
         {
