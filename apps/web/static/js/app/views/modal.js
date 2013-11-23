@@ -36,15 +36,15 @@ define([
             var Modal = Backbone.Modal.extend({
                 template: Handlebars.compile(modalTemplate),
                 cancelEl: '.bbm-button',
-                el: $('<div id="app">')
+                el: $('<div id="modal">')
             });
             
             var modalView = new Modal();
-            modalView.$el.empty().append(modalView.template({
-                maps: ["kevin", "bryce", "dave"]
-            }));
 
-            modalView.render().el;
+            $("#modal").html(modalView.render({
+                maps: ['kevin', 'bryce', 'russ'],
+                person: "Bob"
+            }).el);
         }
 
     });

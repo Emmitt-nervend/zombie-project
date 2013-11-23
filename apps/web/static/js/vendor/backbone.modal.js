@@ -35,7 +35,7 @@
       this.$el.addClass("" + this.prefix + "-wrapper");
       this.modalEl = Backbone.$('<div />').addClass("" + this.prefix + "-modal");
       if (this.template) {
-        this.modalEl.html(this.template(data));
+        this.modalEl.html(this.template(options)); // I changed the parameter from data to options
       }
       this.$el.html(this.modalEl);
       Backbone.$('body').on('keyup', this.checkKey);
