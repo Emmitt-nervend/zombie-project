@@ -4,14 +4,17 @@ define([
     'backbone',
     'handlebars',
     'text!app/templates/editor.handlebars',
+    'text!app/templates/modal.handlebars',
     'app/collections/maps',
-    'app/models/map'
+    'app/models/map',
+    'backbone-modal'
 ], function(
     $,
     _,
     Backbone,
     Handlebars,
     template,
+    modalTemplate,
     Maps,
     Map
 ) {
@@ -20,11 +23,13 @@ define([
 
         template: Handlebars.compile(template),
 
+        modalTemplate: Handlebars.compile(template),
+
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.currentMap = this.options['id'];
             _.bindAll(this);
-           $(document).bind('keyup', this.keypressed);
+            $(document).bind('keyup', this.keypressed);
             // Initialize editor constants
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
@@ -257,7 +262,16 @@ define([
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesEvents")
-            {
+            {Modal
+                console.log(this.maps);
+                var Modal = Backbone.Modal.extend({
+                    template: _.template($('#modal-template').html()),
+                    cancelEl: '.bbm-button'
+                });
+
+                var modalView = new Modal();
+                $('#modal').html(modalView.render().el);
+
                 var xCoordinate = x;
                 var yCoordinate = y;
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
@@ -679,7 +693,9 @@ define([
             if(e.which==71){this.toggleGrid();}
             if(e.which==83){this.saveMapToServer();}
             if(e.which==84){console.log("TEST MAP")}
-            if(e.which==67){this.copy= true;}
+            if(e.which==67){this.$('#copy').click();}
+            if(e.which==86){this.$('#paste').click();}
+
         },
         preparecopy: function()
         {
