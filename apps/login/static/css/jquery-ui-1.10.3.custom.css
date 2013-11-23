@@ -285,6 +285,7 @@ button.ui-button::-moz-focus-inner {
 	margin: -10px 0 0 0;
 	padding: 1px;
 	height: 20px;
+	background-image: url(images/ui-icons_222222_256x240.png) 96 224;
 }
 .ui-dialog .ui-dialog-content {
 	position: relative;

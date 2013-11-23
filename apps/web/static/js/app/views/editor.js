@@ -191,7 +191,6 @@ define([
                             }
                          }
                      }
-                    console.log(self.jsonMapObject);
                     $('#mapTitle').val(self.jsonMapObject.title);
                 }, 100);
             }
@@ -503,6 +502,16 @@ define([
                 } else {
                     self.currentMap = response['map_id']
                 }
+                var $dialog = $('<div></div>')
+                    .html('<iframe style="border: 0px;" src="'+ response.url +'" width="600" height="600"></iframe>')
+                    .dialog({
+                        autoOpen: false,
+                        modal: true,
+                        height: "auto",
+                        width: "auto",
+                        title: self.jsonMapObject.title
+                    });
+                $dialog.dialog('open');
                 console.log(response);
             });
         },
