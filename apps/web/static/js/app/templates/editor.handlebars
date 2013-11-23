@@ -1,39 +1,59 @@
-<div class="row">
-	<div class="navbar navbar-inverse col-lg-8" style="z-index:0">
-		<label for="mapTitle">Title:</label><input type="text" id="mapTitle" class="">
-		<button id="showBottomTiles" class="tileSetSwitch btn btn-danger">Ground Tiles</button>
-		<button id="showMiddleTiles" class="tileSetSwitch btn btn-danger">Middle Tiles</button>
-		<button id="showTopTiles" class="tileSetSwitch btn btn-danger">Top Tiles</button>
-		<button id="showEventTiles" class="tileSetSwitch btn btn-danger">Events</button>
-		<button id="toolBoxToggle" class="btn btn-danger toolbox-toggle">Toolbox</button>
-		<div id="toolbox">
-			<button id="eraser" class="funcSwitcher showing btn btn-danger">Erase</button>
-			<button id="draw" class="funcSwitcher btn btn-danger">Draw</button>
-			<button id="undo" class="historyAction btn btn-danger">Undo</button>
-			<button id="redo" class="historyAction btn btn-danger">Redo</button>
-			<button id="copy" class="btn btn-danger">Copy</button>
-			<button id="paste" class="btn btn-danger">Paste</button>
-			<button id="toggle" class="btn btn-danger">Toggle Grid</button>
-			<button id="playMap" class="btn btn-danger">Play It!</button>
-			<button id="saveMap" class="btn btn-danger">Save Map</button>
 
+
+
+<div class="row">
+	<div class="navbar navbar-inverse" style="z-index:0">
+		<div class="navbar-header">
+			<a id="playMap" class="navbar-brand" href="#">Play Map</a>
+		</div>
+		<form class="navbar-form navbar-left">
+			<input type="text" id="mapTitle" class="form-control" placeholder="Map title">
+		</form>
+		<div>
+			<ul class="nav navbar-nav">
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tiles <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a id="showBottomTiles" class="tileSetSwitch">Ground Tiles</a></li>
+						<li><a id="showMiddleTiles" class="tileSetSwitch">Middle Tiles</a></li>
+						<li><a id="showTopTiles" class="tileSetSwitch">Top Tiles</a></li>
+					</ul>
+				</li>
+				
+				<li><a id="showEventTiles" class="tileSetSwitch">Events</a></li>
+				<li><a id="eraser" class="funcSwitcher showing">Erase</a></li>
+				<li><a id="draw" class="funcSwitcher">Draw</a></li>
+				<li class="dropdown">
+					<a href="#" id="toolBoxToggle" data-toggle="dropdown" class="dropdown-toggle">Toolbox <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a id="undo" class="historyAction">Undo</a></li>
+						<li><a id="redo" class="historyAction">Redo</a></li>
+						<li><a id="copy" class="">Copy</a></li>
+						<li><a id="paste" class="">Paste</a></li>
+						<li><a id="toggle" class="">Toggle Grid</a></li>
+					</ul>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>
 
-<div class="">
+<div>
 	<div id="tilesBottom" class="displayed tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
 	<div id="tilesMiddle" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
 	<div id="tilesTop" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
 	<div id="tilesEvents" class="tileSet" oncontextmenu="return false" style="display: inline-block;"></div>
 </div>
 
-<canvas id="mapBottom" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
-<canvas id="mapMiddle" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
-<canvas id="mapTop" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
-<canvas id="mapEvents" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
-<canvas id="grid" class="grid mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
-<canvas id="copyCanvas" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+<div class="center">
+	<canvas id="mapBottom" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+	<canvas id="mapMiddle" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+	<canvas id="mapTop" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+	<canvas id="mapEvents" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+	<canvas id="grid" class="grid mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+	<canvas id="copyCanvas" class="mapEditorCanvas" oncontextmenu="return false" width="600" height="600"></canvas>
+</div>
 
 <div class="bottom-left">
 	Left Click

@@ -106,7 +106,7 @@ li > a {
 	position: absolute;
 	color: gray;
 	margin: 8px 10px 0 10px;
-	top: 13px;
+	top: 6px;
 	right: 65px;
 	z-index: 150;
 }
@@ -228,6 +228,14 @@ td {
 /*********************************************************/
 /******* STYLE FOR MAP EDITOR PAGE ***********************/
 /*********************************************************/
+.center {
+	position: absolute;
+	width: 600px;
+	height: 600px;
+	top: 310px;
+	left: 50%;
+	margin-left: -300px;
+}
 .top-left {
 	position: fixed;
 	top: 15px;
@@ -252,15 +260,15 @@ td {
 	}
 .bottom-left {
 	position: fixed;
-	bottom: 5px;
-	left: 5px;
+	bottom: 10px;
+	left: 10px;
 	text-align: center;
 	color: white
 }
 .bottom-right {
 	position: fixed;
-	bottom: 5px;
-	right: 5px;
+	bottom: 10px;
+	right: 10px;
 	text-align: center;
 	color: white;
 }
@@ -284,9 +292,9 @@ td {
  	border: 2px solid white;
  	display: inline-block;
 }
-.selected {
+/*.selected {
  	border: 2px solid black;
-}
+}*/
 .mapEditorCanvas {
  	position: absolute;
 }
@@ -322,9 +330,6 @@ td {
     border: 2px solid white;
     display: inline-block;
 }
-/*.selected {
-    border: 2px solid black;
-}*/
 #grid {
     border: 1px solid;
 }
