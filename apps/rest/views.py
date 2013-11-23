@@ -1,5 +1,6 @@
 import json
 import requests
+import random
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -110,7 +111,7 @@ class SaveMap(generics.GenericAPIView):
 		response_dict = json.loads(r.text)
 		if r.status_code is 200:
 			response = {}
-			# We are editing a map, not creating a new one
+			# We are editing a map, not creating a new ones
 			if 'map_id' in request.POST.keys():
 				try:
 					map_to_edit = Map.objects.get(id=request.POST['map_id'])
@@ -148,6 +149,43 @@ class SaveMap(generics.GenericAPIView):
 			return Response(response, status=status.HTTP_200_OK)
 		else:
 			return Response('Unkown error, you suck!', status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class RandomMap(generics.GenericAPIView):
+	# permission_classes = (permissions.AllowAny)
+	def get(self, request):
+		url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
+		headers = {'content-type': 'application/json'}
+
+		all_maps = Map.objects.all()
+		map_len = len(all_maps)
+
+		if map_len > 0:	
+			map_len = map_len - 1
+			n = random.randint(0,map_len) 
+
+			map = {
+				'title': all_maps[n].title,	
+				#'author': 'Random',
+				#'url': all_maps[n].url,
+			    'width': all_maps[n].width,
+			    'height': all_maps[n].height,
+			    'x': all_maps[n].x,
+			    'y': all_maps[n].y,
+			    'data': all_maps[n].data,
+			    'events': all_maps[n].events,
+			    'environment': 'normal'
+			}
+
+			r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
+			python_response = json.loads(r.text)
+
+			response = {}
+			response['message'] = "Successfully loaded a random map"
+			response['url'] = python_response['url']			
+
+			return Response(response, status=status.HTTP_200_OK)
+
 
 def api(request):
 	return render(request, "api.html", {})

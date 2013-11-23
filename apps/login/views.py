@@ -241,8 +241,6 @@ def randomplay(request):
 
 	all_maps = Map.objects.all()
 	map_len = len(all_maps)
-	# print(all_maps)
-	# print(map_len)
 
 	if map_len > 0:	
 		map_len = map_len - 1
@@ -260,9 +258,6 @@ def randomplay(request):
 		    'events': all_maps[n].events,
 		    'environment': 'normal'
 		}
-		# print(map_len)
-		# print(n)
-		#print(map)
 
 		r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
 		python_response = json.loads(r.text)

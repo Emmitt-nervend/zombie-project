@@ -12,10 +12,34 @@ $(document).ready(function(){
 		}
 	});
 	
-	var left = (screen.width/2)-300;
-	var top = (screen.height/2)-300;
+	// var left = (screen.width/2)-300;
+	// var top = (screen.height/2)-300;
+	// $('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
 
-	$('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
+
+	$("#guest").click(function(e){	
+		e.preventDefault();
+
+		$.get("/rest/random-map", function(response){
+			console.log(response);
+			var $dialog = $('<div></div>')
+               .html('<iframe style="border: 0px;" src="'+ response.url +'" width="600" height="600"></iframe>')
+
+               .dialog({
+                   autoOpen: false,
+                   modal: true,
+                   height: "auto",
+                   width: "auto",
+                   title: "Zombie Attack"
+
+
+
+               });
+			$dialog.dialog('open');
+		})
+
+
+	});
 
 });
 
