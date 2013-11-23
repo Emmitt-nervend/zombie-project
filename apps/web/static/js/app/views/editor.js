@@ -104,6 +104,7 @@ define([
             if (!_.isUndefined(this.currentMapData)) {
                 if (!_.isUndefined(this.currentMapData.attributes.data)) {
                     var mapInfo = this.currentMapData.attributes;
+                    console.log(mapInfo);
                     this.jsonMapObject = {
                         "title": mapInfo.title,
                         "author": "",  
