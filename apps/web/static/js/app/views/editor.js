@@ -4,27 +4,32 @@ define([
     'backbone',
     'handlebars',
     'text!app/templates/editor.handlebars',
+    'text!app/templates/modalWindow.handlebars',
     'app/collections/maps',
-    'app/models/map'
+    'app/models/map',
+    'backbone-modal'
 ], function(
     $,
     _,
     Backbone,
     Handlebars,
     template,
+    mTemplate,
     Maps,
     Map
 ) {
-    
+
     var EditorView = Backbone.View.extend({
 
         template: Handlebars.compile(template),
 
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
+            this.modalTemplate = Handlebars.compile(mTemplate);
             this.currentMap = this.options['id'];
             _.bindAll(this);
-           $(document).bind('keyup', this.keypressed);
+            $(document).bind('keydown', this.keypressed);
+            $(document).bind(setInterval(this.saveAfterTime, 5000));
             // Initialize editor constants
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
@@ -36,13 +41,14 @@ define([
             this.SRCEVENTS = '/static/images/events.png';
             this.SRCMIDDLE = '/static/images/middle.png';
             this.SRCTOP = '/static/images/upper.png';
-            this.EditorColums = 8;
-            this.EditorRows = 8; 
+            this.EditorColums = 15;
+            this.EditorRows = 15; 
             this.selectedLeft = 0;
             this.selectedRight = 0;
             this.showGrid = true;
             this.erase = false;
             this.copy = false;
+            this.pasteTiles = [];
             // Defaults for new map
             if (_.isUndefined(this.currentMap)) {
                     this.jsonMapObject = { 
@@ -60,7 +66,7 @@ define([
                     },
                     "env": "normal"    
                 };
-                for(i = 0; i < this.COLS; i++)
+                for(i = 0; i < this.EditorColums; i++)
                 {
                     this.jsonMapObject.data.top[i] = [];
                     this.jsonMapObject.data.middle[i] = [];
@@ -78,6 +84,8 @@ define([
             this.maps = new Maps();
             this.maps.on('change', this.render, this);
             this.maps.fetch();
+            this.mapSaved = true;
+            this.mouseIsDown = false;
         },
 
         destroy: function() {
@@ -87,21 +95,24 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
-            'mousemove cavnas' : 'drawTiletoMap',
+            // 'mousemove canvas': 'mouseMove',
+            'mouseup canvas': 'mouseUp',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
+            'click #playMap': 'playMap',
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
             'click .historyAction': 'historyAction',
             'click .toolbox-toggle': 'toggleToolbox',
             'click #copy': 'preparecopy',
-            'click #paste': 'paste'
+            'click #paste': 'preparePaste'
         },
 
         render: function() {
             if (!_.isUndefined(this.currentMapData)) {
                 if (!_.isUndefined(this.currentMapData.attributes.data)) {
                     var mapInfo = this.currentMapData.attributes;
+                    console.log(mapInfo);
                     this.jsonMapObject = {
                         "title": mapInfo.title,
                         "author": "",  
@@ -109,7 +120,7 @@ define([
                         "height": mapInfo.height,  
                         "x": mapInfo.x,       
                         "y": mapInfo.y,       
-                        "events": $.parseJSON(mapInfo.events), 
+                        "events": [], 
                         "data": $.parseJSON(mapInfo.data),
                         "env": "" 
                     }
@@ -123,8 +134,8 @@ define([
             var self = this;
             if (_.isUndefined(this.currentMap)) {
                 setTimeout(function(){
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             self.drawPiece(22, i, j, "tilesBottom", false);
                         }
                     };
@@ -132,29 +143,29 @@ define([
 
             } else if (!_.isUndefined(this.jsonMapObject)) {
                 setTimeout(function() {
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             self.drawPiece(self.jsonMapObject.data.bottom[j][i], i, j, "tilesBottom", false)
                         }
                     }
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             if(self.jsonMapObject.data.middle[j][i])
                             {
                                 self.drawPiece(self.jsonMapObject.data.middle[j][i], i, j, "tilesMiddle", false)
                             }
                         }
                     }
-                    for (var i = 0; i < 8; ++i) {
-                        for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                        for (var j = 0; j < self.EditorRows; ++j) {
                             if(self.jsonMapObject.data.top[j][i])
                             {
                                 self.drawPiece(self.jsonMapObject.data.top[j][i], i, j, "tilesTop", false)
                             }
                         }
                     }
-                    for (var i = 0; i < 8; ++i) {
-                         for (var j = 0; j < 8; ++j) {
+                    for (var i = 0; i < self.EditorColums; ++i) {
+                         for (var j = 0; j < self.EditorRows; ++j) {
                             var eventIndex = self.findMatchingEvent(i,j);
                             if(eventIndex>=0)
                             {
@@ -255,8 +266,19 @@ define([
                 var previousValue = this.jsonMapObject.data.bottom[y][x];
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
-            else if(tileSet =="tilesEvents")
-            {
+            else if(tileSet =="tilesEvents"){
+                console.log(this.maps);
+                var Modal = Backbone.Modal.extend({
+                    template: Handlebars.compile(mTemplate),
+                    cancelEl: '.bbm-button',
+                    el: $('<div id="modal">')
+                });
+
+                var modalView = new Modal();
+                $("#modal").html(modalView.render({
+                    maps: ['kevin', 'russ', 'bryce']
+                }).el);
+
                 var xCoordinate = x;
                 var yCoordinate = y;
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
@@ -326,6 +348,14 @@ define([
             ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
         },
         /*Event Functions*/
+        saveAfterTime: function (e) {
+            if(this.mapSaved == false){
+                console.log("TIME TO SAVE!!!!!!!!");
+                this.saveMapToServer();
+                this.mapSaved = true;
+            }
+        },
+
         tileClick: function(e){
             if(this.erase)
             {
@@ -411,7 +441,18 @@ define([
             this.$('.displayed').show();
             this.$('#draw').hide();
         },
+        mouseUp: function (e) {
+            this.mouseIsDown = false;
+        },
+        mouseMove: function (e) {
+            if (this.mouseIsDown == true){
+                this.drawTiletoMap(e);
+            }
+        },
         drawTiletoMap: function(e){
+            this.mapSaved = false
+            this.mouseIsDown = true;
+            console.log("MOUSEMOVE");
             var tileSet = this.$('.displayed').attr('id');
             if (!tileSet)
             {
@@ -423,9 +464,19 @@ define([
             if (e.which === 3) clickedRight = true;
             var x = Math.floor(e.offsetX / this.SIZE);
             var y = Math.floor(e.offsetY / this.SIZE);
-            if(this.erase == true)
+            if(this.erase)
             {
                 this.eraseTile(x,y, true);
+                return false;
+            }
+            if(this.copy)
+            {
+                this.copyFunction(x,y);
+                return false;
+            }
+            if(this.paste)
+            {
+                this.pasteTile(x,y);
                 return false;
             }
             if (clickedLeft)
@@ -437,6 +488,27 @@ define([
             this.showGrid = !this.showGrid;
             var func = this.showGrid ? 'removeClass' : 'addClass';
             $('#grid')[func]('hidden');
+        },
+        playMap: function(){
+            this.jsonMapObject.title = $('#mapTitle').val();
+            this.jsonMapObject.author=USER;
+            this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
+            this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
+            var self = this;
+            if (!_.isUndefined(this.currentMap)) {
+                data = {'map': JSON.stringify(this.jsonMapObject), 'map_id': this.currentMap}
+            } else {
+                data = {'map': JSON.stringify(this.jsonMapObject)}
+            }
+            $.post('/rest/play-map', data, function(response){
+                if (_.isUndefined(self.currentMap)) {
+                    // this.currentMap = response
+                    self.currentMap = response['map_id'];
+                    Backbone.history.navigate('#map-editor/'+response['map_id'])
+                } else {
+                    self.currentMap = response['map_id']
+                }
+            });
         },
         saveMapToServer: function(){
             this.jsonMapObject.title = $('#mapTitle').val();
@@ -485,6 +557,8 @@ define([
             if(e.target.id=="eraser")
             {
                 this.erase = true;
+                this.copy = false;
+                this.paste = false;
                 this.$('.mapEditorCanvas').css({cursor:"crosshair"});
                 this.$('#eraser').hide();
                 this.$('#draw').show();
@@ -492,6 +566,8 @@ define([
             if(e.target.id=="draw")
             {
                 this.erase = false;
+                this.copy = false;
+                this.paste = false;
                 this.$('.mapEditorCanvas').css({cursor: "default"});
                 this.$('#eraser').show();
                 this.$('#draw').hide();
@@ -609,7 +685,7 @@ define([
             }
             self.actionHistoryIndex--;
         },
-        undoTileAdd: function(x, y, layer, id)
+        undoTileAdd: function(x, y, layer, id, addEventToHistory)
         {
             if(layer=="tilesEvents")
             {
@@ -641,12 +717,6 @@ define([
         },
         redo: function()
         {
-            //if(this.actionHistoryIndex>=this.actionHistory.length)
-            //{
-              //  console.log("nothing to re-do");
-                //return false;
-            //}
-            //this.addEventToHistory = false;
             var self = this;
             var nextAction=this.undoneActions[0];
             if(nextAction.action=="erase")
@@ -658,7 +728,6 @@ define([
                 self.drawPiece(parseInt(nextAction.tileId), nextAction.x, nextAction.y, nextAction.layer, true);
             }
             this.undoneActions.splice(0,1);
-            //this.actionHistoryIndex++;
         },
         toggleToolbox: function(e) {
             console.log("here");
@@ -666,19 +735,139 @@ define([
         },
 
         keypressed: function(e) {
-          e.preventDefault();
-          console.log(e.which);
-          if(e.which==71){this.toggleGrid();}
-          if(e.which==83){this.saveMapToServer();}
-          if(e.which==84){console.log("TEST MAP")}
+            this.mapSaved = false
+            console.log(e.which);
+            if(e.which==71 && e.ctrlKey){ //ctrl + g
+                e.preventDefault();
+                this.toggleGrid();
+            }
+            if(e.which==83 && e.ctrlKey){ //ctrl + s
+                e.preventDefault();
+                this.saveMapToServer();
+            }
+            if(e.which==80 && e.ctrlKey){ //ctrl + p
+                e.preventDefault();
+                this.$('#playMap').click();
+            }
+            if(e.which==67 && e.ctrlKey){ //ctrl + c
+                e.preventDefault();
+                this.$('#copy').click();
+            }
+            if(e.which==86 && e.ctrlKey){ //ctrl + v
+                e.preventDefault();
+                this.$('#paste').click();
+            }
+            if(e.which==90 && e.ctrlKey){ //ctrl + z
+                e.preventDefault();
+                this.$('#undo').click();
+            }
+            if(e.which==88 && e.ctrlKey){ //ctrl + x
+                e.preventDefault();
+                this.$('#redo').click();
+            }
+            if(e.which==68 && e.ctrlKey){ //ctrl + d
+                e.preventDefault();
+                this.$('#draw').click();
+            }
+            if(e.which==69 && e.ctrlKey){ //ctrl + e
+                e.preventDefault();
+                this.$('#eraser').click();
+            }
+            if(e.which==53 && e.ctrlKey){ //ctrl + 5
+                e.preventDefault();
+                this.$('#toolBoxToggle').click();
+            }
+            if(e.which==49 && e.ctrlKey){ //ctrl + 1
+                e.preventDefault();
+                this.$('#showBottomTiles').click();
+            }
+            if(e.which==50 && e.ctrlKey){ //ctrl + 2
+                e.preventDefault();
+                this.$('#showMiddleTiles').click();
+            }
+            if(e.which==51 && e.ctrlKey){ //ctrl + 3
+                e.preventDefault();
+                this.$('#showTopTiles').click();
+            }
+            if(e.which==52 && e.ctrlKey){ //ctrl + 4
+                e.preventDefault();
+                this.$('#showEventTiles').click();
+            }
+
         },
         preparecopy: function()
         {
-
+            this.copy = true;
+            this.erase = false;
+            this.paste = false;
+            this.pasteTiles=[];
         },
-        paste: function()
+        preparePaste: function()
+        {   
+            this.$('.mapEditorCanvas').css({cursor:"crosshair"});
+            this.copy = false;
+            this.erase =false;
+            this.paste = true;
+        },
+        pasteTile: function(x,y)
         {
-
+            var self =this;
+            var xBase = x>this.pasteTiles[0].x ? x-this.pasteTiles[0].x : this.pasteTiles[0].x-x;
+            var yBase = y>this.pasteTiles[0].y ? y-this.pasteTiles[0].y : this.pasteTiles[0].y-y;
+            var shiftDown =  x > this.pasteTiles[0].x ? true : false;
+            var shiftRight =  y > this.pasteTiles[0].y ? true : false;
+            this.pasteTiles.forEach(function(newTile){
+                var newX = shiftDown ? newTile.x+xBase : newTile.x-xBase;
+                var newY = shiftRight ? newTile.y + yBase : newTile.y - yBase
+                self.drawPiece(newTile.id, newX, newY, newTile.tileSet, true)
+            })
+            this.$('.mapEditorCanvas').css({cursor:"default"});
+            ctx = this.$('#copyCanvas')[0].getContext('2d');
+            for (var i = 0; i < this.EditorColums; ++i) {
+                for (var j = 0; j < this.EditorRows; ++j) {
+                    ctx.clearRect(i*this.SIZE, j*this.SIZE, this.SIZE, this.SIZE);
+                }
+            };
+            this.paste = false;
+        },
+        copyFunction: function(x,y)
+        {
+            if(this.jsonMapObject.data.top[y][x])
+            {
+                var id = this.jsonMapObject.data.top[y][x];
+                var tileSet = "tilesTop";
+                 var copyTile = {
+                    "id": id,
+                    "x": x,
+                    "y": y,
+                    "tileSet": tileSet
+                }
+                this.pasteTiles.push(copyTile);
+            }
+            if(this.jsonMapObject.data.middle[y][x])
+            {
+                var id = this.jsonMapObject.data.middle[y][x];
+                var tileSet = "tilesMiddle";
+                var copyTile = {
+                    "id": id,
+                    "x": x,
+                    "y": y,
+                    "tileSet": tileSet
+                }
+                this.pasteTiles.push(copyTile);
+            }
+            var id = this.jsonMapObject.data.bottom[y][x];
+            var tileSet = "tilesBottom";
+            var copyTile = {
+                "id": id,
+                "x": x,
+                "y": y,
+                "tileSet": tileSet
+            }
+            this.pasteTiles.push(copyTile);
+            ctx = this.$('#copyCanvas')[0].getContext('2d');
+            ctx.strokeStyle = '#ff0000';
+            ctx.strokeRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE);
         }
     });
     return EditorView;

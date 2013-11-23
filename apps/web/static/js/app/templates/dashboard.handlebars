@@ -44,7 +44,10 @@
  		<table class="left-align">
  			{{#each maps}}
  				{{#with attributes}}
- 					<tr><td>{{title}}</td><td><a href="#map-editor/{{id}}">edit</a></td><td><a href="#">delete</td></tr>
+ 					<tr>
+ 						<td>{{title}}</td><td><a href="#map-editor/{{id}}" data-id="{{id}}">edit</a></td>
+ 						<td><a href="#" class="delete" data-id="{{id}}">delete </td>
+ 					</tr>
  				{{/with}}
  			{{/each}}
  		</table>
