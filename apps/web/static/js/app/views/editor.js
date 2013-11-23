@@ -96,6 +96,7 @@ define([
             'mousemove cavnas' : 'drawTiletoMap',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
+            'click #playMap': 'playMap',
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
             'click .historyAction': 'historyAction',
@@ -462,6 +463,27 @@ define([
             this.showGrid = !this.showGrid;
             var func = this.showGrid ? 'removeClass' : 'addClass';
             $('#grid')[func]('hidden');
+        },
+        playMap: function(){
+            this.jsonMapObject.title = $('#mapTitle').val();
+            this.jsonMapObject.author=USER;
+            this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
+            this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
+            var self = this;
+            if (!_.isUndefined(this.currentMap)) {
+                data = {'map': JSON.stringify(this.jsonMapObject), 'map_id': this.currentMap}
+            } else {
+                data = {'map': JSON.stringify(this.jsonMapObject)}
+            }
+            $.post('/rest/play-map', data, function(response){
+                if (_.isUndefined(self.currentMap)) {
+                    // this.currentMap = response
+                    self.currentMap = response['map_id'];
+                    Backbone.history.navigate('#map-editor/'+response['map_id'])
+                } else {
+                    self.currentMap = response['map_id']
+                }
+            });
         },
         saveMapToServer: function(){
             this.jsonMapObject.title = $('#mapTitle').val();
