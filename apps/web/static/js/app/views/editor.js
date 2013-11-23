@@ -503,6 +503,7 @@ define([
                 } else {
                     self.currentMap = response['map_id']
                 }
+                console.log(response);
             });
         },
         saveMapToServer: function(){
