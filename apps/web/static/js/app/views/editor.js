@@ -4,7 +4,6 @@ define([
     'backbone',
     'handlebars',
     'text!app/templates/editor.handlebars',
-    'text!app/templates/modal.handlebars',
     'app/collections/maps',
     'app/models/map',
     'backbone-modal'
@@ -14,7 +13,6 @@ define([
     Backbone,
     Handlebars,
     template,
-    modalTemplate,
     Maps,
     Map
 ) {
@@ -22,8 +20,6 @@ define([
     var EditorView = Backbone.View.extend({
 
         template: Handlebars.compile(template),
-
-        modalTemplate: Handlebars.compile(template),
 
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
@@ -115,7 +111,7 @@ define([
                         "height": mapInfo.height,  
                         "x": mapInfo.x,       
                         "y": mapInfo.y,       
-                        "events": $.parseJSON(mapInfo.events), 
+                        "events": [], 
                         "data": $.parseJSON(mapInfo.data),
                         "env": "" 
                     }
