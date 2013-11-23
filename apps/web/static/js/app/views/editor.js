@@ -4,9 +4,9 @@ define([
     'backbone',
     'handlebars',
     'text!app/templates/editor.handlebars',
-    'text!app/templates/modalWindow.handlebars',
     'app/collections/maps',
     'app/models/map',
+    'app/views/modal',
     'backbone-modal'
 ], function(
     $,
@@ -14,9 +14,9 @@ define([
     Backbone,
     Handlebars,
     template,
-    mTemplate,
     Maps,
-    Map
+    Map,
+    ModalView
 ) {
 
     var EditorView = Backbone.View.extend({
@@ -25,7 +25,6 @@ define([
 
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
-            this.modalTemplate = Handlebars.compile(mTemplate);
             this.currentMap = this.options['id'];
             _.bindAll(this);
             $(document).bind('keydown', this.keypressed);
@@ -196,6 +195,7 @@ define([
                     $('#mapTitle').val(self.jsonMapObject.title);
                 }, 100);
             }
+            $("#content").css("min-height", "960px");
             $("#toolbox").hide();
             return this;
         },
@@ -267,14 +267,8 @@ define([
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesEvents"){
-                console.log(this.maps);
-                var Modal = Backbone.Modal.extend({
-                    template: Handlebars.compile(mTemplate),
-                    cancelEl: '.bbm-button',
-                    el: $('<div id="modal">')
-                });
 
-                var modalView = new Modal();
+                var modalView = new ModalView();
                 $("#modal").html(modalView.render({
                     maps: ['kevin', 'russ', 'bryce']
                 }).el);
@@ -489,7 +483,8 @@ define([
             var func = this.showGrid ? 'removeClass' : 'addClass';
             $('#grid')[func]('hidden');
         },
-        playMap: function(){
+        playMap: function(e){
+            e.preventDefault();
             this.jsonMapObject.title = $('#mapTitle').val();
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
