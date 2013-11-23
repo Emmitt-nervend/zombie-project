@@ -10,7 +10,7 @@ require.config({
         'jqueryui': 'vendor/jquery-ui-1.10.3.min',
         'lasso': 'vendor/lasso',
         'ink-filepicker': '//api.filepicker.io/v1/filepicker',
-        'backbone-modal': 'vendor/backbone.modal-min'
+        'backbone-modal': 'vendor/backbone.modal'
     },
     shim: {
         'underscore': {

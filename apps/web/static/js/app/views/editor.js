@@ -4,6 +4,7 @@ define([
     'backbone',
     'handlebars',
     'text!app/templates/editor.handlebars',
+    'text!app/templates/modalWindow.handlebars',
     'app/collections/maps',
     'app/models/map',
     'backbone-modal'
@@ -13,16 +14,18 @@ define([
     Backbone,
     Handlebars,
     template,
+    mTemplate,
     Maps,
     Map
 ) {
-    
+
     var EditorView = Backbone.View.extend({
 
         template: Handlebars.compile(template),
 
         initialize: function() {
             this.constructor.__super__.initialize.apply(this, [this.options]);
+            this.modalTemplate = Handlebars.compile(mTemplate);
             this.currentMap = this.options['id'];
             _.bindAll(this);
             $(document).bind('keyup', this.keypressed);
@@ -258,16 +261,18 @@ define([
                 var previousValue = this.jsonMapObject.data.bottom[y][x];
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
-            else if(tileSet =="tilesEvents")
-            {Modal
+            else if(tileSet =="tilesEvents"){
                 console.log(this.maps);
                 var Modal = Backbone.Modal.extend({
-                    template: _.template($('#modal-template').html()),
-                    cancelEl: '.bbm-button'
+                    template: Handlebars.compile(mTemplate),
+                    cancelEl: '.bbm-button',
+                    el: $('<div id="modal">')
                 });
 
                 var modalView = new Modal();
-                $('#modal').html(modalView.render().el);
+                $("#modal").html(modalView.render({
+                    maps: ['kevin', 'russ', 'bryce']
+                }).el);
 
                 var xCoordinate = x;
                 var yCoordinate = y;

@@ -5,7 +5,8 @@ define([
     'app/views/nav',
     'app/views/dashboard',
     'app/views/editor',
-    'app/views/settings'
+    'app/views/settings',
+    'app/views/modal'
 ], function(
     $,
     _,
@@ -13,7 +14,8 @@ define([
     NavView,
     DashboardView,
     EditorView,
-    SettingsView
+    SettingsView,
+    ModalView
 ) {
 
     var nav = new NavView();
@@ -61,6 +63,11 @@ define([
         settings: function() {
             this.cleanup();
             this.render(new SettingsView(), 'settings');
+        },
+
+        modal: function() {
+            this.cleanup();
+            this.render(new ModalView(), 'modal');
         },
 
         cleanup: function() {
