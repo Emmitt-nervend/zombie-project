@@ -13,5 +13,6 @@ urlpatterns = patterns('',
 	url(r'^admin-request$', views.AdminRequest.as_view()),
 	url(r'^save-map$', views.SaveMap.as_view()),
 	url(r'^random-map$', views.RandomMap.as_view()),	
+	url(r'^play-map$', views.PlayMap.as_view()),
 	url(r'^api$', views.api, name='api'),
 )
