@@ -29,7 +29,8 @@ define([
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.currentMap = this.options['id'];
             _.bindAll(this);
-            $(document).bind('keyup', this.keypressed);
+            $(document).bind('keydown', this.keypressed);
+            $(document).bind(setInterval(this.saveAfterTime, 5000));
             // Initialize editor constants
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
@@ -84,6 +85,8 @@ define([
             this.maps = new Maps();
             this.maps.on('change', this.render, this);
             this.maps.fetch();
+            this.mapSaved = true;
+            this.mouseIsDown = false;
         },
 
         destroy: function() {
@@ -93,7 +96,8 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
-            'mousemove cavnas' : 'drawTiletoMap',
+            // 'mousemove canvas': 'mouseMove',
+            'mouseup canvas': 'mouseUp',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
             'click #playMap': 'playMap',
@@ -342,6 +346,14 @@ define([
             ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
         },
         /*Event Functions*/
+        saveAfterTime: function (e) {
+            if(this.mapSaved == false){
+                console.log("TIME TO SAVE!!!!!!!!");
+                this.saveMapToServer();
+                this.mapSaved = true;
+            }
+        },
+
         tileClick: function(e){
             if(this.erase)
             {
@@ -427,7 +439,18 @@ define([
             this.$('.displayed').show();
             this.$('#draw').hide();
         },
+        mouseUp: function (e) {
+            this.mouseIsDown = false;
+        },
+        mouseMove: function (e) {
+            if (this.mouseIsDown == true){
+                this.drawTiletoMap(e);
+            }
+        },
         drawTiletoMap: function(e){
+            this.mapSaved = false
+            this.mouseIsDown = true;
+            console.log("MOUSEMOVE");
             var tileSet = this.$('.displayed').attr('id');
             if (!tileSet)
             {
@@ -710,13 +733,64 @@ define([
         },
 
         keypressed: function(e) {
-            e.preventDefault();
+            this.mapSaved = false
             console.log(e.which);
-            if(e.which==71){this.toggleGrid();}
-            if(e.which==83){this.saveMapToServer();}
-            if(e.which==84){console.log("TEST MAP")}
-            if(e.which==67){this.$('#copy').click();}
-            if(e.which==86){this.$('#paste').click();}
+            if(e.which==71 && e.ctrlKey){ //ctrl + g
+                e.preventDefault();
+                this.toggleGrid();
+            }
+            if(e.which==83 && e.ctrlKey){ //ctrl + s
+                e.preventDefault();
+                this.saveMapToServer();
+            }
+            if(e.which==80 && e.ctrlKey){ //ctrl + p
+                e.preventDefault();
+                this.$('#playMap').click();
+            }
+            if(e.which==67 && e.ctrlKey){ //ctrl + c
+                e.preventDefault();
+                this.$('#copy').click();
+            }
+            if(e.which==86 && e.ctrlKey){ //ctrl + v
+                e.preventDefault();
+                this.$('#paste').click();
+            }
+            if(e.which==90 && e.ctrlKey){ //ctrl + z
+                e.preventDefault();
+                this.$('#undo').click();
+            }
+            if(e.which==88 && e.ctrlKey){ //ctrl + x
+                e.preventDefault();
+                this.$('#redo').click();
+            }
+            if(e.which==68 && e.ctrlKey){ //ctrl + d
+                e.preventDefault();
+                this.$('#draw').click();
+            }
+            if(e.which==69 && e.ctrlKey){ //ctrl + e
+                e.preventDefault();
+                this.$('#eraser').click();
+            }
+            if(e.which==53 && e.ctrlKey){ //ctrl + 5
+                e.preventDefault();
+                this.$('#toolBoxToggle').click();
+            }
+            if(e.which==49 && e.ctrlKey){ //ctrl + 1
+                e.preventDefault();
+                this.$('#showBottomTiles').click();
+            }
+            if(e.which==50 && e.ctrlKey){ //ctrl + 2
+                e.preventDefault();
+                this.$('#showMiddleTiles').click();
+            }
+            if(e.which==51 && e.ctrlKey){ //ctrl + 3
+                e.preventDefault();
+                this.$('#showTopTiles').click();
+            }
+            if(e.which==52 && e.ctrlKey){ //ctrl + 4
+                e.preventDefault();
+                this.$('#showEventTiles').click();
+            }
 
         },
         preparecopy: function()
