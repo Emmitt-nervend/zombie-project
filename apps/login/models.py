@@ -7,8 +7,8 @@ import django_filepicker
 class ZombieUser(models.Model):
 	id = models.AutoField(primary_key=True)
 	user = models.OneToOneField(User)
-	games_won = models.IntegerField(null=True, blank=True)
-	games_lost = models.IntegerField(null=True, blank=True)
+	games_won = models.IntegerField(null=True, blank=True, default=0)
+	games_lost = models.IntegerField(null=True, blank=True, default=0)
 	account_type = models.IntegerField(null=True, blank=True)
 	maps = models.ManyToManyField('Map', null=True, blank=True)
 	profile_pic = models.CharField(max_length=100, null=True, blank=True)
