@@ -103,7 +103,6 @@ define([
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
             'click .historyAction': 'historyAction',
-            'click .toolbox-toggle': 'toggleToolbox',
             'click #copy': 'preparecopy',
             'click #paste': 'preparePaste'
         },
@@ -112,7 +111,6 @@ define([
             if (!_.isUndefined(this.currentMapData)) {
                 if (!_.isUndefined(this.currentMapData.attributes.data)) {
                     var mapInfo = this.currentMapData.attributes;
-                    console.log(mapInfo);
                     this.jsonMapObject = {
                         "title": mapInfo.title,
                         "author": "",  
@@ -197,6 +195,7 @@ define([
             }
             $("#content").css("min-height", "960px");
             $("#toolbox").hide();
+            this.delegateEvents();
             return this;
         },
         
@@ -344,7 +343,6 @@ define([
         /*Event Functions*/
         saveAfterTime: function (e) {
             if(this.mapSaved == false){
-                console.log("TIME TO SAVE!!!!!!!!");
                 this.saveMapToServer();
                 this.mapSaved = true;
             }
@@ -446,7 +444,6 @@ define([
         drawTiletoMap: function(e){
             this.mapSaved = false
             this.mouseIsDown = true;
-            console.log("MOUSEMOVE");
             var tileSet = this.$('.displayed').attr('id');
             if (!tileSet)
             {
@@ -504,7 +501,7 @@ define([
                     self.currentMap = response['map_id']
                 }
                 var $dialog = $('<div></div>')
-                    .html('<iframe style="border: 0px;" src="'+ response.url +'" width="600" height="600"></iframe>')
+                    .html('<iframe id="mapIframe" style="border: 0px;" src="'+ response.url +'" width="600" height="600"></iframe>')
                     .dialog({
                         autoOpen: false,
                         modal: true,
@@ -513,7 +510,13 @@ define([
                         title: self.jsonMapObject.title
                     });
                 $dialog.dialog('open');
-                console.log(response);
+                $("#document").on('keydown', function(e) {
+                    if (e.which == 40 || e.which == 38) {
+                        e.preventDefault();
+                    }
+                    console.log("iframe event!");
+                });
+                console.log($dialog);
             });
         },
         saveMapToServer: function(){
@@ -666,7 +669,7 @@ define([
         {
             if(this.actionHistoryIndex<=0)
             {
-                console.log("Can't undo anymore.");
+                // Can't undo anymore
                 return false;
             }
             var self = this;
@@ -735,19 +738,8 @@ define([
             }
             this.undoneActions.splice(0,1);
         },
-        toggleToolbox: function(e) {
-            console.log("here");
-            $("#toolbox").toggle("slide", {direction: "up"});
-        },
-        arrows: function(e) {
-            e.preventDefault();
-            console.log(e);
-        },
         keypressed: function(e) {
-            e.preventDefault();
-            console.log(e);
             this.mapSaved = false
-            console.log(e.which);
             if(e.which==71 && e.ctrlKey){ //ctrl + g
                 e.preventDefault();
                 this.toggleGrid();
@@ -803,6 +795,12 @@ define([
             if(e.which==52 && e.ctrlKey){ //ctrl + 4
                 e.preventDefault();
                 this.$('#showEventTiles').click();
+            }
+            if(e.which==40){
+                e.preventDefault();
+            }
+            if(e.which==38){
+                e.preventDefault();
             }
 
         },
