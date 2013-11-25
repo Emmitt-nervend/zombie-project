@@ -27,6 +27,7 @@ define([
             this.constructor.__super__.initialize.apply(this, [this.options]);
             this.currentMap = this.options['id'];
             _.bindAll(this);
+            // $(window).bind('keydown', this.arrows);
             $(document).bind('keydown', this.keypressed);
             $(document).bind(setInterval(this.saveAfterTime, 5000));
             // Initialize editor constants
@@ -738,8 +739,13 @@ define([
             console.log("here");
             $("#toolbox").toggle("slide", {direction: "up"});
         },
-
+        arrows: function(e) {
+            e.preventDefault();
+            console.log(e);
+        },
         keypressed: function(e) {
+            e.preventDefault();
+            console.log(e);
             this.mapSaved = false
             console.log(e.which);
             if(e.which==71 && e.ctrlKey){ //ctrl + g
