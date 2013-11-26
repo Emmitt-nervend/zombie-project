@@ -58,9 +58,12 @@ define([
 
         events: {
             'click #submit': 'gamesWon',
-            'click .delete': 'deleteMap'
+            'click .delete': 'deleteMap',
+            'click #addWin': 'winloss',
+            'click #subWin': 'winloss',
+            'click #addLoss': 'winloss',
+            'click #subLoss': 'winloss'
         },
-
         gamesWon: function(e) {
             e.preventDefault();
             var data = $('#gamesWon').val();
@@ -76,6 +79,34 @@ define([
             this.maps.get(mapIdToDelete).destroy({success: function(model, response) {
                 self.render();
             }});
+        },
+
+        winloss: function (e) {
+            e.preventDefault();
+            if(e.target.id == 'addLoss'){
+                var lost = this.zombieUser.get('games_lost');
+                lost += 1;
+                this.zombieUser.set({games_lost: lost});
+            }
+            if(e.target.id == 'subLoss'){
+                var lost = this.zombieUser.get('games_lost');
+                if(lost > 0)
+                    lost -= 1;
+                this.zombieUser.set({games_lost: lost});
+            }
+            if(e.target.id == 'addWin'){
+                var lost = this.zombieUser.get('games_won');
+                lost += 1;
+                this.zombieUser.set({games_won: lost});
+            }
+            if(e.target.id == 'subWin'){
+                var lost = this.zombieUser.get('games_won');
+                if(lost > 0)
+                    lost -= 1;
+                this.zombieUser.set({games_won: lost});
+            }
+            this.zombieUser.save();
+
         }
 
     });

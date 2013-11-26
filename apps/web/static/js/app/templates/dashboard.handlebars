@@ -33,8 +33,30 @@
 			 			<h1>0</h1>
  					{{/if}}
  				</div>
- 			</div> 
+ 			</div>
 		</div>
+		<div class="row">
+ 			{{!-- <div class="col-md-2">
+ 				<button class="btn btn-info">+</button>
+ 			</div>	
+ 			<div class="col-md-2">
+ 				<button class="btn btn-info">-</button>
+ 			</div>
+ 			<div class="col-md-2 col-md-offset-2">
+ 				<button class="btn btn-info">+</button>
+ 			</div>	
+ 			<div class="col-md-2">
+ 				<button class="btn btn-info">-</button>
+ 			</div>	 --}}	
+ 			<div class="col-md-6">
+ 				<button class="btn btn-info" id="addWin">+</button>
+ 				<button class="btn btn-info" id="subWin">-</button>
+ 			</div>
+ 			<div class="col-md-6">
+ 				<button class="btn btn-info" id="addLoss">+</button>
+ 				<button class="btn btn-info" id="subLoss">-</button>
+ 			</div>
+ 		</div> 
 	</div>
  	<div class="col-md-8 col-md-push-1 col-attrib full-height"> 			
  		<h2 class="left-align">Created Maps</h2>
@@ -45,7 +67,7 @@
  			{{#each maps}}
  				{{#with attributes}}
  					<tr>
- 						<td>{{title}}</td><td><a href="#map-editor/{{id}}" data-id="{{id}}">edit</a></td>
+ 						<td class="white-text">{{title}}</td><td><a href="#map-editor/{{id}}" data-id="{{id}}">edit</a></td>
  						<td><a href="#" class="delete" data-id="{{id}}">delete </td>
  					</tr>
  				{{/with}}

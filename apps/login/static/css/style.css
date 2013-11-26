@@ -181,7 +181,7 @@ li > a {
 }
 	.col-attrib {
 		background-color: rgba(100, 100,100, 0.8);
-	}
+	}	
 .profile-pic img {
 	width: 100%;
 	border: 2px solid black;
@@ -232,9 +232,10 @@ td {
 	position: absolute;
 	width: 600px;
 	height: 600px;
-	top: 310px;
+	top: 340px;
 	left: 50%;
 	margin-left: -300px;
+	box-shadow: 0 0 8px rgba(250, 0, 0, 0.5);
 }
 .top-left {
 	position: fixed;
