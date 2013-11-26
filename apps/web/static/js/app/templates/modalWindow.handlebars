@@ -5,17 +5,19 @@
     {{#if mapId}}
     <div id="treasure">
         <h4>Select your Item:</h4>
-        <input type="radio" name="item" value="1">Shotgun<br>
-        <input type="radio" name="item" value="2">Knife<br>
-        <input type="radio" name="item" value="3">Machine Gun<br>
+        <input type="radio" name="item" data-id="1">Shotgun<br>
+        <input type="radio" name="item" data-id="2">Knife<br>
+        <input type="radio" name="item" data-id="3">Machine Gun<br>
     </div>
     {{else}}
     <div id="transfer">
         <h4>Destination Map:</h4>
         <select id="mapList" required>
-            <option></option>
+            <option>--Select a map--</option>
         {{#each maps}}
-            <option>{{this}}</option>
+            {{#with attributes}}
+                <option id="{{title}}" data-id="{{id}}">{{title}}</option>
+            {{/with}}
         {{/each}}
         </select>
         <p>New X Coordinate <input type="text" id="d_x" class="" required></p>

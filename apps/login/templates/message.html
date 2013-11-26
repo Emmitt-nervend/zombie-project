@@ -6,7 +6,11 @@
 
 <div class="center-screen">
 
-	<a href="/"><img src="/static/images/Logo.png" id="homelogo"></a>
+	{% if url %}
+		<a href="{{url}}"><img src="/static/images/Logo.png" id="homelogo"></a>
+	{% else %}
+		<a href="/"><img src="/static/images/Logo.png" id="homelogo"></a>
+	{% endif %}
 
 	<h2 class="walter-turncoat head-spacing">
 		{{message}}

@@ -106,7 +106,7 @@ li > a {
 	position: absolute;
 	color: gray;
 	margin: 8px 10px 0 10px;
-	top: 6px;
+	top: 7px;
 	right: 65px;
 	z-index: 150;
 }
@@ -115,6 +115,9 @@ li > a {
 		height: 25px;
 		margin: 15px 5px;
 	}
+		.top-right-panel .web {
+			margin: 10px 5px !important;
+		}
 	.top-right-panel span a {
 		display: block;
 		width: 100%;

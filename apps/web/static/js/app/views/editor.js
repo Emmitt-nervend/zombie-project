@@ -31,6 +31,7 @@ define([
             $(document).bind('keydown', this.keypressed);
             $(document).bind(setInterval(this.saveAfterTime, 5000));
             // Initialize editor constants
+            this.loadingMap = false;
             this.SIZE = 40;
             this.NUM_TILES_BOTTOM = 44;
             this.NUM_TILES_MIIDLE = 72;
@@ -74,6 +75,7 @@ define([
                 }
             } else {
                 // Load the map if we are editing a map
+                this.loadingMap = true;
                 this.currentMapData = new Map({id: this.currentMap})
                 this.currentMapData.on('change', this.render, this);
                 this.currentMapData.fetch();
@@ -177,16 +179,16 @@ define([
                                 {
                                     tileId=1;
                                 }
-                                else if(eventId=="hole"||id==4)
+                                else if(eventId=="hole")
                                 {
                                     tileId=2;
                                 }
                                 else if(eventId=="door")
-                                {Index
+                                {
                                     tileId=3;
                                 }
                                 self.jsonMapObject.events.splice(eventIndex, 1);
-                                self.drawPiece(tileId, i, j, "tilesEvents", false, self.jsonMapObject.events[eventIndex])
+                                self.drawPiece(tileId, i, j, "tilesEvents", false, self.jsonMapObject.events[eventIndex]);
                             }
                          }
                      }
@@ -267,18 +269,19 @@ define([
             }
             else if(tileSet =="tilesEvents"){
                 var self = this;
-                if(id ==0 || id >=2)
+                if(id == 0 || id >= 2)
                 {
-                    if(id == 0)
-                        {var mapId = "treasure";}
+                    if(id == 0){
+                        var mapId = "treasure";
+                    }
                     var modalView = new ModalView();
-
                     $("#modal").html(modalView.render({
-                        maps: self.maps,
+                        maps: self.maps.models,
                         mapId: mapId
                     }).el);
                     $("#submitEvent").on('click', function(){
                         var info = modalView.submitEvent();
+                        console.log(info);
                         self.saveEventObject(info, x, y, id);
                     });
                 }
@@ -354,14 +357,12 @@ define([
             }
             this.mapSaved = false;
         },
-        
         saveAfterTime: function (e) {
             if(this.mapSaved == false){
                 this.saveMapToServer();
                 this.mapSaved = true;
             }
         },
-
         tileClick: function(e){
             if(this.erase)
             {
@@ -816,7 +817,6 @@ define([
             if(e.which==38){
                 e.preventDefault();
             }
-
         },
         preparecopy: function()
         {

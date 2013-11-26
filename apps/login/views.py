@@ -22,7 +22,7 @@ def home(request):
 		user = authenticate(username=submitted_name, password=submitted_password)
 		if user is not None:
 			if user.is_active:
-				expiration = 1200  # twnety minutes
+				expiration = 1200  # twenty minutes
 				login(request, user)
 				request.session.set_expiry(expiration)
 				return HttpResponseRedirect('/web/')
@@ -89,11 +89,17 @@ def sign_up(request):
 				new_auth_user.last_name = cd['lastName']
 				new_auth_user.first_name = cd['firstName']
 				new_auth_user.save()
-				if cd['designer'] is 1:
-					new_zombie_user = ZombieUser(user=new_auth_user, accountType=1)
+				print(cd['designer'])
+				if cd['designer'] is True:
+					new_zombie_user = ZombieUser(user=new_auth_user, account_type=1)
 				else:
 					new_zombie_user = ZombieUser(user=new_auth_user)
 				new_zombie_user.save()
+				# Log in the new user
+				user = authenticate(username=cd['userName'], password=cd['password'])
+				expiration = 1200  # twenty minutes
+				login(request, user)
+				request.session.set_expiry(expiration)
 				return HttpResponseRedirect('/success/')
 			else:
 				return render(request, 'sign_up.html', {'errors': 'Passowords do not match', 
@@ -106,7 +112,7 @@ def sign_up(request):
 
 def success(request):
 	message = "Success! Your account has been created."
-	return render(request, 'message.html', {'message': message})
+	return render(request, 'message.html', {'message': message, 'url': '/web'})
 
 def logout_user(request):
 	if request.user.is_authenticated():

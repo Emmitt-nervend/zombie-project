@@ -16,7 +16,7 @@
 		<div class="row">
  			<div class="col-md-6">
  				<div class="box" id="win">
- 					<p>Wins</p>
+ 					<p class="white-text">Wins</p>
  					{{#if userinfo.games_won}}
  						<h1>{{userinfo.games_won}}</h1>
 			 		{{else}}
@@ -26,7 +26,7 @@
  			</div>
  			<div class="col-md-6">
  				<div class="box" id="loss">
- 					<p>Losses</p>
+ 					<p class="white-text">Losses</p>
  					{{#if userinfo.games_lost}}
  						<h1>{{userinfo.games_lost}}</h1>
 			 		{{else}}
@@ -35,31 +35,19 @@
  				</div>
  			</div>
 		</div>
-		<div class="row">
- 			{{!-- <div class="col-md-2">
- 				<button class="btn btn-info">+</button>
- 			</div>	
- 			<div class="col-md-2">
- 				<button class="btn btn-info">-</button>
- 			</div>
- 			<div class="col-md-2 col-md-offset-2">
- 				<button class="btn btn-info">+</button>
- 			</div>	
- 			<div class="col-md-2">
- 				<button class="btn btn-info">-</button>
- 			</div>	 --}}	
+		<div class="row">	
  			<div class="col-md-6">
- 				<button class="btn btn-info" id="addWin">+</button>
- 				<button class="btn btn-info" id="subWin">-</button>
+ 				<button class="btn btn-default" id="addWin">+</button>
+ 				<button class="btn btn-default" id="subWin">-</button>
  			</div>
  			<div class="col-md-6">
- 				<button class="btn btn-info" id="addLoss">+</button>
- 				<button class="btn btn-info" id="subLoss">-</button>
+ 				<button class="btn btn-default" id="addLoss">+</button>
+ 				<button class="btn btn-default" id="subLoss">-</button>
  			</div>
  		</div> 
 	</div>
  	<div class="col-md-8 col-md-push-1 col-attrib full-height"> 			
- 		<h2 class="left-align">Created Maps</h2>
+ 		<h2 class="left-align">{{user}}'s maps</h2>
  		{{#unless maps}}
  			<h3>You have no maps! Create a map now by clicking <a href="/web/#map-editor">here</a></h3>
  		{{/unless}}
