@@ -119,7 +119,7 @@ define([
                         "height": mapInfo.height,  
                         "x": mapInfo.x,       
                         "y": mapInfo.y,       
-                        "events": [], 
+                        "events": $.parseJSON(mapInfo.events), 
                         "data": $.parseJSON(mapInfo.data),
                         "env": "" 
                     }
@@ -187,7 +187,7 @@ define([
                                     tileId=3;
                                 }
                                 self.jsonMapObject.events.splice(eventIndex, 1);
-                                self.drawPiece(tileId, i, j, "tilesEvents", false)
+                                self.drawPiece(tileId, i, j, "tilesEvents", false, self.jsonMapObject.events[eventIndex])
                             }
                          }
                      }
@@ -243,7 +243,7 @@ define([
                 tile.hide();
             }
         },
-        drawPiece:function(id, x, y, tileSet, addEventToHistory) {
+        drawPiece:function(id, x, y, tileSet, addEventToHistory, eventBody) {
             if(tileSet =="tilesBottom")
             {
                 var ctx = this.$('#mapBottom')[0].getContext('2d');
@@ -266,60 +266,24 @@ define([
                 this.jsonMapObject.data.top[y][x]=parseInt(id);
             }
             else if(tileSet =="tilesEvents"){
+                var self = this;
+                if(id ==0 || id >=2)
+                {
+                    if(id == 0)
+                        {var mapId = "treasure";}
+                    var modalView = new ModalView();
 
-                var modalView = new ModalView();
-                $("#modal").html(modalView.render({
-                    maps: ['kevin', 'russ', 'bryce']
-                }).el);
-
-                var xCoordinate = x;
-                var yCoordinate = y;
+                    $("#modal").html(modalView.render({
+                        maps: self.maps,
+                        mapId: mapId
+                    }).el);
+                    $("#submitEvent").on('click', function(){
+                        var info = modalView.submitEvent();
+                        self.saveEventObject(info, x, y, id);
+                    });
+                }
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
                 var source = this.SRCEVENTS;
-                var previousValue = this.jsonMapObject.events[this.findMatchingEvent(x,y)];
-                if(id==0)
-                {
-                    this.jsonMapObject.events.push(
-                    {
-                        "id": "treasure",
-                        "x": xCoordinate,  
-                        "y": yCoordinate,  
-                        "item": Number   // the item the treasure box contains, figure out a way to set this
-                    });
-                }
-                else if(id==1)
-                {
-                    this.jsonMapObject.events.push(
-                    {
-                        "id": "bush",
-                        "x": xCoordinate,  
-                        "y": yCoordinate   
-                    });
-                }
-                else if(id==2)
-                {
-                    this.jsonMapObject.events.push(
-                    {
-                        "id": "hole",
-                        "x": xCoordinate,  
-                        "y": yCoordinate,  
-                        "d_id": Number,  // the destination id of the map to send you to
-                        "d_x":  Number,  // the destination x of where it sends you
-                        "d_y":  Number,  // the destination y of where it sends you
-                    });
-                }
-                else if(id==3||id==4)
-                {
-                    this.jsonMapObject.events.push(
-                    {
-                        "id": "door",
-                        "x": xCoordinate,  // the x location of the door
-                        "y": yCoordinate,  // the y location of the door
-                        "d_id": Number,  // the destination id of the map to send you to
-                        "d_x":  Number,  // the destination x of where it sends you
-                        "d_y":  Number,  // the destination y of where it sends you
-                    });
-                }
             }
             if(addEventToHistory)
             {
@@ -340,7 +304,57 @@ define([
             var yOffset = Math.floor(id / this.COLS) * this.SIZE;
             ctx.drawImage(img, xOffset, yOffset, this.SIZE, this.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
         },
-        /*Event Functions*/
+        saveEventObject: function(info, x, y, id)
+        {
+            var xCoordinate = x;
+            var yCoordinate = y;
+            var previousValue = this.jsonMapObject.events[this.findMatchingEvent(x,y)];
+            if(id==0)
+            {
+                this.jsonMapObject.events.push(
+                {
+                    "id": "treasure",
+                    "x": xCoordinate,  
+                    "y": yCoordinate,  
+                    "item": parseInt(info.value)   // the item the treasure box contains, figure out a way to set this
+                });
+            }
+            else if(id==1)
+            {
+                this.jsonMapObject.events.push(
+                {
+                    "id": "bush",
+                    "x": xCoordinate,  
+                    "y": yCoordinate   
+                });
+            }
+            else if(id==2)
+            {
+                this.jsonMapObject.events.push(
+                {
+                    "id": "hole",
+                    "x": xCoordinate,  
+                    "y": yCoordinate,  
+                    "d_id": info.mapId,  // the destination id of the map to send you to
+                    "d_x":  info.d_x,  // the destination x of where it sends you
+                    "d_y":  info.d_y,  // the destination y of where it sends you
+                });
+            }
+            else if(id==3||id==4)
+            {
+                this.jsonMapObject.events.push(
+                {
+                    "id": "door",
+                    "x": xCoordinate,  // the x location of the door
+                    "y": yCoordinate,  // the y location of the door
+                    "d_id": info.mapId,  // the destination id of the map to send you to
+                    "d_x":  info.d_x,  // the destination x of where it sends you
+                    "d_y":  info.d_y,  // the destination y of where it sends you
+                });
+            }
+            this.mapSaved = false;
+        },
+        
         saveAfterTime: function (e) {
             if(this.mapSaved == false){
                 console.log("TIME TO SAVE!!!!!!!!");
