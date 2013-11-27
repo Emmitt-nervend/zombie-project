@@ -97,7 +97,7 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
-            // 'mousemove canvas': 'mouseMove',
+            'mousemove canvas': 'mouseMove',
             'mouseup canvas': 'mouseUp',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
@@ -187,8 +187,10 @@ define([
                                 {
                                     tileId=3;
                                 }
+                                var eventBody = self.jsonMapObject.events[eventIndex];
                                 self.jsonMapObject.events.splice(eventIndex, 1);
-                                self.drawPiece(tileId, i, j, "tilesEvents", false, self.jsonMapObject.events[eventIndex]);
+                                self.drawPiece(tileId, i, j, "tilesEvents", false, eventBody);
+
                             }
                          }
                      }
@@ -269,21 +271,55 @@ define([
             }
             else if(tileSet =="tilesEvents"){
                 var self = this;
-                if(id == 0 || id >= 2)
+                if(!eventBody)
                 {
-                    if(id == 0){
-                        var mapId = "treasure";
+                    if(id == 0 || id >= 2)
+                    {
+                        if(id == 0){
+                            var mapId = "treasure";
+                        }
+                        var modalView = new ModalView();
+                        $("#modal").html(modalView.render({
+                            maps: self.maps.models,
+                            mapId: mapId
+                        }).el);
+                        $("#submitEvent").on('click', function(){
+                            var info = modalView.submitEvent();
+                            console.log(info);
+                            var eventBody = self.saveEventObject(info, x, y, id);
+                            var ctx = self.$('#mapEvents')[0].getContext('2d');
+                            var source = self.SRCEVENTS;
+                            var img=document.createElement('image');
+                            img.src=source;
+                            var xOffset = id % self.COLS * self.SIZE;
+                            var yOffset = Math.floor(id / self.COLS) * self.SIZE;
+                            ctx.drawImage(img, xOffset, yOffset, self.SIZE, self.SIZE, x * this.SIZE, y * this.SIZE, this.SIZE, this.SIZE);
+                            if(addEventToHistory)
+                            {
+                                var historyItem = {
+                                    "layer": tileSet,
+                                    "action": "add",
+                                    "x": x,
+                                    "y": y,
+                                    "tileId": eventBody,
+                                    "previousValue": previousValue
+                                };
+                                self.actionHistory[self.actionHistoryIndex] = historyItem;
+                                self.actionHistoryIndex++;
+                            }
+                            return false;
+                        });
                     }
-                    var modalView = new ModalView();
-                    $("#modal").html(modalView.render({
-                        maps: self.maps.models,
-                        mapId: mapId
-                    }).el);
-                    $("#submitEvent").on('click', function(){
-                        var info = modalView.submitEvent();
-                        console.log(info);
-                        self.saveEventObject(info, x, y, id);
-                    });
+                }
+                else
+                {
+                    var oldIndex = this.findMatchingEvent(x,y);
+                    if(oldIndex>=0)
+                    {
+                        var previousValue = this.jsonMapObject.events[oldIndex];
+                        this.jsonMapObject.events.splice(oldIndex, 1);
+                    }
+                    this.jsonMapObject.events.push(eventBody);
                 }
                 var ctx = this.$('#mapEvents')[0].getContext('2d');
                 var source = this.SRCEVENTS;
@@ -295,7 +331,7 @@ define([
                     "action": "add",
                     "x": x,
                     "y": y,
-                    "tileId": id,
+                    "tileId": (tileSet=="tilesEvents"? eventBody:id),
                     "previousValue": previousValue
                 };
                 this.actionHistory[this.actionHistoryIndex] = historyItem;
@@ -314,26 +350,26 @@ define([
             var previousValue = this.jsonMapObject.events[this.findMatchingEvent(x,y)];
             if(id==0)
             {
-                this.jsonMapObject.events.push(
+                var eventBody = //this.jsonMapObject.events.push(
                 {
                     "id": "treasure",
                     "x": xCoordinate,  
                     "y": yCoordinate,  
                     "item": parseInt(info.value)   // the item the treasure box contains, figure out a way to set this
-                });
+                };
             }
             else if(id==1)
             {
-                this.jsonMapObject.events.push(
+                var eventBody =//this.jsonMapObject.events.push(
                 {
                     "id": "bush",
                     "x": xCoordinate,  
                     "y": yCoordinate   
-                });
+                };
             }
             else if(id==2)
             {
-                this.jsonMapObject.events.push(
+                 var eventBody =//this.jsonMapObject.events.push(
                 {
                     "id": "hole",
                     "x": xCoordinate,  
@@ -341,11 +377,11 @@ define([
                     "d_id": info.mapId,  // the destination id of the map to send you to
                     "d_x":  info.d_x,  // the destination x of where it sends you
                     "d_y":  info.d_y,  // the destination y of where it sends you
-                });
+                };
             }
             else if(id==3||id==4)
             {
-                this.jsonMapObject.events.push(
+                 var eventBody =//this.jsonMapObject.events.push(
                 {
                     "id": "door",
                     "x": xCoordinate,  // the x location of the door
@@ -353,9 +389,11 @@ define([
                     "d_id": info.mapId,  // the destination id of the map to send you to
                     "d_x":  info.d_x,  // the destination x of where it sends you
                     "d_y":  info.d_y,  // the destination y of where it sends you
-                });
+                };
             }
+            this.jsonMapObject.events.push(eventBody);
             this.mapSaved = false;
+            return eventBody;
         },
         saveAfterTime: function (e) {
             if(this.mapSaved == false){
@@ -693,7 +731,30 @@ define([
             this.actionHistory.splice(this.actionHistoryIndex-1, 1)
             if(lastAction.action=="erase")
             {
-                self.drawPiece(lastAction.tileId, lastAction.x, lastAction.y, lastAction.layer, false);
+                if(lastAction.layer=="tilesEvents")
+                {
+                    if(lastAction.tileId.id =="treasure")
+                    {
+                        var eventTileID = 0;
+                    }
+                    else if(lastAction.tileId.id =="bush")
+                    {
+                         var eventTileID = 1;
+                    }
+                    else if(lastAction.tileId.id =="hole")
+                    {
+                         var eventTileID = 2;
+                    }
+                    else if(lastAction.tileId.id =="door")
+                    {
+                         var eventTileID = 3;
+                    }
+                    self.drawPiece(eventTileID, lastAction.x, lastAction.y, lastAction.layer, false, lastAction.tileId);    
+                }
+                else
+                {
+                    self.drawPiece(lastAction.tileId, lastAction.x, lastAction.y, lastAction.layer, false);
+                }
                 
             }
             else if(lastAction.action=="add")
@@ -723,7 +784,7 @@ define([
             }
             else if(layer=="tilesMiddle")
             {
-                var ctx = this.$('#mapTop')[0].getContext('2d');
+                var ctx = this.$('#mapMiddle')[0].getContext('2d');
             }
             if(addEventToHistory)
             {
@@ -743,6 +804,10 @@ define([
         {
             var self = this;
             var nextAction=this.undoneActions[0];
+            if(!nextAction)
+            {
+                return false;
+            }
             if(nextAction.action=="erase")
             {
                 self.undoTileAdd(nextAction.x, nextAction.y, nextAction.layer, nextAction.tileId, true);
@@ -755,6 +820,7 @@ define([
         },
         keypressed: function(e) {
             this.mapSaved = false
+            console.log(e.which);
             if(e.which==71 && e.ctrlKey){ //ctrl + g
                 e.preventDefault();
                 this.toggleGrid();
@@ -779,7 +845,7 @@ define([
                 e.preventDefault();
                 this.$('#undo').click();
             }
-            if(e.which==88 && e.ctrlKey){ //ctrl + x
+            if(e.which==89 && e.ctrlKey){ //ctrl + x
                 e.preventDefault();
                 this.$('#redo').click();
             }

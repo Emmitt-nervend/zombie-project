@@ -42,7 +42,7 @@ define([
                 data.d_y = self.$('#d_y').val();
             }
             this.close();
-            console.log(data);
+            //console.log(data);
             return data;
         }
 
