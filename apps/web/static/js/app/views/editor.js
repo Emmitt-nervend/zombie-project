@@ -97,7 +97,7 @@ define([
         events: {
             'mousedown .tile':'tileClick',
             'mousedown canvas':'drawTiletoMap',
-            'mousemove canvas': 'mouseMove',
+            //'mousemove canvas': 'mouseMove',
             'mouseup canvas': 'mouseUp',
             'click #toggle': 'toggleGrid',
             'click #saveMap': 'saveMapToServer',
