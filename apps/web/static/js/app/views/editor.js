@@ -122,7 +122,7 @@ define([
                         "y": mapInfo.y,       
                         "events": $.parseJSON(mapInfo.events), 
                         "data": $.parseJSON(mapInfo.data),
-                        "env": mapInfo.env
+                        "env": mapInfo.environment
                     }
                 }
             }
