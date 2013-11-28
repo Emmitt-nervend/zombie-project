@@ -195,15 +195,18 @@ define([
                          }
                      }
                     $('#mapTitle').val(self.jsonMapObject.title);
-                    if(self.jsonMapObject.env.length>0)
-                    {
-                        var selection = self.jsonMapObject.env;
-                        $('#env').find('option').each(function{
-                            if($(this)==selection)
-                            {
-                                $(this).prop('selected', true);
-                            }
-                        })
+                    if(self.jsonMapObject.env)
+                    {   
+                       var selection = self.jsonMapObject.env;
+                       if(selection.length>0)
+                        {
+                            $('#env').find('option').each(function(){
+                                if($(this).attr('value')==selection)
+                                {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+                        }
                     }
                 }, 100);
             }
