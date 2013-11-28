@@ -122,7 +122,7 @@ define([
                         "y": mapInfo.y,       
                         "events": $.parseJSON(mapInfo.events), 
                         "data": $.parseJSON(mapInfo.data),
-                        "env": "" 
+                        "env": mapInfo.env
                     }
                 }
             }
@@ -195,6 +195,16 @@ define([
                          }
                      }
                     $('#mapTitle').val(self.jsonMapObject.title);
+                    if(self.jsonMapObject.env.length>0)
+                    {
+                        var selection = self.jsonMapObject.env;
+                        $('#env').find('option').each(function{
+                            if($(this)==selection)
+                            {
+                                $(this).prop('selected', true);
+                            }
+                        })
+                    }
                 }, 100);
             }
             $("#content").css("min-height", "960px");
@@ -574,6 +584,7 @@ define([
         },
         saveMapToServer: function(){
             this.jsonMapObject.title = $('#mapTitle').val();
+            this.jsonMapObject.env = $('#env').val();
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
             this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
