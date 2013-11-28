@@ -28,7 +28,7 @@ class Map(models.Model):
 	y = models.IntegerField()
 	data = JSONField()
 	events = models.CharField(max_length=1000, null=True, blank=True)
-	environment = models.CharField(max_length=100, null=True, blank=True)
+	env = models.CharField(max_length=100, null=True, blank=True)
 
 	def __unicode__(self):
 		return unicode(self.id)

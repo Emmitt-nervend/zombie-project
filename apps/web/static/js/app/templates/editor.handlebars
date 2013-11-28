@@ -5,12 +5,7 @@
 		</div>
 		<form class="navbar-form navbar-left">
 			<input type="text" id="mapTitle" class="form-control" placeholder="Untitled map">
-			<select id="env">
-				<option value="normal">Normal</option>
-				<option value="rainy">Rainy</option>
-				<option value="cloudy">Cloudy</option>
-				<option value="dark">Dark</option>
-			</select>
+			
 		</form>
 		<div>
 			<ul class="nav navbar-nav">
@@ -31,6 +26,15 @@
 						<li><a id="copy" class="">Copy (ctl+c)</a></li>
 						<li><a id="paste" class="">Paste (ctl+v)</a></li>
 						<li><a id="toggle" class="">Toggle Grid (ctl+g)</a></li>
+					</ul>
+				</li>
+				<li class="dropdown" id="env">
+					<a href="#" class="dropdown-toggle" id="env" data-toggle="dropdown">Environment <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" id="normal">Normal</a></li>
+						<li><a href="#" id="rainy">Rainy</a></li>
+						<li><a href="#" id="cloudy">Cloudy</a></li>
+						<li><a href="#" id="dark">Dark</a></li>
 					</ul>
 				</li>
 				<li><a id="eraser" class="funcSwitcher showing">Erase (ctl+e)</a></li>

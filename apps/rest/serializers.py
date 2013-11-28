@@ -20,5 +20,5 @@ class ZombieUserSerializer(serializers.ModelSerializer):
 class MapSerializer(serializers.ModelSerializer):
 
 	class Meta:
-		fields = ('id', 'title', 'owner', 'width', 'height', 'x', 'y', 'data', 'events', 'environment')
+		fields = ('id', 'title', 'owner', 'width', 'height', 'x', 'y', 'data', 'events', 'env')
 		model = Map
