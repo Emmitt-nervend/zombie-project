@@ -16,29 +16,21 @@ $(document).ready(function(){
 	// var top = (screen.height/2)-300;
 	// $('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
 
-
 	$("#guest").click(function(e){	
 		e.preventDefault();
-
 		$.get("/rest/random-map", function(response){
 			console.log(response);
-			var $dialog = $('<div></div>')
-               .html('<iframe style="border: 0px;" src="'+ response.url +'" width="600" height="600"></iframe>')
-
-               .dialog({
-                   autoOpen: false,
-                   modal: true,
-                   height: "auto",
-                   width: "auto",
-                   title: "Zombie Attack"
-
-
-
-               });
+			var $dialog = $('<div id="uiwrapper"></div>')
+				.html('<iframe style="" src="'+ response.url +'" width="600" height="600"></iframe>')
+				.dialog({
+					autoOpen: false,
+					modal: true,
+					height: "auto",
+					width: "auto",
+					title: "Zombie Attack: Random Map"
+			});
 			$dialog.dialog('open');
-		});
-
-
+		})
 	});
 
 });
