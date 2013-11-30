@@ -12,26 +12,27 @@ $(document).ready(function(){
 		}
 	});
 	
-	// var left = (screen.width/2)-300;
-	// var top = (screen.height/2)-300;
-	// $('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
+	var left = (screen.width/2)-300;
+	var top = (screen.height/2)-300;
+	$('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
 
-	$("#guest").click(function(e){	
-		e.preventDefault();
-		$.get("/rest/random-map", function(response){
-			console.log(response);
-			var $dialog = $('<div id="uiwrapper"></div>')
-				.html('<iframe style="" src="'+ response.url +'" width="600" height="600"></iframe>')
-				.dialog({
-					autoOpen: false,
-					modal: true,
-					height: "auto",
-					width: "auto",
-					title: "Zombie Attack: Random Map"
-			});
-			$dialog.dialog('open');
-		})
-	});
+	// $("#guest").click(function(e){	
+	// 	// e.preventDefault();
+	// 	$.get("/rest/random-map", function(response){
+	// 		console.log(response);
+	// 		var $dialog = $('<div></div>')
+	// 			.html('<iframe style="{overflow-y: scroll}" src="'+ response.url +'" width="500" height="500"></iframe>')  //width=left height=top"></iframe>')
+	// 			.dialog({
+	// 				autoOpen: false,
+	// 				modal: true,
+	// 				height: "auto",
+	// 				width: "auto",
+	// 				title: "Zombie Attack: Random Map"
+	// 		});
+	// 		$('body').addClass('stop-scrolling')	
+	// 		$dialog.dialog('open');
+	// 	})
+	// });
 
 });
 
