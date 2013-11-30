@@ -126,7 +126,7 @@ class PlayMap(generics.GenericAPIView):
 							      y=map_dict['y'],
 							      events=map_dict['events'],
 							      data=map_dict['data'],
-							      environment=map_dict['env'])
+							      env=map_dict['env'])
 				map_to_edit.save()
 				response['map_id'] = map_to_edit.id
 				response['message'] = 'success'
@@ -141,7 +141,7 @@ class PlayMap(generics.GenericAPIView):
 							  y=map_dict['y'],
 							  events=map_dict['events'],
 							  data=map_dict['data'],
-							  environment=map_dict['env'])
+							  env=map_dict['env'])
 				new_map.save()
 				response['map_id'] = new_map.id
 				response['message'] = 'success'
@@ -211,7 +211,7 @@ class SaveMap(generics.GenericAPIView):
 						      y=map_dict['y'],
 						      events=map_dict['events'],
 						      data=map_dict['data'],
-						      environment=map_dict['env'])
+						      env=map_dict['env'])
 			map_to_edit.save()
 			response['map_id'] = map_to_edit.id
 			response['message'] = 'success'
@@ -226,7 +226,7 @@ class SaveMap(generics.GenericAPIView):
 						  y=map_dict['y'],
 						  events=map_dict['events'],
 						  data=map_dict['data'],
-						  environment=map_dict['env'])
+						  env=map_dict['env'])
 			new_map.save()
 			response['map_id'] = new_map.id
 			response['message'] = 'success'
