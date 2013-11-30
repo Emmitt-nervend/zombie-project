@@ -199,46 +199,6 @@ def change_password(request, token):
 		message = "Sorry, this link has expired."	
 		return render(request, 'message.html', {'message': message})
 
-def guest(request):
-	map = {
-		'title':'Default Map',
-		'author': 'Zombie Attack',
-		'width': 15,
-		'height': 15,
-		'x': 4,
-		'y': 4,
-		'data': {
-			'bottom': [
-				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
-				[22, 0, 8,16,22,22,22,22,22,22,22,22,22,22,22],
-				[22, 1, 9, 8,16,22,22,22,22,22,22,22,22,22,22],
-				[22, 1, 9, 9,17,22,22,22,22,22,22,22,22,22,22],
-				[22, 2, 0, 9, 8,16,22,22,22,22,22,22,22,22,22],
-				[22,22, 1, 9, 9, 8, 8,16,22,22,22,22,22,22,22],
-				[22,22, 2, 4, 9, 9, 9, 8,16,22,22,22,22,22,22],
-				[22,22,22, 2,10, 4, 9, 9, 8,16,22,22,22,22,22],
-				[22,22,22,22,22, 2, 4, 9, 9,17,22,22,22,22,22],
-				[22,22,22,22,22,22, 2, 4, 9,17,22,22,22,22,22],
-				[22,22,22,22,22,22,22, 2,10,18,22,22,22,22,22],
-				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
-				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
-				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
-				[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22]
-			],
-			'middle':[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-			'top':[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-		},
-		'events': [],
-		'env': 'normal'
-	}
-
-	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
-	headers = {'content-type': 'application/json'}
-
-	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
-	python_response = json.loads(r.text)
-	return render(request, 'guest.html', {'url':python_response['url']})
-
 
 def randomplay(request):
 	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
@@ -246,9 +206,6 @@ def randomplay(request):
 
 	all_maps = Map.objects.all()
 	map_len = len(all_maps)
-
-	print(all_maps)
-	print(map_len)
 
 	if map_len > 0:	
 		map_len = map_len - 1
@@ -264,16 +221,15 @@ def randomplay(request):
 		    'events': all_maps[n].events,
 		    'env': 'normal'
 		}
-
 		r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
 		python_response = json.loads(r.text)
 		return render(request, 'guest.html', {'url':python_response['url']})
-	
+		
 	else:
 		print("There are no saved maps. \nUsing default map.")	
 		map = {
 			'title':'Default Map',
-			'author': 'Guest',
+			'author': 'System',
 			'width': 15,
 			'height': 15,
 			'x': 4,
@@ -306,6 +262,3 @@ def randomplay(request):
 		r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
 		python_response = json.loads(r.text)
 		return render(request, 'guest.html', {'url':python_response['url']})
-
-
-	
