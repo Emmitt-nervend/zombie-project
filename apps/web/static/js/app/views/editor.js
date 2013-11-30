@@ -100,13 +100,17 @@ define([
             //'mousemove canvas': 'mouseMove',
             'mouseup canvas': 'mouseUp',
             'click #toggle': 'toggleGrid',
-            'click #saveMap': 'saveMapToServer',
+            'click #savemap': 'saveMap',
             'click #playMap': 'playMap',
             'click .tileSetSwitch': 'switchTiles',
             'click .funcSwitcher': 'changeFunctions',
             'click .historyAction': 'historyAction',
             'click #copy': 'preparecopy',
-            'click #paste': 'preparePaste'
+            'click #paste': 'preparePaste',
+            'click #normal': 'enviornment',
+            'click #rainy': 'enviornment',
+            'click #cloudy': 'enviornment',
+            'click #dark': 'enviornment'
         },
 
         render: function() {
@@ -410,8 +414,16 @@ define([
         },
         saveAfterTime: function (e) {
             if(this.mapSaved == false){
-                this.saveMapToServer();
+                console.log("savedMap");
+                // this.saveMapToServer();
+                this.$el.find('#savemap').click();
                 this.mapSaved = true;
+            }
+            else {
+                this.$el.find('#savemap').css({
+                color: "#ffffff",
+                transition: "color 1000ms linear"          
+                });
             }
         },
         tileClick: function(e){
@@ -587,7 +599,8 @@ define([
         },
         saveMapToServer: function(){
             this.jsonMapObject.title = $('#mapTitle').val();
-            this.jsonMapObject.env = $('#env').val();
+            // this.jsonMapObject.env = enviornment;
+            console.log(this.jsonMapObject.env);
             this.jsonMapObject.author=USER;
             this.jsonMapObject.width = parseInt($('#mapBottom').attr('width'))/40;
             this.jsonMapObject.height = parseInt($('#mapBottom').attr('height'))/40;
@@ -971,7 +984,39 @@ define([
             ctx = this.$('#copyCanvas')[0].getContext('2d');
             ctx.strokeStyle = '#ff0000';
             ctx.strokeRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE);
+        }, 
+
+        enviornment: function (e){
+            e.preventDefault();
+            if (e.currentTarget.id == "normal"){
+                console.log("normal");
+                this.jsonMapObject.env = "normal";
+            }
+            if (e.currentTarget.id == "rainy"){
+                console.log("rainy");
+                this.jsonMapObject.env = "rainy";
+            }
+            if (e.currentTarget.id == "cloudy"){
+                console.log("cloudy");
+                this.jsonMapObject.env = "cloudy";
+            }
+            if (e.currentTarget.id == "dark"){
+                console.log("dark");
+                this.jsonMapObject.env = "dark";
+            }
+        },
+
+        saveMap: function (e){
+            e.preventDefault();
+            console.log("SAVED");
+            this.$el.find('#savemap').css({
+                color: "red",
+                transition: "color 1000ms linear"                
+            });
+            
+            this.saveMapToServer();
         }
+
     });
     return EditorView;
 });

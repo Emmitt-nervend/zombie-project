@@ -85,7 +85,10 @@ define([
             e.preventDefault();
             if(e.target.id == 'addLoss'){
                 var lost = this.zombieUser.get('games_lost');
-                lost += 1;
+                if (lost)
+                    lost += 1;
+                else
+                    lost = 1;
                 this.zombieUser.set({games_lost: lost});
             }
             if(e.target.id == 'subLoss'){
@@ -95,15 +98,18 @@ define([
                 this.zombieUser.set({games_lost: lost});
             }
             if(e.target.id == 'addWin'){
-                var lost = this.zombieUser.get('games_won');
-                lost += 1;
-                this.zombieUser.set({games_won: lost});
+                var win = this.zombieUser.get('games_won');
+                if (win)
+                    win += 1;
+                else
+                    win = 1;
+                this.zombieUser.set({games_won: win});
             }
             if(e.target.id == 'subWin'){
-                var lost = this.zombieUser.get('games_won');
-                if(lost > 0)
-                    lost -= 1;
-                this.zombieUser.set({games_won: lost});
+                var win = this.zombieUser.get('games_won');
+                if(win > 0)
+                    win -= 1;
+                this.zombieUser.set({games_won: win});
             }
             this.zombieUser.save();
 
