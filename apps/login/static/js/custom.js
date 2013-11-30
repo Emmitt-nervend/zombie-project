@@ -12,8 +12,8 @@ $(document).ready(function(){
 		}
 	});
 	
-	var left = (screen.width/2)-300;
-	var top = (screen.height/2)-300;
+	// var left = (screen.width/2)-300;
+	// var top = (screen.height/2)-300;
 	$('#playGuest').popupWindow({centerScreen:1, height:600, width:600});
 
 	// $("#guest").click(function(e){	

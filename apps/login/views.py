@@ -236,10 +236,9 @@ def guest(request):
 	headers = {'content-type': 'application/json'}
 
 	r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
-
 	python_response = json.loads(r.text)
-
 	return render(request, 'guest.html', {'url':python_response['url']})
+
 
 def randomplay(request):
 	url = 'http://zombie-attack.aws.af.cm/uploadMap/ae8c7e77-4e02-4d95-a63a-603b44cadf87'
@@ -248,21 +247,22 @@ def randomplay(request):
 	all_maps = Map.objects.all()
 	map_len = len(all_maps)
 
+	print(all_maps)
+	print(map_len)
+
 	if map_len > 0:	
 		map_len = map_len - 1
 		n = random.randint(0,map_len) 
 
 		map = {
 			'title': all_maps[n].title,	
-			#'author': 'Random',
-			#'url': all_maps[n].url,
 		    'width': all_maps[n].width,
 		    'height': all_maps[n].height,
 		    'x': all_maps[n].x,
 		    'y': all_maps[n].y,
 		    'data': all_maps[n].data,
 		    'events': all_maps[n].events,
-		    'environment': 'normal'
+		    'env': 'normal'
 		}
 
 		r = requests.post(url, data=json.dumps({'map':map}), headers=headers)
@@ -296,8 +296,8 @@ def randomplay(request):
 					[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
 					[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22]
 				],
-				'middle':[[],[],[],[],[],[],[],[]],
-				'top':[[],[],[],[],[],[],[],[],[]]
+				'middle':[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+				'top':[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 			},
 			'events': [],
 			'env': 'normal'
