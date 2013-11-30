@@ -107,10 +107,10 @@ define([
             'click .historyAction': 'historyAction',
             'click #copy': 'preparecopy',
             'click #paste': 'preparePaste',
-            'click #normal': 'enviornment',
-            'click #rainy': 'enviornment',
-            'click #cloudy': 'enviornment',
-            'click #dark': 'enviornment'
+            'click #normal': 'environment',
+            'click #rainy': 'environment',
+            'click #cloudy': 'environment',
+            'click #dark': 'environment'
         },
 
         render: function() {
@@ -199,19 +199,19 @@ define([
                          }
                      }
                     $('#mapTitle').val(self.jsonMapObject.title);
-                    if(self.jsonMapObject.env)
-                    {   
-                       var selection = self.jsonMapObject.env;
-                       if(selection.length>0)
-                        {
-                            $('#env').find('li').each(function(){
-                                if($(this).attr('id')==selection)
-                                {
-                                    $('#env').html($(this).html());
-                                }
-                            });
-                        }
-                    }
+                    // if(self.jsonMapObject.env)
+                    // {   
+                    //    var selection = self.jsonMapObject.env;
+                    //    if(selection.length>0)
+                    //     {
+                    //         $('#env').find('li').each(function(){
+                    //             if($(this).attr('id')==selection)
+                    //             {
+                    //                 $('#env').html($(this).html());
+                    //             }
+                    //         });
+                    //     }
+                    // }
                 }, 100);
             }
             $("#content").css("min-height", "960px");
@@ -986,7 +986,7 @@ define([
             ctx.strokeRect(x*this.SIZE, y*this.SIZE, this.SIZE, this.SIZE);
         }, 
 
-        enviornment: function (e){
+        environment: function (e){
             e.preventDefault();
             if (e.currentTarget.id == "normal"){
                 console.log("normal");
