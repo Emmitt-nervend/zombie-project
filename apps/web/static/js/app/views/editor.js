@@ -200,10 +200,10 @@ define([
                        var selection = self.jsonMapObject.env;
                        if(selection.length>0)
                         {
-                            $('#env').find('option').each(function(){
-                                if($(this).attr('value')==selection)
+                            $('#env').find('li').each(function(){
+                                if($(this).attr('id')==selection)
                                 {
-                                    $(this).prop('selected', true);
+                                    $('#env').html($(this).html());
                                 }
                             });
                         }
